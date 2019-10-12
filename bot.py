@@ -1,26 +1,37 @@
 import os
 import discord
+from discord.ext import commands
+from json import load
 from dotenv import load_dotenv
 
 load_dotenv()
 token=os.getenv('DISCORD_TOKEN')
 guild_propane=int(os.getenv('DISCORD_GUILD_PROPANE'))
-prefix_help=os.getenv('COMMAND_PREFIX_HELP')
+commands_wiki=load(open('wiki.json'))
+bot=commands.Bot(command_prefix=os.getenv('COMMAND_PREFIX'))
+guild_emoji={}
 
-client=discord.Client()
-
-@client.event
+@bot.event
 async def on_ready():
-    guild=client.get_guild(guild_propane)
-    print(f'{client.user}, enter:\n'
-        f'{guild.name}(id: {guild.id})')
+    guild=bot.get_guild(guild_propane)
 
-@client.event
-async def on_message(message):
-    if message.author==client.user:
-        return
+    for emoji in guild.emojis:
+        guild_emoji[emoji.name]=emoji.id
     
-    if message.content==prefix_help+'maia':
-        await message.channel.send('Beep boop!')
+    print(f'{bot.user.name}, roll out! Entering {guild.name}(id: {guild.id})')
 
-client.run(token)
+@bot.event
+async def on_message(message):
+    if message.author==bot.user:
+        pass
+    
+    if 'wotcher' in message.content.lower():
+        await message.add_reaction('<:wotcher:{0}>'.format(guild_emoji['wotcher']))
+
+    await bot.process_commands(message)
+
+@bot.command()
+async def wiki(context, entry):
+    await context.send('{0}: {1}'.format(entry, commands_wiki[entry.lower()]))
+
+bot.run(token)
