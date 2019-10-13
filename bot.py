@@ -1,7 +1,7 @@
 import os
 import discord
 from discord.ext import commands
-from json import load
+from json import load, dump
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,9 +20,9 @@ async def on_ready():
 
     for emoji in guild.emojis:
         guild_emoji[emoji.name]=emoji.id
-    
-    # Debog
-    print(guild_emoji)
+    # Occasionally run this
+    #dump(guild_emoji, open('emoji.json', 'w'))
+
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
 @bot.event
@@ -37,6 +37,7 @@ async def on_message(message):
 
 @bot.command()
 async def wiki(context, entry):
-    await context.send('{0}: {1}'.format(entry, commands_wiki.get(entry.lower(), 'Entry does not exist.')))
+    await context.send('**{0}:** {1}'.format(entry, commands_wiki.get(entry.lower(), 'Entry does not exist.'))) 
+
 
 bot.run(token)
