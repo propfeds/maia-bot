@@ -20,8 +20,14 @@ async def on_ready():
 
     for emoji in guild.emojis:
         guild_emoji[emoji.name]=emoji.id
+
     # Occasionally run this
-    #dump(guild_emoji, open('emoji.json', 'w'))
+    # dump(guild_emoji, open('emoji.json', 'w'))
+    # And / or this
+    # guild_roles={}
+    # for role in guild.roles:
+    #     guild_roles[role.name]=role.id
+    # dump(guild_roles, open('roles.json', 'w'))
 
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
@@ -36,8 +42,18 @@ async def on_message(message):
     await bot.process_commands(message)
 
 @bot.command()
-async def wiki(context, entry):
-    await context.send('**{0}:** {1}'.format(entry, commands_wiki.get(entry.lower(), 'Entry does not exist.'))) 
+async def wiki(context, *entries):
+    for entry in entries:
+        await context.send('**{0}:** {1}'.format(entry, commands_wiki.get(entry.lower(), 'Entry does not exist.'))) 
 
+@bot.command()
+async def bard(context):
+    role_bard=discord.utils.get(context.guild.roles, name='Bard')
+    if role_bard in context.author.roles:
+        await context.author.remove_roles(role_bard, reason="Unbarded by command")
+        await context.send("Unbarded!")
+    else:
+        await context.author.add_roles(role_bard, reason="Barded by command")
+        await context.send("Barded!")
 
 bot.run(token)
