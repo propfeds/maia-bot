@@ -49,6 +49,7 @@ async def wiki(context, *entries):
         if commands_wiki.get(entry.lower()):
             entry_cur=entry
 
+            # Redirecting entries
             while commands_wiki.get(entry_cur)[0]=='>':
                 entry_cur=commands_wiki.get(entry_cur)[1:]
                 response+=('►{0}'.format(entry_cur))

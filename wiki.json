@@ -1,17 +1,13 @@
 {
-    "a": ">b",
-    "b": ">cd",
-    "cd": ">e",
-    "e": "press f",
-
     "derek": "An ancient warrior, slayer of Jormumgandulf.",
-    "dracklenose": "Mun 'Dracklenose' Ching of Ankh-Morpork, a Witch. Colourblind. Loves to toss people into the Morgue.",
+    "dracklenose": ">mun ching",
 
     "maia": "Tavernkeeper, Lorekeeper, Bookkeeper. Keeper of stuffs. I also keep Minh trapped in this cycle of never-ending debugging.",
     "merope": "She's my spiritual successor. Runs a cafe out in space.",
     "merope's cafe": "The prequel to Maia's Tavern.",
     "morza": "Morzilla Fireliz <:morzilla:616663663083782198>",
     "morzilla": "Morza Morizon <:morza:616569007876603904>",
+    "mun ching": "Mun 'Dracklenose' Ching of Ankh-Morpork, a Witch. Colourblind. Loves to toss people into the Morgue.",
 
     "nova": "The first Champion of FARA. An Astronomer of the Spire, hell bent on finding her true home where she belongs.",
 
