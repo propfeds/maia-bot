@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 token=os.getenv('DISCORD_TOKEN')
 guild_propane=int(os.getenv('DISCORD_GUILD_PROPANE'))
-commands_wiki=load(open('wiki.json'))
+commands_wiki=load(open('wiki.json', encoding='utf-8'))
 bot=commands.Bot(command_prefix=os.getenv('COMMAND_PREFIX'))
 guild_emoji={}
 
@@ -35,20 +35,33 @@ async def on_ready():
 async def on_message(message):
     if message.author==bot.user:
         pass
-    
+
     if 'wotcher' in message.content.lower():
         await message.add_reaction(format_emoji('wotcher'))
 
     await bot.process_commands(message)
 
-@bot.command()
+@bot.command(description='Type entries as arguments to learn about various topics.')
 async def wiki(context, *entries):
     for entry in entries:
-        await context.send('**{0}:** {1}'.format(entry, commands_wiki.get(entry.lower(), 'Entry does not exist.'))) 
+        response='**{0}'.format(entry)
 
-@bot.command()
+        if commands_wiki.get(entry.lower()):
+            entry_cur=entry
+
+            while commands_wiki.get(entry_cur)[0]=='>':
+                entry_cur=commands_wiki.get(entry_cur)[1:]
+                response+=('►{0}'.format(entry_cur))
+
+            response+=(':** {0}'.format(commands_wiki.get(entry_cur)))
+        else:
+            response+=':** Entry does not exist.'
+        await context.send(response)
+
+@bot.command(description='Bards you and unbards you.')
 async def bard(context):
     role_bard=discord.utils.get(context.guild.roles, name='Bard')
+
     if role_bard in context.author.roles:
         await context.author.remove_roles(role_bard, reason="Unbarded by command")
         await context.send("Unbarded!")

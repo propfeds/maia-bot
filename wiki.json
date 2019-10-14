@@ -1,4 +1,9 @@
 {
+    "a": ">b",
+    "b": ">cd",
+    "cd": ">e",
+    "e": "press f",
+
     "derek": "An ancient warrior, slayer of Jormumgandulf.",
     "dracklenose": "Mun 'Dracklenose' Ching of Ankh-Morpork, a Witch. Colourblind. Loves to toss people into the Morgue.",
 
@@ -17,10 +22,10 @@
     "robot": "My hella fellas!",
     "rougelike": "It's spelled *rogue*like.",
 
-    "tom": "In memory of a level 2 Cleric of Vlakos. Stomped flat and dragged away.",
+    "tom": ">tom forsaus",
     "tom forsaus": "In memory of a level 2 Cleric of Vlakos. Stomped flat and dragged away.",
     "tome": "The best game of all time. Seizure warning: screen flickers when f.lux filter is present.",
-    "tome4 sauce": "In memory of a level 2 Cleric of Vlakos. Stomped flat and dragged away.",
+    "tome4 sauce": ">tom forsaus",
     "tridude": "Exhibiting rare trilateral symmetry, some speculate that the green skinned tridudes are not native to our plane. This doesn't stop the tridudes from killing unwary adventurers, however, so save the philosophy until you have escaped the dungeon.",
 
     "wotcher": "A colloquial greeting in southern England, most commonly in Lancre. Its American equivalent is 'Wotchit doing?'.",
