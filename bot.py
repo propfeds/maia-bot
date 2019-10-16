@@ -4,29 +4,16 @@ from dotenv import load_dotenv
 from json import load, dump
 import os
 from random import randint
+from rdoclient_py3 import RandomOrgClient, RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 
 load_dotenv()
-token=os.getenv('DISCORD_TOKEN')
-guild_propane=int(os.getenv('DISCORD_GUILD_ID'))
+# Discourse
 commands_wiki=load(open('data/wiki.json', encoding='utf-8'))
-bot=commands.Bot(command_prefix=os.getenv('COMMAND_PREFIX'))
+bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
 guild_emoji={}
 guild_role_indexes={}
-
-def roll_die(dice, sides, mod):
-    results={}
-    results_dice=[]
-    results_sum=mod
-    for _ in range(dice):
-        roll=randint(1, sides)
-        results_dice.append(roll)
-        results_sum+=roll
-    results['dice']=results_dice
-    results['sum']=results_sum
-    return results
-
-def format_die_roll(results):
-    return '\n`{0}`→{1}'.format(results['dice'], results['sum'])
+# Randorg
+randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild, name):
     return guild.roles[guild_role_indexes[name]]
@@ -36,7 +23,7 @@ def format_emoji(name):
 
 @bot.event
 async def on_ready():
-    guild=bot.get_guild(guild_propane)
+    guild=bot.get_guild(int(os.getenv('DISCORD_GUILD_ID')))
 
     for emoji in guild.emojis:
         guild_emoji[emoji.name]=emoji.id
@@ -92,7 +79,7 @@ async def bard(context):
         await context.author.add_roles(get_role(context.guild, 'Bard'), reason="Barded by command")
         await context.send("Barded!")
 
-@bot.command(description='Rolls dice with the xdy+m format. First word in reason can specify number of repeats.')
+@bot.command(description='Powered by Random.org. Rolls dice with the xdy+m format. First word in reason can specify number of repeats.')
 async def roll(context, die, *reason):
     nof_repeats=1
     response="Rolling `{0}`".format(die)
@@ -108,12 +95,27 @@ async def roll(context, die, *reason):
     response+=':'
     # Replacing 'd' and '+' with spaces
     die_list=die.translate({100:32, 43:32}).split()
-    die_list.append(0)
-    for _ in range(nof_repeats):
-        response+=format_die_roll(roll_die(int(die_list[0]), int(die_list[1]), int(die_list[2])))
+    die_list.append('0')
+    dice, sides, mod=int(die_list[0]), int(die_list[1]), int(die_list[2])
+
+    results_dice=[]
+    try:
+        results_dice.extend(randorg_client.generate_integers(dice*nof_repeats, 1, sides))
+    except RandomOrgSendTimeoutError:
+        response+='\nRandom.org timeout.'
+    except (RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError):
+        response+='\nRandom.org out of juice! Using pseudo RNG.'
+        for _ in range(dice*nof_repeats):
+            results_dice.append(randint(1, sides))
+    # Actually displaying dice
+    for i in range(nof_repeats):
+        roll=results_dice[dice*i:dice*(i+1)]
+        response+='\n`{0}`→{1}'.format(str(roll), sum(roll)+mod)
 
     await context.send(response)
 
-bot.run(token)
 
-# Todo: !roll but powered by random.org; !gungeon @mention time_hours reason: Muted!
+
+bot.run(os.getenv('DISCORD_TOKEN'))
+
+# Todo: !gungeon @mention time_hours reason: Muted!
