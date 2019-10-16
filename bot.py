@@ -6,10 +6,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 token=os.getenv('DISCORD_TOKEN')
-guild_propane=int(os.getenv('DISCORD_GUILD_PROPANE'))
+guild_propane=int(os.getenv('DISCORD_GUILD_ID'))
 commands_wiki=load(open('data/wiki.json', encoding='utf-8'))
 bot=commands.Bot(command_prefix=os.getenv('COMMAND_PREFIX'))
 guild_emoji={}
+guild_role_indexes={}
+
+def get_role(guild, name):
+    return guild.roles[guild_role_indexes[name]]
 
 def format_emoji(name):
     return '<:{0}:{1}>'.format(name, guild_emoji[name])
@@ -21,13 +25,18 @@ async def on_ready():
     for emoji in guild.emojis:
         guild_emoji[emoji.name]=emoji.id
 
-    # Occasionally run this
-    # dump(guild_emoji, open('data/emoji.json', 'w'))
+    for i, role in enumerate(guild.roles):
+        guild_role_indexes[role.name]=i
+
+    # Occasionally run this for data observation
+    # dump(guild_emoji, open('data/exported/emoji.json', 'w'))
     # And / or this
     # guild_roles={}
     # for role in guild.roles:
     #     guild_roles[role.name]=role.id
-    # dump(guild_roles, open('data/roles.json', 'w'))
+    # dump(guild_roles, open('data/exported/roles.json', 'w'))
+    # Also this
+    # dump(guild_role_indexes, open('data/exported/role_indexes.json', 'w'))
 
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
@@ -61,13 +70,12 @@ async def wiki(context, *entries):
 
 @bot.command(description='Bards you and unbards you.')
 async def bard(context):
-    role_bard=discord.utils.get(context.guild.roles, name='Bard')
 
-    if role_bard in context.author.roles:
-        await context.author.remove_roles(role_bard, reason="Unbarded by command")
+    if get_role(context.guild, 'Bard') in context.author.roles:
+        await context.author.remove_roles(get_role(context.guild, 'Bard'), reason="Unbarded by command")
         await context.send("Unbarded!")
     else:
-        await context.author.add_roles(role_bard, reason="Barded by command")
+        await context.author.add_roles(get_role(context.guild, 'Bard'), reason="Barded by command")
         await context.send("Barded!")
 
 bot.run(token)
