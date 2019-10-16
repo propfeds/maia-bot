@@ -87,7 +87,9 @@ async def roll(context, die, *reason):
         if not i:
             if word.isdigit():
                 nof_repeats=int(word)
-                response+=' {0} times for'.format(word)
+                response+=' {0} times'.format(word)
+                if len(*reason)>1:
+                    response+=' for'
             else:
                 response+=' once for {0}'.format(word)
         else:
