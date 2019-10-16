@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 token=os.getenv('DISCORD_TOKEN')
 guild_propane=int(os.getenv('DISCORD_GUILD_PROPANE'))
-commands_wiki=load(open('wiki.json', encoding='utf-8'))
+commands_wiki=load(open('data/wiki.json', encoding='utf-8'))
 bot=commands.Bot(command_prefix=os.getenv('COMMAND_PREFIX'))
 guild_emoji={}
 
@@ -22,12 +22,12 @@ async def on_ready():
         guild_emoji[emoji.name]=emoji.id
 
     # Occasionally run this
-    # dump(guild_emoji, open('emoji.json', 'w'))
+    # dump(guild_emoji, open('data/emoji.json', 'w'))
     # And / or this
     # guild_roles={}
     # for role in guild.roles:
     #     guild_roles[role.name]=role.id
-    # dump(guild_roles, open('roles.json', 'w'))
+    # dump(guild_roles, open('data/roles.json', 'w'))
 
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
