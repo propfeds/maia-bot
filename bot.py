@@ -12,6 +12,7 @@ commands_wiki=load(open('data/wiki.json', encoding='utf-8'))
 bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
 guild_emoji={}
 guild_role_indexes={}
+vowels=['a', 'e', 'i', 'o', 'u']
 # Randorg
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
@@ -31,15 +32,14 @@ async def on_ready():
     for i, role in enumerate(guild.roles):
         guild_role_indexes[role.name]=i
 
-    # Occasionally run this for data observation
-    # dump(guild_emoji, open('data/exported/emoji.json', 'w'))
-    # And / or this
-    # guild_roles={}
-    # for role in guild.roles:
-    #     guild_roles[role.name]=role.id
-    # dump(guild_roles, open('data/exported/roles.json', 'w'))
-    # Also this
-    # dump(guild_role_indexes, open('data/exported/role_indexes.json', 'w'))
+    dump_stuff=input('Wanna dump stuff? (y for yes):')
+    if dump_stuff=='y':
+        dump(guild_emoji, open('data/exported/emoji.json', 'w'))
+        guild_roles={}
+        for role in guild.roles:
+            guild_roles[role.name]=role.id
+        dump(guild_roles, open('data/exported/roles.json', 'w'))
+        dump(guild_role_indexes, open('data/exported/role_indexes.json', 'w'))
 
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
@@ -48,10 +48,14 @@ async def on_message(message):
     if message.author==bot.user:
         pass
 
+    await bot.process_commands(message)
+
     if 'wotcher' in message.content.lower():
         await message.add_reaction(format_emoji('wotcher'))
 
-    await bot.process_commands(message)
+    if 'rougelike' in message.content.lower():
+        await message.channel.send('It\'s spelled *r{0}g{1}{2}*l{3}k{4}.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
+
 
 @bot.command(description='Type entries as arguments to learn about various topics.')
 async def wiki(context, *entries):
