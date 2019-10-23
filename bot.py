@@ -57,22 +57,23 @@ async def on_message(message):
         await message.channel.send('It\'s spelled *r{0}g{1}{2}*l{3}k{4}.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
 
-@bot.command(description='Type entries as arguments to learn about various topics.')
-async def wiki(context, *entries):
-    for entry in entries:
-        response='**{0}'.format(entry)
+@bot.command(description='Search the Library of Maia to learn about various topics.')
+async def wiki(context, *entry):
+    entry_full=' '.join(entry).lower()
 
-        if commands_wiki.get(entry.lower()):
-            entry_cur=entry
-            # Redirecting entries
-            while commands_wiki.get(entry_cur)[0]=='>':
-                entry_cur=commands_wiki.get(entry_cur)[1:]
-                response+=('→{0}'.format(entry_cur))
+    response='**{0}'.format(entry_full)
 
-            response+=(':** {0}'.format(commands_wiki.get(entry_cur)))
-        else:
-            response+=':** Entry does not exist.'
-        await context.send(response)
+    if commands_wiki.get(entry_full):
+        # Redirecting entries
+        while commands_wiki.get(entry_full)[0]=='>':
+            entry_full=commands_wiki.get(entry_full)[1:]
+            response+=('→{0}'.format(entry_full))
+
+        response+=(':** {0}'.format(commands_wiki.get(entry_full)))
+    else:
+        response+=':** Entry does not exist.'
+
+    await context.send(response)
 
 @bot.command(description='Bards you and unbards you.')
 async def bard(context):
