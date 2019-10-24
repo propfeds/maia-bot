@@ -54,7 +54,7 @@ async def on_message(message):
         await message.add_reaction(format_emoji('wotcher'))
 
     if 'rougelike' in message.content.lower():
-        await message.channel.send('It\'s spelled *r{0}g{1}{2}*l{3}k{4}.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
+        await message.channel.send('It\'s spelled *r{0}g{1}{2}*like.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
 
 @bot.command(description='Search the Library of Maia to learn about various topics.')
