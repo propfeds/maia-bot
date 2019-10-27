@@ -5,6 +5,7 @@ from json import load, dump
 import os
 from random import randint
 from rdoclient_py3 import RandomOrgClient, RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
+from timed_input import TimedInput
 
 load_dotenv()
 # Discourse
@@ -32,8 +33,8 @@ async def on_ready():
     for i, role in enumerate(guild.roles):
         guild_role_indexes[role.name]=i
 
-    dump_stuff=input('Wanna dump stuff? (y for yes):')
-    if dump_stuff=='y':
+    dump_stuff=TimedInput('Wanna dump stuff? Type anything before one second elapses: ', 1)
+    if dump_stuff.response is not None:
         dump(guild_emoji, open('data/exported/emoji.json', 'w'))
         guild_roles={}
         for role in guild.roles:
