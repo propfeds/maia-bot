@@ -51,10 +51,10 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-    if 'wotcher' in message.content.lower():
+    message_lowcase=message.content.lower()
+    if 'wotcher' in message_lowcase:
         await message.add_reaction(format_emoji('wotcher'))
-
-    if 'rougelike' in message.content.lower():
+    if 'rougelike' in message_lowcase:
         await message.channel.send('It\'s spelled *r{0}g{1}{2}*like.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
 
