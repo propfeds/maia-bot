@@ -20,6 +20,12 @@ vowels=['a', 'e', 'i', 'o', 'u']
 # Randorg
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
+def get_possessive(noun):
+    if noun[-1]=='s':
+        return noun+'\''
+    else:
+        return noun+'\'s'
+
 def get_role(guild, name):
     return guild.roles[guild_role_indexes[guild_role_ids[name]]]
 
@@ -85,26 +91,31 @@ async def wiki(context, *entry):
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
         await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['unbard_reason'])
-        await context.send(responses['bard']['unbard'])
+        await context.send(responses['bard']['unbard'].format(context.author.display_name))
     else:
         await context.author.add_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['bard_reason'])
-        await context.send(responses['bard']['bard'])
+        roll_rare=randint(0, 99)
+        if roll_rare<10:
+            await context.send(responses['bard']['bard_rare'].format(context.author.display_name, get_possessive(context.author.display_name)))
+        else:
+            await context.send(responses['bard']['bard'].format(context.author.display_name))
 
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
     nof_repeats=1
-    response="{0} `{1}`".format(responses['roll']['rolling'], die)
+    response='{0}: {1} `{2}`'.format(context.author.display_name, responses['roll']['rolling'], die)
     for i, word in enumerate(reason):
+        response+=' '
         if not i:
             if word.isdigit():
                 nof_repeats=int(word)
-                response+=' {0} {1}'.format(word, responses['roll']['times'])
-                if len([*reason])>1:
+                response+='{0} {1}'.format(word, responses['roll']['times'])
+                if len(reason)>1:
                     response+=' {0}'.format(responses['roll']['for'])
             else:
-                response+=' {0} {1}'.format(responses['roll']['once_for'], word)
+                response+='{0} {1}'.format(responses['roll']['once_for'], word)
         else:
-            response+=' {0}'.format(word)
+            response+=word
     response+=':'
     # Replacing 'd' and '+' with spaces
     die_list=die.translate({100:32, 43:32}).split()
@@ -126,7 +137,6 @@ async def roll(context, die, *reason):
         response+='\n`{0}`→{1}'.format(str(roll), sum(roll)+mod)
 
     await context.send(response)
-
 
 
 bot.run(os.getenv('DISCORD_TOKEN'))
