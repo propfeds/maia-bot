@@ -99,7 +99,7 @@ async def roll(context, die, *reason):
             if word.isdigit():
                 nof_repeats=int(word)
                 response+=' {0} {1}'.format(word, responses['roll_times'])
-                if len(*reason)>1:
+                if len([*reason])>1:
                     response+=' {0}'.format(responses['roll_for'])
             else:
                 response+=' {0} {1}'.format(responses['roll_once_for'], word)
