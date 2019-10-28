@@ -63,7 +63,7 @@ async def on_message(message):
         await message.channel.send(responses['rougelike'].format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
 
-@bot.command(description='Search the Library of Maia to learn about various topics.')
+@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
 async def wiki(context, *entry):
     entry_full=' '.join(entry).lower()
 
@@ -77,32 +77,32 @@ async def wiki(context, *entry):
 
         response+=':** {0}'.format(commands_wiki.get(entry_full))
     else:
-        response+=':** {0}'.format(responses['wiki_entry_not_exist'])
+        response+=':** {0}'.format(responses['wiki']['entry_not_exist'])
 
     await context.send(response)
 
-@bot.command(description='Bards you and unbards you.')
+@bot.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
-        await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['unbard_reason'])
-        await context.send(responses['unbard'])
+        await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['unbard_reason'])
+        await context.send(responses['bard']['unbard'])
     else:
-        await context.author.add_roles(get_role(context.guild, 'Bard'), reason=responses['bard_reason'])
-        await context.send(responses['bard'])
+        await context.author.add_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['bard_reason'])
+        await context.send(responses['bard']['bard'])
 
-@bot.command(description='Powered by Random.org. Rolls dice with the xdy+m format. First word in reason can specify number of repeats.')
+@bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
     nof_repeats=1
-    response="{0} `{1}`".format(responses['roll_rolling'], die)
+    response="{0} `{1}`".format(responses['roll']['rolling'], die)
     for i, word in enumerate(reason):
         if not i:
             if word.isdigit():
                 nof_repeats=int(word)
-                response+=' {0} {1}'.format(word, responses['roll_times'])
+                response+=' {0} {1}'.format(word, responses['roll']['times'])
                 if len([*reason])>1:
-                    response+=' {0}'.format(responses['roll_for'])
+                    response+=' {0}'.format(responses['roll']['for'])
             else:
-                response+=' {0} {1}'.format(responses['roll_once_for'], word)
+                response+=' {0} {1}'.format(responses['roll']['once_for'], word)
         else:
             response+=' {0}'.format(word)
     response+=':'
@@ -115,9 +115,9 @@ async def roll(context, die, *reason):
     try:
         results_dice.extend(randorg_client.generate_integers(dice*nof_repeats, 1, sides))
     except RandomOrgSendTimeoutError:
-        response+='\n{0}'.format(responses['roll_randorg_timeout'])
+        response+='\n{0}'.format(responses['roll']['randorg_timeout'])
     except (RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError):
-        response+='\n{0}'.format(responses['roll_randorg_juice'])
+        response+='\n{0}'.format(responses['roll']['randorg_juice'])
         for _ in range(dice*nof_repeats):
             results_dice.append(randint(1, sides))
     # Actually displaying dice
