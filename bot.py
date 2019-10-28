@@ -9,16 +9,18 @@ from timed_input import TimedInput
 
 load_dotenv()
 # Discourse
-commands_wiki=load(open('data/wiki.json', encoding='utf-8'))
+with open('data/wiki.json', encoding='utf-8') as json_wiki:
+    commands_wiki=load(json_wiki)
 bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
 guild_emoji={}
+guild_role_ids={}
 guild_role_indexes={}
 vowels=['a', 'e', 'i', 'o', 'u']
 # Randorg
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild, name):
-    return guild.roles[guild_role_indexes[name]]
+    return guild.roles[guild_role_indexes[guild_role_ids[name]]]
 
 def format_emoji(name):
     return '<:{0}:{1}>'.format(name, guild_emoji[name])
@@ -26,21 +28,21 @@ def format_emoji(name):
 @bot.event
 async def on_ready():
     guild=bot.get_guild(int(os.getenv('DISCORD_GUILD_ID')))
-
-    for emoji in guild.emojis:
-        guild_emoji[emoji.name]=emoji.id
-
-    for i, role in enumerate(guild.roles):
-        guild_role_indexes[role.name]=i
-
-    dump_stuff=TimedInput('Wanna dump stuff? Type anything before one second elapses: ', 1)
-    if dump_stuff.response is not None:
-        dump(guild_emoji, open('data/exported/emoji.json', 'w'))
-        guild_roles={}
+    # Emoji name to ID
+    with open('data/{0}/emoji.json'.format(guild.id), 'w') as json_emoji:
+        for emoji in guild.emojis:
+            guild_emoji[emoji.name]=emoji.id
+        dump(guild_emoji, json_emoji)
+    # Role name to ID
+    with open('data/{0}/role_ids.json'.format(guild.id), 'w') as json_role_ids:
         for role in guild.roles:
-            guild_roles[role.name]=role.id
-        dump(guild_roles, open('data/exported/roles.json', 'w'))
-        dump(guild_role_indexes, open('data/exported/role_indexes.json', 'w'))
+            guild_role_ids[role.name]=role.id
+        dump(guild_role_ids, json_role_ids)
+    # Role ID to index in guild's role list
+    with open('data/{0}/role_indexes.json'.format(guild.id), 'w') as json_role_indexes:
+        for i, role in enumerate(guild.roles):
+            guild_role_indexes[role.id]=i
+        dump(guild_role_indexes, json_role_indexes)
 
     print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
@@ -48,12 +50,14 @@ async def on_ready():
 async def on_message(message):
     if message.author==bot.user:
         return
-
+    # Commands first for faster query, hopefully.
     await bot.process_commands(message)
-
+    
     message_lowcase=message.content.lower()
+
     if 'wotcher' in message_lowcase:
         await message.add_reaction(format_emoji('wotcher'))
+
     if 'rougelike' in message_lowcase:
         await message.channel.send('It\'s spelled *r{0}g{1}{2}*like.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
@@ -80,10 +84,10 @@ async def wiki(context, *entry):
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
         await context.author.remove_roles(get_role(context.guild, 'Bard'), reason="Unbarded by command")
-        await context.send("Unbarded!")
+        await context.send("I hereby unbard thee!")
     else:
         await context.author.add_roles(get_role(context.guild, 'Bard'), reason="Barded by command")
-        await context.send("Barded!")
+        await context.send("I!")
 
 @bot.command(description='Powered by Random.org. Rolls dice with the xdy+m format. First word in reason can specify number of repeats.')
 async def roll(context, die, *reason):
