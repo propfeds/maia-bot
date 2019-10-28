@@ -5,12 +5,13 @@ from json import load, dump
 import os
 from random import randint
 from rdoclient_py3 import RandomOrgClient, RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
-from timed_input import TimedInput
 
 load_dotenv()
 # Discourse
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
     commands_wiki=load(json_wiki)
+with open('data/responses.json', encoding='utf-8') as json_responses:
+    responses=load(json_responses)
 bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
 guild_emoji={}
 guild_role_ids={}
@@ -44,7 +45,7 @@ async def on_ready():
             guild_role_indexes[role.id]=i
         dump(guild_role_indexes, json_role_indexes)
 
-    print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
+    print(responses['on_ready'].format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
 @bot.event
 async def on_message(message):
@@ -59,7 +60,7 @@ async def on_message(message):
         await message.add_reaction(format_emoji('wotcher'))
 
     if 'rougelike' in message_lowcase:
-        await message.channel.send('It\'s spelled *r{0}g{1}{2}*like.'.format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
+        await message.channel.send(responses['rougelike'].format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
 
 @bot.command(description='Search the Library of Maia to learn about various topics.')
@@ -72,36 +73,36 @@ async def wiki(context, *entry):
         # Redirecting entries
         while commands_wiki.get(entry_full)[0]=='>':
             entry_full=commands_wiki.get(entry_full)[1:]
-            response+=('→{0}'.format(entry_full))
+            response+='→{0}'.format(entry_full)
 
-        response+=(':** {0}'.format(commands_wiki.get(entry_full)))
+        response+=':** {0}'.format(commands_wiki.get(entry_full))
     else:
-        response+=':** Entry does not exist.'
+        response+=':** {0}'.format(responses['wiki_entry_not_exist'])
 
     await context.send(response)
 
 @bot.command(description='Bards you and unbards you.')
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
-        await context.author.remove_roles(get_role(context.guild, 'Bard'), reason="Unbarded by command")
-        await context.send("I hereby unbard thee!")
+        await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['unbard_reason'])
+        await context.send(responses['unbard'])
     else:
-        await context.author.add_roles(get_role(context.guild, 'Bard'), reason="Barded by command")
-        await context.send("I!")
+        await context.author.add_roles(get_role(context.guild, 'Bard'), reason=responses['bard_reason'])
+        await context.send(responses['bard'])
 
 @bot.command(description='Powered by Random.org. Rolls dice with the xdy+m format. First word in reason can specify number of repeats.')
 async def roll(context, die, *reason):
     nof_repeats=1
-    response="Rolling `{0}`".format(die)
+    response="{0} `{1}`".format(responses['roll_rolling'], die)
     for i, word in enumerate(reason):
         if not i:
             if word.isdigit():
                 nof_repeats=int(word)
-                response+=' {0} times'.format(word)
+                response+=' {0} {1}'.format(word, responses['roll_times'])
                 if len(*reason)>1:
-                    response+=' for'
+                    response+=' {0}'.format(responses['roll_for'])
             else:
-                response+=' once for {0}'.format(word)
+                response+=' {0} {1}'.format(responses['roll_once_for'], word)
         else:
             response+=' {0}'.format(word)
     response+=':'
@@ -114,9 +115,9 @@ async def roll(context, die, *reason):
     try:
         results_dice.extend(randorg_client.generate_integers(dice*nof_repeats, 1, sides))
     except RandomOrgSendTimeoutError:
-        response+='\nRandom.org timeout.'
+        response+='\n{0}'.format(responses['roll_randorg_timeout'])
     except (RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError):
-        response+='\nRandom.org out of juice! Using pseudo RNG.'
+        response+='\n{0}'.format(responses['roll_randorg_juice'])
         for _ in range(dice*nof_repeats):
             results_dice.append(randint(1, sides))
     # Actually displaying dice
