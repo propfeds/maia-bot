@@ -68,25 +68,6 @@ async def on_message(message):
     if 'rougelike' in message_lowcase:
         await message.channel.send(responses['rougelike'].format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
 
-
-@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
-async def wiki(context, *entry):
-    entry_full=' '.join(entry).lower()
-
-    response='**{0}'.format(entry_full)
-
-    if commands_wiki.get(entry_full):
-        # Redirecting entries
-        while commands_wiki.get(entry_full)[0]=='>':
-            entry_full=commands_wiki.get(entry_full)[1:]
-            response+='→{0}'.format(entry_full)
-
-        response+=':** {0}'.format(commands_wiki.get(entry_full))
-    else:
-        response+=':** {0}'.format(responses['wiki']['entry_not_exist'])
-
-    await context.send(response)
-
 @bot.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
@@ -99,6 +80,10 @@ async def bard(context):
             await context.send(responses['bard']['bard_rare'].format(context.author.display_name, get_possessive(context.author.display_name)))
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
+
+@bot.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
+async def f(context, temp_f):
+    await context.send(responses['f']['conversion'].format((float(temp_f)-32.0)/1.8))
 
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
@@ -138,6 +123,23 @@ async def roll(context, die, *reason):
 
     await context.send(response)
 
+@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
+async def wiki(context, *entry):
+    entry_full=' '.join(entry).lower()
+
+    response='**{0}'.format(entry_full)
+
+    if commands_wiki.get(entry_full):
+        # Redirecting entries
+        while commands_wiki.get(entry_full)[0]=='>':
+            entry_full=commands_wiki.get(entry_full)[1:]
+            response+='→{0}'.format(entry_full)
+
+        response+=':** {0}'.format(commands_wiki.get(entry_full))
+    else:
+        response+=':** {0}'.format(responses['wiki']['entry_not_exist'])
+
+    await context.send(response)
 
 bot.run(os.getenv('DISCORD_TOKEN'))
 
