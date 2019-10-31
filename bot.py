@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from json import load, dump
+import math
 from modules.grammar import get_possessive
 import os
 from random import randint
@@ -23,6 +24,9 @@ randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild, name):
     return guild.roles[guild_role_indexes[guild_role_ids[name]]]
+
+def f(temp_f):
+    return (eval(str(temp_f))-32.0)/1.8
 
 @bot.event
 async def on_ready():
@@ -58,9 +62,10 @@ async def bard(context):
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-@bot.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
-async def f(context, temp_f):
-    await context.send(responses['f']['conversion'].format((float(temp_f)-32.0)/1.8))
+@bot.command(name='f', description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
+async def fahrenheit_to_celsius(context, *exp):
+    temp_f=''.join(exp)
+    await context.send(responses['f']['conversion'].format(f(temp_f)))
 
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
