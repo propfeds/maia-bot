@@ -75,7 +75,7 @@ async def calc(context, *exp):
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
     nof_repeats=1
-    response='{0}: {1} `{2}`'.format(context.author.display_name, responses['roll']['rolling'], die)
+    response='{0} `{1}` for {2}'.format(responses['roll']['rolling'], die, context.author.display_name)
     for i, word in enumerate(reason):
         response+=' '
         if not i:
