@@ -67,10 +67,10 @@ async def bard(context):
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-@bot.command(aliases=responses['calculate']['aliases'], description=responses['calculate']['desc'], help=responses['calculate']['help'], brief=responses['calculate']['brief'])
-async def calculate(context, *exp):
+@bot.command(aliases=responses['calc']['aliases'], description=responses['calc']['desc'], help=responses['calc']['help'], brief=responses['calc']['brief'])
+async def calc(context, *exp):
     exp_full=''.join(exp)
-    await context.send(choice(responses['calculate']['result']).format(eval(str(exp_full))))
+    await context.send(choice(responses['calc']['result']).format(eval(str(exp_full))))
 
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
