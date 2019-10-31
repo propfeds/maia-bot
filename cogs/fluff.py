@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from modules.grammar import get_random_vowel
+from utils.grammar import get_random_vowel
 
 class Fluff(commands.Cog, name='Fluff'):
     def __init__(self, bot, guild_emoji, responses):

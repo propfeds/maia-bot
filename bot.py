@@ -4,9 +4,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from json import load, dump
 import math
-from modules.grammar import get_possessive
+from utils.conversions import f_c, c_f, inch_cm, cm_inch
+from utils.grammar import get_possessive
 import os
-from random import randint
+from random import randint, choice
 from rdoclient_py3 import RandomOrgClient, RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 
 load_dotenv()
@@ -15,7 +16,7 @@ with open('data/wiki.json', encoding='utf-8') as json_wiki:
     commands_wiki=load(json_wiki)
 with open('data/responses.json', encoding='utf-8') as json_responses:
     responses=load(json_responses)
-bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
+bot=commands.Bot(command_prefix=[os.getenv('DISCORD_CMD_PREFIX'), os.getenv('DISCORD_CMD_PREFIX_ALT'), os.getenv('DISCORD_CMD_PREFIX_ADDR1'), os.getenv('DISCORD_CMD_PREFIX_ADDR2'), os.getenv('DISCORD_CMD_PREFIX_ADDR3')])
 guild_emoji={}
 guild_role_ids={}
 guild_role_indexes={}
@@ -24,9 +25,6 @@ randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild, name):
     return guild.roles[guild_role_indexes[guild_role_ids[name]]]
-
-def f(temp_f):
-    return (eval(str(temp_f))-32.0)/1.8
 
 @bot.event
 async def on_ready():
@@ -62,10 +60,10 @@ async def bard(context):
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-@bot.command(name='f', description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
-async def fahrenheit_to_celsius(context, *exp):
-    temp_f=''.join(exp)
-    await context.send(responses['f']['conversion'].format(f(temp_f)))
+@bot.command(aliases=responses['calculate']['aliases'], description=responses['calculate']['desc'], help=responses['calculate']['help'], brief=responses['calculate']['brief'])
+async def calculate(context, *exp):
+    exp_full=''.join(exp)
+    await context.send(choice(responses['calculate']['result']).format(eval(str(exp_full))))
 
 @bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
@@ -105,7 +103,7 @@ async def roll(context, die, *reason):
 
     await context.send(response)
 
-@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
+@bot.command(aliases=responses['wiki']['aliases'], description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
 async def wiki(context, *entry):
     entry_full=' '.join(entry).lower()
 
