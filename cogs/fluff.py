@@ -22,4 +22,4 @@ class Fluff(commands.Cog, name='Fluff'):
             await message.add_reaction(self.format_emoji('wotcher'))
 
         if 'rougelike' in message_lowcase:
-            await message.channel.send(self.responses['rougelike'].format(get_random_vowel, get_random_vowel, get_random_vowel))
+            await message.channel.send(self.responses['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
