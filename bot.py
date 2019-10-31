@@ -1,7 +1,9 @@
+from cogs.fluff import Fluff
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from json import load, dump
+from modules.grammar import get_possessive
 import os
 from random import randint
 from rdoclient_py3 import RandomOrgClient, RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
@@ -16,59 +18,34 @@ bot=commands.Bot(command_prefix=os.getenv('DISCORD_COMMAND_PREFIX'))
 guild_emoji={}
 guild_role_ids={}
 guild_role_indexes={}
-vowels=['a', 'e', 'i', 'o', 'u']
 # Randorg
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
-def get_possessive(noun):
-    if noun[-1]=='s':
-        return noun+'\''
-    else:
-        return noun+'\'s'
-
 def get_role(guild, name):
     return guild.roles[guild_role_indexes[guild_role_ids[name]]]
-
-def format_emoji(name):
-    return '<:{0}:{1}>'.format(name, guild_emoji[name])
 
 @bot.event
 async def on_ready():
     guild=bot.get_guild(int(os.getenv('DISCORD_GUILD_ID')))
     # Emoji name to ID
-    with open('data/{0}/emoji.json'.format(guild.id), 'w') as json_emoji:
+    with open('data/{0}/emoji.json'.format(guild.id), 'w+') as json_emoji:
         for emoji in guild.emojis:
             guild_emoji[emoji.name]=emoji.id
         dump(guild_emoji, json_emoji)
     # Role name to ID
-    with open('data/{0}/role_ids.json'.format(guild.id), 'w') as json_role_ids:
+    with open('data/{0}/role_ids.json'.format(guild.id), 'w+') as json_role_ids:
         for role in guild.roles:
             guild_role_ids[role.name]=role.id
         dump(guild_role_ids, json_role_ids)
     # Role ID to index in guild's role list
-    with open('data/{0}/role_indexes.json'.format(guild.id), 'w') as json_role_indexes:
+    with open('data/{0}/role_indexes.json'.format(guild.id), 'w+') as json_role_indexes:
         for i, role in enumerate(guild.roles):
             guild_role_indexes[role.id]=i
         dump(guild_role_indexes, json_role_indexes)
 
     print(responses['on_ready'].format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
-@bot.event
-async def on_message(message):
-    if message.author==bot.user:
-        return
-    # Commands first for faster query, hopefully.
-    await bot.process_commands(message)
-    
-    message_lowcase=message.content.lower()
-
-    if 'wotcher' in message_lowcase:
-        await message.add_reaction(format_emoji('wotcher'))
-
-    if 'rougelike' in message_lowcase:
-        await message.channel.send(responses['rougelike'].format(vowels[randint(0, 4)], vowels[randint(0, 4)], vowels[randint(0, 4)]))
-
-@bot.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
+@commands.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
         await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['unbard_reason'])
@@ -81,11 +58,11 @@ async def bard(context):
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-@bot.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
+@commands.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
 async def f(context, temp_f):
     await context.send(responses['f']['conversion'].format((float(temp_f)-32.0)/1.8))
 
-@bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
+@commands.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
     nof_repeats=1
     response='{0}: {1} `{2}`'.format(context.author.display_name, responses['roll']['rolling'], die)
@@ -123,7 +100,7 @@ async def roll(context, die, *reason):
 
     await context.send(response)
 
-@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
+@commands.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
 async def wiki(context, *entry):
     entry_full=' '.join(entry).lower()
 
@@ -141,6 +118,8 @@ async def wiki(context, *entry):
 
     await context.send(response)
 
+
+bot.add_cog(Fluff(bot, guild_emoji, responses))
 bot.run(os.getenv('DISCORD_TOKEN'))
 
 # Todo: !gungeon @mention time_hours reason: Muted!
