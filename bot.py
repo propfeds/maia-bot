@@ -45,7 +45,7 @@ async def on_ready():
 
     print(responses['on_ready'].format(guild.me.display_name, bot.user.name, guild.name, guild.id))
 
-@commands.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
+@bot.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
 async def bard(context):
     if get_role(context.guild, 'Bard') in context.author.roles:
         await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['unbard_reason'])
@@ -58,11 +58,11 @@ async def bard(context):
         else:
             await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-@commands.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
+@bot.command(description=responses['f']['desc'], help=responses['f']['help'], brief=responses['f']['brief'])
 async def f(context, temp_f):
     await context.send(responses['f']['conversion'].format((float(temp_f)-32.0)/1.8))
 
-@commands.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
+@bot.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
 async def roll(context, die, *reason):
     nof_repeats=1
     response='{0}: {1} `{2}`'.format(context.author.display_name, responses['roll']['rolling'], die)
@@ -100,7 +100,7 @@ async def roll(context, die, *reason):
 
     await context.send(response)
 
-@commands.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
+@bot.command(description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
 async def wiki(context, *entry):
     entry_full=' '.join(entry).lower()
 
