@@ -20,7 +20,7 @@ async def on_ready():
         else:
             gather(guild)
 
-    print('{0} the {1}, roll out! Entering: {2} (id: {3})'.format(guild.me.display_name, bot.user.name, guild.name, guild.id))
+    print('Maia the {0}, roll out!'.format(bot.user.name))
 
 bot.add_cog(Queries(bot))
 bot.add_cog(Fluff(bot))
