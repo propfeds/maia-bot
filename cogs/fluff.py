@@ -1,15 +1,14 @@
+from cogs import responses, guild_emoji
 import discord
 from discord.ext import commands
 from utils.grammar import get_random_vowel
 
 class Fluff(commands.Cog, name='Fluff'):
-    def __init__(self, bot, guild_emoji, responses):
+    def __init__(self, bot):
         self.bot=bot
-        self.guild_emoji=guild_emoji
-        self.responses=responses
 
-    def format_emoji(self, name):
-        return '<:{0}:{1}>'.format(name, self.guild_emoji[name])
+    def format_emoji(self, guild, name):
+        return '<:{0}:{1}>'.format(name, guild_emoji[guild.id][name])
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -19,7 +18,7 @@ class Fluff(commands.Cog, name='Fluff'):
         message_lowcase=message.content.lower()
 
         if 'wotcher' in message_lowcase:
-            await message.add_reaction(self.format_emoji('wotcher'))
+            await message.add_reaction(self.format_emoji(message.guild, 'wotcher'))
 
         if 'rougelike' in message_lowcase:
-            await message.channel.send(self.responses['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
+            await message.channel.send(responses['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
