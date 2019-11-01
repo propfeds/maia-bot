@@ -29,6 +29,9 @@ def gather(guild, dump_json=False):
     guild_role_ids[guild.id]={}
     guild_role_indexes[guild.id]={}
 
+    if not os.path.exists('data/{0}/'.format(guild.id)):
+        os.mkdir('data/{0}/'.format(guild.id))
+
     # Emoji name to ID
     for emoji in guild.emojis:
         guild_emoji[guild.id][emoji.name]=emoji.id
