@@ -3,7 +3,9 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 from json import load, dump
-import math
+# pylint: disable=unused-wildcard-import
+from math import *
+# pylint: enable=unused-wildcard-import
 from utils.conversions import f_c, c_f, inch_cm, cm_inch
 from utils.grammar import get_possessive
 import os
