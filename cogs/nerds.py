@@ -28,13 +28,13 @@ class Nerds(commands.Cog):
             await context.send(responses['roll']['not_die'].format(context.author.display_name))
             return
 
-        nof_repeats=1
+        repeats=1
         response='{0} `{1}` {2} {3}'.format(responses['roll']['rolling'], die, responses['roll']['for'], context.author.display_name)
         for i, word in enumerate(reason):
             response+=' '
             if not i:
                 if word.isdigit():
-                    nof_repeats=int(word)
+                    repeats=int(word)
                     response+='{0} {1}'.format(word, responses['roll']['times'])
                     if len(reason)>1:
                         response+=' {0}'.format(responses['roll']['for'])
@@ -48,16 +48,16 @@ class Nerds(commands.Cog):
 
         results_dice=[]
         try:
-            results_dice.extend(randorg_client.generate_integers(dice*nof_repeats, 1, sides))
+            results_dice.extend(randorg_client.generate_integers(dice*repeats, 1, sides))
         except RandomOrgSendTimeoutError:
             response+='\n{0}'.format(responses['roll']['randorg_timeout'])
         except (RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError):
             response+='\n{0}'.format(responses['roll']['randorg_juice'])
-            for _ in range(dice*nof_repeats):
+            for _ in range(dice*repeats):
                 results_dice.append(randint(1, sides))
 
         # Actually displaying dice
-        for i in range(nof_repeats):
+        for i in range(repeats):
             roll=results_dice[dice*i:dice*(i+1)]
             result_sum=sum(roll, mod)
             response+='\n{0}'.format(responses['roll']['result'].format(str(roll), ('+{0}'.format(mod) if (mod>0) else str(mod)) if (mod!=0) else '', '→{0}'.format(result_sum) if (dice>1 or mod!=0) else ''))
