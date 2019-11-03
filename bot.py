@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-bot=commands.Bot(command_prefix=['!', '/', 'Maia, ', 'maia, ', 'MAIA, ', 'mAIA, '])
+bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ', 'MAIA, '])
 
 @bot.event
 async def on_ready():
-    # Megadump
+    # Steal all your data
     guild_id_prop=int(os.getenv('DISCORD_GUILD_ID_PROP'))
     for guild in bot.guilds:
         if guild.id==guild_id_prop:

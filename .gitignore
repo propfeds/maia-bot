@@ -2,6 +2,7 @@
 data/
 utils/unused/
 old_bugger_code/
+test/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

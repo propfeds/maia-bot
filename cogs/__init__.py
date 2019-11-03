@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from json import load, dump
 import os
 from rdoclient_py3 import RandomOrgClient
+import re
 
 # Discourse
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
@@ -14,6 +15,8 @@ guild_role_ids={}
 guild_role_indexes={}
 
 bard_rare_chance=10
+
+die_regex_pattern='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
 
 # Randorg
 load_dotenv()
