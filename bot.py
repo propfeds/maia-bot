@@ -26,5 +26,3 @@ bot.add_cog(Queries(bot))
 bot.add_cog(Fluff(bot))
 bot.add_cog(Nerds(bot))
 bot.run(os.getenv('DISCORD_TOKEN'))
-
-# Todo: !gungeon @mention time_hours reason: Muted!
