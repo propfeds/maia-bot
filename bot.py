@@ -20,7 +20,7 @@ async def on_ready():
         else:
             gather(guild)
 
-    print('Maia the {0}, roll out!'.format(bot.user.name))
+    print('Maia the {0}, rolling out in the age of {1}!'.format(bot.user.name, discord.__version__))
 
 bot.add_cog(Queries(bot))
 bot.add_cog(Fluff(bot))

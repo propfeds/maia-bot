@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from json import load, dump
 import os
 from rdoclient_py3 import RandomOrgClient
-import re
 
 # Discourse
 with open('data/wiki.json', encoding='utf-8') as json_wiki:

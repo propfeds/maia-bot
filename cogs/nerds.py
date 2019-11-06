@@ -1,5 +1,4 @@
 from cogs import responses, randorg_client, die_regex_pattern
-import discord
 from discord.ext import commands
 # pylint: disable=unused-wildcard-import
 from math import *

@@ -1,5 +1,4 @@
 from cogs import responses, guild_emoji
-import discord
 from discord.ext import commands
 from utils.grammar import get_random_vowel
 

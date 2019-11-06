@@ -41,7 +41,7 @@ class Queries(commands.Cog):
         await member.add_roles(get_role(context.guild, 'G\u0318\u031d\u034du\u0324\u0347\u032cn\u0329\u0332\u0320g\u0322\u0355\u0355e\u0356\u0317\u033cone\u0341\u0317\u0339e\u034d\u0326\u032dr\u0330?\u0327\u0339\u0333?\u0319\u0330\u031f'), reason=reason_full)
 
         await asyncio.sleep(hours_int*3600.0)
-        response=responses['mute']['unmute'].format(member.display_name, hours_int, reason_full)
+        response=responses['mute']['unmute'].format(member.mention, hours_int, reason_full)
         if member==context.author:
             response+=' {0}'.format(responses['mute']['fool'])
         await context.send(response)
