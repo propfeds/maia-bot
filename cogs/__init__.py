@@ -3,6 +3,7 @@ from json import load, dump
 import os
 from rdoclient_py3 import RandomOrgClient
 
+load_dotenv()
 # Discourse
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
     commands_wiki=load(json_wiki)
@@ -14,11 +15,10 @@ guild_role_ids={}
 guild_role_indexes={}
 
 bard_rare_chance=10
-
+necrobutt_url=os.getenv('DISCORD_NECROBUTT_URL')
 die_regex_pattern='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
 
 # Randorg
-load_dotenv()
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild, name):
