@@ -2,11 +2,11 @@ from cogs import responses, randorg_client, die_regex_pattern
 from discord.ext import commands
 # pylint: disable=unused-wildcard-import
 from math import *
-# pylint: enable=unused-wildcard-import
 from random import randint, choice
 from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
-from utils.conversions import f_c, c_f, inch_cm, cm_inch
+from utils.conversions import *
+# pylint: enable=unused-wildcard-import
 
 class Nerds(commands.Cog):
     def __init__(self, bot):
