@@ -23,5 +23,5 @@ class Fluff(commands.Cog, name='Fluff'):
         if 'rougelike' in message_lowcase:
             await message.channel.send(responses['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
 
-        if 'reanimate' in message_lowcase:
+        if 'reanimat' in message_lowcase:
             await message.channel.send(file=File('data/necrobutt.gif'))

@@ -1,5 +1,5 @@
 # All personal
-data/
+data/*/
 utils/unused/
 old_bugger_code/
 test/
