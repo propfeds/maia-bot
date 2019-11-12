@@ -38,7 +38,7 @@ def gather(guild, dump_json=False):
         guild_emoji[guild.id][emoji.name]=emoji.id
     if dump_json:
         with open('data/{0}/emoji.json'.format(guild.id), 'w+') as json_emoji:
-            dump(guild_emoji[guild.id], json_emoji)
+            dump(guild_emoji[guild.id], json_emoji, indent=4)
 
     # Role name to ID then ID to index (in guild's role list)
     for i, role in enumerate(guild.roles):
@@ -46,6 +46,6 @@ def gather(guild, dump_json=False):
         guild_role_indexes[guild.id][role.id]=i
     if dump_json:
         with open('data/{0}/role_ids.json'.format(guild.id), 'w+') as json_role_ids:
-            dump(guild_role_ids[guild.id], json_role_ids)
+            dump(guild_role_ids[guild.id], json_role_ids, indent=4)
         with open('data/{0}/role_indexes.json'.format(guild.id), 'w+') as json_role_indexes:
-            dump(guild_role_indexes[guild.id], json_role_indexes)
+            dump(guild_role_indexes[guild.id], json_role_indexes, indent=4)
