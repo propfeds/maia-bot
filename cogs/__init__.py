@@ -15,7 +15,6 @@ guild_role_ids={}
 guild_role_indexes={}
 
 bard_rare_chance=10
-necrobutt_url=os.getenv('DISCORD_NECROBUTT_URL')
 die_regex_pattern='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
 
 # Randorg

@@ -1,4 +1,5 @@
-from cogs import responses, guild_emoji, necrobutt_url
+from cogs import responses, guild_emoji
+from discord import File
 from discord.ext import commands
 from utils.grammar import get_random_vowel
 
@@ -23,4 +24,4 @@ class Fluff(commands.Cog, name='Fluff'):
             await message.channel.send(responses['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
 
         if 'reanimate' in message_lowcase:
-            await message.channel.send(necrobutt_url)
+            await message.channel.send(file=File('data/necrobutt.gif'))
