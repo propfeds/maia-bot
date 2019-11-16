@@ -1,48 +1,50 @@
 {
     "archmage": "A high master of the material and spiritual arts, their endurance in the Beelzebub slaying quest outmatches their own frailty.",
+    "aria": "Not to be confused with the other Aria in Necrodancer.\n<lore needs development> Dance of the Pythons: Humans invaded the ancient natural civilisation, but she was kinda dumb to not notice. She realised, 'Cultural enlightenment my arse. It's all killing shanking, I can't get a peace to read my books.' That means she's not so dumb. She's quite an inquisitive being, and her purpose here was just to research the locals. She did side with the locals against her own kind, and later on established the Spire, an academy for the country. Her fellows are kinda dumb though, they were super aggressive and only wanted to assert dominance, that's why they invaded the civ in the first place. But after being trapped in the tropical jungles of Notnam <name needs development>, her fellows back in her city realised all the effects of aggression. Where they helped her build the Spire, a hilltop, looked just like a spiky wizard hat. To honour the Spire and its founder, the city was then renamed to Needlecap.",
 
-    "bard": "Bards 👀",
+    "bard": "Powered by octave, these lads weave their sonic powers to manipulate emotions. 👀",
+    "blight": "Don't tell me about that, I don't want to. It has taken over my mind. This Gunflower's gonna attack next turn, better dodge out of the way. But what good is a pixel art if it's drawn on a 640x360 canvas? What if I had to develop other characters, I have to develop other characters too. Enter: The Special Almanac for the Special Occasion.",
+
+    "dance of the pythons": "Hey, could you tell Prop this, to stop procrastinating and actually develop the game? ECS my butt >:(.",
     "derek": "An ancient warrior, slayer of Jormumgandulf.",
     "dracklenose": ">mun ching",
 
     "gungeon": "This stupidly deep basement is home to some serious lust for the smell of gunpowder. Rumours have it, ||a High Dragun resides at the bottom of it all||.",
     "gungeoneer": "Powered by octane, these lads gunger for asinine action.",
 
-    "headmaster": "Marring the verily perceptible blue of the Nethack Faction, the Headmaster position is granted for those worthy of becoming the Leader of the Cult.",
+    "headmaster": "Marring the verily perceptible blue of the Nethack Faction, the Headmaster position is only granted for those worthy of becoming the Leader of the Cult.",
 
-    "maia": "Tavernkeeper, Lorekeeper, Bookkeeper. Keeper of stuffs. I also keep Minh trapped in this cycle of never-ending debugging.",
-    "merope": "She's my spiritual successor. Runs a cafe out in space.",
+    "maia": "Tavern keeper, Lore keeper, Book keeper. Keeper of stuffs. I also keep Minh trapped in this cycle of never-ending debugging.",
+    "merope": "She's my spiritual successor. Runs a cafe out in space. Presumably alive playing mellow Korean drama music on the Rhodes.",
     "merope's cafe": "The prequel to Maia's Tavern.",
     "mirza": "Hella fez hat jazz fella!",
     "morza": "Morzilla Fireliz <:morzilla:616663663083782198>",
     "morzilla": "Morza Morizon <:morza:616569007876603904>",
-    "mun ching": "Mun 'Dracklenose' Ching of Ankh-Morpork, a practitioner of the arts of Headology. Colourblind. Loves to toss people into the Morgue.",
+    "mun ching": "Mun 'Dracklenose' Ching of Ankh-Morpork, a practitioner of the arts of Headology. Monochromatically colourblind. One heart, three souls.",
 
-    "nova": "The first Champion of FARA. An Astronomer of the Spire, hell bent on finding her '\"'true home'\"'.",
+    "nova": "The first Champion of FARA. An Astronomer of the Spire, hell bent on finding her '\"'true home'\"'. That's kind of edgy, don't you think?",
 
     "overseer": "The eye and eyes of the Cult, constantly watching.",
 
-    "pearl harbor": "The attack on Pearl Harbor[nb 3][11] was a surprise preemptive[12] military strike by the Imperial Japanese Navy Air Service upon the United States (a neutral country at the time) against the naval base at Pearl Harbor in Honolulu, Hawaii on Sunday morning, December 7, 1941. The attack led to the United States' formal entry into World War II the next day. The Japanese military leadership referred to the attack as the Hawaii Operation and Operation AI,[13][14] and as Operation Z during its planning.[15]",
-    "pearl harbour": "It's spelled Harb*or*, you non-American!",
+    "powder crew": ["Nvidia Hareworks!", "Wu Song!", "Prisca Lightfoot!", "Taaam", "Robert Dingle", "Nunlovers & Sunlovers", "Moonchin", "Who the Hell Goes Xom?"],
 
     "ripto": "The Keeper of Gates, Guardian of the Sanctuary. Frequently takes the form of a bunny dragon gargoyle.",
     "robot": "My hella fellas!",
     "rougelike": "It's spelled *rogue*like.",
 
-    "sourcerer": "Powered by the Source engine, these beings are masters of logic manipulation, memory logistics, and are generally good tea makers.",
-    "spiralist": "Powered by octave, why the hell is this guy a Bard?",
-    "spire": "This stupidly tall academy is home to some serious lust for infinite knowledge. No one has yet to see the roof, and rumours have it, that the tower itself stretches infinitely into space.",
+    "sourcerer": "Powered by the Source engine.\nThe Sourcerers. They'll tear open your eyes. At the speed of light. Network sharing line, is chaos all the time. Also generally good tea makers.",
+    "spire": "This stupidly tall academy is home to some serious lust for infinite knowledge. No one has yet to see the roof, and rumours have it, that the tower itself stretches infinitely into space. But it's not always been like this. At least not when Aria established it. What has education come to? This will only be answered when lore develops.",
 
     "tavernkeep": "M41-A, keeping the banters in place since 1437.",
+    "terminal blues": "Why did you take my GBA and throw it in the lake? It's still working, but it's all blue now. The textures are all gone too... everyone looks like a god damn letter!",
     "tom": ">tom forsaus",
     "tom forsaus": "Problem eliminated at the sauce. Party disbanded.",
-    "tome": "The best game of all time. Seizure warning: screen flickers when f.lux filter is present.",
     "tome4 sauce": ">tom forsaus",
     "tridude": "Exhibiting rare trilateral symmetry, some speculate that the green skinned tridudes are not native to our plane. This doesn't stop the tridudes from killing unwary adventurers, however, so save the philosophy until you have escaped the dungeon.",
 
     "up?": "Beep boop! <:wotcher:631772789988392960>",
 
-    "wotcher": "A colloquial greeting in southern England, most commonly in Lancre. Its American equivalent is 'Wotchit doing?'.",
+    "wotcher": "A colloquial greeting in southern England, most commonly in Lancre. Not to be confused with its American equivalent, 'Wotchit doing?'.",
 
-    "yuwanda": "Yuwanda the Weaver is the Goddess of Creation, often occupying the physical form of a fluttering woven serpent. Probably has to do with some string theory. Her imagery has profoundly manifested within the locals, from their long and intricately braided hair locks to <lore needs development ;( >."
+    "yuwanda": "Yuwanda the Weaver, the Goddess of Creation, often occupies the physical form of a fluttering woven serpent. Probably has to do with some string theory <physics needs development>. Her imagery has profoundly manifested within the locals, from their long and intricately braided hair locks to <lore needs development ;(>."
 }
