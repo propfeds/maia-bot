@@ -63,7 +63,7 @@
     },
     "wiki":
     {
-        "aliases": ["what's", "tell me about"],
+        "aliases": ["what's", "define"],
         "desc": "Search the Library of Maia to learn about various topics.",
         "help": "Helps you with lore. Specify an entry.\nCan redirect entries.\nExample:\n!wiki tome",
         "brief": "Helps you with lore",        
