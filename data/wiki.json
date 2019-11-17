@@ -1,12 +1,11 @@
 {
     "archmage": "A high master of the material and spiritual arts, their endurance in the Beelzebub slaying quest outmatches their own frailty.",
-    "aria": "Not to be confused with the other Aria in Necrodancer.\n<lore needs development> Dance of the Pythons: Humans invaded the ancient natural civilisation, but she was kinda dumb to not notice. She realised, 'Cultural enlightenment my arse. It's all killing shanking, I can't get a peace to read my books.' That means she's not so dumb. She's quite an inquisitive being, and her purpose here was just to research the locals. She did side with the locals against her own kind, and later on established the Spire, an academy for the country. Her fellows are kinda dumb though, they were super aggressive and only wanted to assert dominance, that's why they invaded the civ in the first place. But after being trapped in the tropical jungles of Notnam <name needs development>, her fellows back in her city realised all the effects of aggression. Where they helped her build the Spire, a hilltop, looked just like a spiky wizard hat. To honour the Spire and its founder, the city was then renamed to Needlecap.",
+    "aria": "Not to be confused with the other Aria in Necrodancer.\n<lore needs development> Dance of the Pythons: Once upon a time, humans invaded the ancient natural civilisation, but she was kinda dumb to not notice. But then she realised, 'Cultural enlightenment my arse. It's all killing shanking, I can't get a peace to read my books.', that means she's not so dumb. She's quite an inquisitive being, and her purpose here was just to research the locals. She then sided with the locals against her own kind, and later on established the Spire, an academy for the country. Her fellows were kinda dumb though, super aggressive and only wanted to assert dominance, that's why they invaded the civ in the first place. But after being trapped in the tropical jungles of Notnam <name needs development>, her fellows back in her city was horrified at all the aftermaths of aggression. Where they helped her build the Spire, it looked just like a spiky wizard hat. To honour the Spire and its founder, the city was then renamed to Needlecap.",
 
     "bard": "Powered by octave, these lads weave their sonic powers to manipulate emotions. 👀",
     "blight": "Don't tell me about that, I don't want to. It has taken over my mind. This Gunflower's gonna attack next turn, better dodge out of the way. But what good is a pixel art if it's drawn on a 640x360 canvas? What if I had to develop other characters, I have to develop other characters too. Enter: The Special Almanac for the Special Occasion.",
 
-    "dance of the pythons": "Hey, could you tell Prop this, to stop procrastinating and actually develop the game? ECS my butt >:(.",
-    "derek": "An ancient warrior, slayer of Jormumgandulf.",
+    "dance of the pythons": "Hey, could you tell Prop this, to stop procrastinating and actually develop the game? ECS my butt >:(.\nhttps://github.com/propfeds/dance-of-the-pythons",
     "dracklenose": ">mun ching",
 
     "gungeon": "This stupidly deep basement is home to some serious lust for the smell of gunpowder. Rumours have it, ||a High Dragun resides at the bottom of it all||.",
@@ -20,7 +19,7 @@
     "mirza": "Hella fez hat jazz fella!",
     "morza": "Morzilla Fireliz <:morzilla:616663663083782198>",
     "morzilla": "Morza Morizon <:morza:616569007876603904>",
-    "mun ching": "Mun 'Dracklenose' Ching of Ankh-Morpork, a practitioner of the arts of Headology. Monochromatically colourblind. One heart, three souls.",
+    "mun ching": "Mun 'Dracklenose' Ching of Ankh-Morpork, a practitioner of the arts of Headology. Monochromatically colourblind, triple personality, Morgue-tossingly aggressive. Was even killed by a poodle once. Her original adventure came to a halt, and what remains of her now is only a Powder run named Moonchin.",
 
     "nova": "The first Champion of FARA. An Astronomer of the Spire, hell bent on finding her '\"'true home'\"'. That's kind of edgy, don't you think?",
 
@@ -32,11 +31,11 @@
     "robot": "My hella fellas!",
     "rougelike": "It's spelled *rogue*like.",
 
-    "sourcerer": "Powered by the Source engine.\nThe Sourcerers. They'll tear open your eyes. At the speed of light. Network sharing line, is chaos all the time. Also generally good tea makers.",
-    "spire": "This stupidly tall academy is home to some serious lust for infinite knowledge. No one has yet to see the roof, and rumours have it, that the tower itself stretches infinitely into space. But it's not always been like this. At least not when Aria established it. What has education come to? This will only be answered when lore develops.",
+    "sourcerer": "Powered by the Source engine.\nThe Sourcerers. They'll tear open your eyes. At the speed of light. Network sharing line, is chaos all the time. Also generally good tea makers. 👀",
+    "spire": "This stupidly tall academy is home to some serious lust for infinite knowledge. No one has yet to see the roof, and rumours have it, that the tower itself stretches infinitely into space.\nBut it's not always been like this. At least not when Aria established it. What has education come to? This will only be answered when lore develops.",
 
     "tavernkeep": "M41-A, keeping the banters in place since 1437.",
-    "terminal blues": "Why did you take my GBA and throw it in the lake? It's still working, but it's all blue now. The textures are all gone too... everyone looks like a god damn letter!",
+    "terminal blues": "Why did you take my GBA and throw it in the lake? It's still working, but it's all blue now. The textures are all gone too... everything looks like a god damn letter!\nEntering: Terminal Blues, a Powder tileset in CP437.\nFeaturing:\n- Everything is CP437! Almost!\n- Custom fonts!\nhttps://github.com/propfeds/terminal-blues",
     "tom": ">tom forsaus",
     "tom forsaus": "Problem eliminated at the sauce. Party disbanded.",
     "tome4 sauce": ">tom forsaus",
