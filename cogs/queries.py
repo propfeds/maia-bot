@@ -71,8 +71,12 @@ class Queries(commands.Cog):
                 while commands_wiki[entry_full][0]=='>':
                     entry_full=commands_wiki[entry_full][1:]
                     response+='→{0}'.format(entry_full)
-
-                response+=':** {0}'.format(commands_wiki[entry_full])
+                
+                if type(commands_wiki[entry_full])==list:
+                    response+=':**\n- '
+                    response+='\n- '.join(commands_wiki[entry_full])
+                else:
+                    response+=':** {0}'.format(commands_wiki[entry_full])
         else:
             response+=':** {0}'.format(responses['wiki']['entry_not_exist'])
 
