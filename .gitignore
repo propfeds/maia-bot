@@ -1,6 +1,5 @@
 # Project
-data/guilds/
-data/wiki.json
+data/
 utils/*/
 
 # Byte-compiled / optimized / DLL files
