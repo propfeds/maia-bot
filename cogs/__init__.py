@@ -1,3 +1,4 @@
+import discord
 from dotenv import load_dotenv
 from json import load, dump
 import os
@@ -21,10 +22,10 @@ gungeoneer_role_name='G\u0318\u031d\u034du\u0324\u0347\u032cn\u0329\u0332\u0320g
 # Randorg
 randorg_client=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
-def get_role(guild, name):
+def get_role(guild: discord.Guild, name: str) -> discord.Role:
     return guild.roles[guild_role_indexes[guild.id][guild_role_ids[guild.id][name]]]
 
-def gather(guild, dump_json=False):
+def gather(guild: discord.Guild, dump_json=False) -> None:
     global guild_emoji, guild_role_ids, guild_role_indexes
 
     guild_emoji[guild.id]={}

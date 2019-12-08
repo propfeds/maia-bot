@@ -6,11 +6,17 @@ from random import randint
 from utils.grammar import get_possessive
 
 class Queries(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot=bot
 
-    @commands.command(description=responses['bard']['desc'], help=responses['bard']['help'], brief=responses['bard']['brief'])
-    async def bard(self, context):
+    @commands.command(
+        aliases=responses['bard']['cfg']['aliases'],
+        brief=responses['bard']['cfg']['brief'],
+        description=responses['bard']['cfg']['desc'],
+        help=responses['bard']['cfg']['help'],
+        hidden=responses['bard']['cfg']['hidden']
+    )
+    async def bard(self, context: commands.Context) -> None:
         if get_role(context.guild, 'Bard') in context.author.roles:
             await context.author.remove_roles(get_role(context.guild, 'Bard'), reason=responses['bard']['unbard_reason'])
             await context.send(responses['bard']['unbard'].format(context.author.display_name))
@@ -22,8 +28,14 @@ class Queries(commands.Cog):
             else:
                 await context.send(responses['bard']['bard'].format(context.author.display_name))
 
-    @commands.command(hidden=True, aliases=responses['mute']['aliases'], description=responses['mute']['desc'], help=responses['mute']['help'], brief=responses['mute']['brief'])
-    async def mute(self, context, member: discord.Member, hours, *reason):
+    @commands.command(
+        aliases=responses['mute']['cfg']['aliases'],
+        brief=responses['mute']['cfg']['brief'],
+        description=responses['mute']['cfg']['desc'],
+        help=responses['mute']['cfg']['help'],
+        hidden=responses['mute']['cfg']['hidden']
+    )
+    async def mute(self, context: commands.Context, member: discord.Member, hours: float, *reason: str) -> None:
         if member==self.bot.user or not context.author.guild_permissions.manage_roles:
             await context.send(responses['mute']['fool'])
             return
@@ -47,8 +59,14 @@ class Queries(commands.Cog):
         await context.send(response)
         await member.remove_roles(get_role(context.guild, gungeoneer_role_name), reason='Not '+reason_full)
 
-    @commands.command(description=responses['sourcerer']['desc'], help=responses['sourcerer']['help'], brief=responses['sourcerer']['brief'])
-    async def sourcerer(self, context):
+    @commands.command(
+        aliases=responses['sourcerer']['cfg']['aliases'],
+        brief=responses['sourcerer']['cfg']['brief'],
+        description=responses['sourcerer']['cfg']['desc'],
+        help=responses['sourcerer']['cfg']['help'],
+        hidden=responses['sourcerer']['cfg']['hidden']
+    )
+    async def sourcerer(self, context: commands.Context) -> None:
         if get_role(context.guild, 'Sourcerer') in context.author.roles:
             await context.author.remove_roles(get_role(context.guild, 'Sourcerer'), reason=responses['sourcerer']['unsource_reason'])
             await context.send(responses['sourcerer']['unsource'].format(context.author.display_name))
@@ -56,8 +74,14 @@ class Queries(commands.Cog):
             await context.author.add_roles(get_role(context.guild, 'Sourcerer'), reason=responses['sourcerer']['source_reason'])
             await context.send(responses['sourcerer']['source'].format(context.author.display_name))
 
-    @commands.command(aliases=responses['wiki']['aliases'], description=responses['wiki']['desc'], help=responses['wiki']['help'], brief=responses['wiki']['brief'])
-    async def wiki(self, context, *entry):
+    @commands.command(
+        aliases=responses['wiki']['cfg']['aliases'],
+        brief=responses['wiki']['cfg']['brief'],
+        description=responses['wiki']['cfg']['desc'],
+        help=responses['wiki']['cfg']['help'],
+        hidden=responses['wiki']['cfg']['hidden']
+    )
+    async def wiki(self, context: commands.Context, *entry: str) -> None:
         entry_full=' '.join(entry).lower()
         response='**{0}'.format(entry_full)
 
@@ -81,5 +105,3 @@ class Queries(commands.Cog):
             response+=':** {0}'.format(responses['wiki']['entry_not_exist'])
 
         await context.send(response)
-
-    

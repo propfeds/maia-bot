@@ -5,23 +5,40 @@ from math import *
 from random import randint, choice
 from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
+from typing import Match, Tuple
 from utils.conversions import *
 # pylint: enable=unused-wildcard-import
 
 class Nerds(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot=bot
 
-    def format_dice(self, match):
-        return (int(match.group(1)) if (match.group(1) is not None) else 1, int(match.group(2)), int(match.group(3)) if (match.group(3) is not None) else 0)
+    def format_dice(self, match: Match) -> Tuple[int, int, int]:
+        return (
+            int(match.group(1)) if (match.group(1) is not None) else 1,
+            int(match.group(2)),
+            int(match.group(3)) if (match.group(3) is not None) else 0
+        )
 
-    @commands.command(aliases=responses['calc']['aliases'], description=responses['calc']['desc'], help=responses['calc']['help'], brief=responses['calc']['brief'])
-    async def calc(self, context, *exp):
+    @commands.command(
+        aliases=responses['calc']['cfg']['aliases'],
+        brief=responses['calc']['cfg']['brief'],
+        description=responses['calc']['cfg']['desc'],
+        help=responses['calc']['cfg']['help'],
+        hidden=responses['calc']['cfg']['hidden']
+    )
+    async def calc(self, context: commands.Context, *exp) -> float:
         exp_full=''.join(exp)
         await context.send(choice(responses['calc']['result']).format(eval(str(exp_full))))
 
-    @commands.command(description=responses['roll']['desc'], help=responses['roll']['help'], brief=responses['roll']['brief'])
-    async def roll(self, context, die, *reason):
+    @commands.command(
+        aliases=responses['roll']['cfg']['aliases'],
+        brief=responses['roll']['cfg']['brief'],
+        description=responses['roll']['cfg']['desc'],
+        help=responses['roll']['cfg']['help'],
+        hidden=responses['roll']['cfg']['hidden']
+    )
+    async def roll(self, context: commands.Context, die: str, *reason) -> None:
         die_match=re.match(die_regex_pattern, die)
         if die_match is None:
             await context.send(responses['roll']['not_die'].format(context.author.display_name))

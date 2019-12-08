@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ', 'MAIA, '])
+bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ', 'MAIA, ', 'Maia ', 'maia ', 'MAIA '])
 
 @bot.event
-async def on_ready():
+async def on_ready() -> None:
     # Steal all your data
     guild_id_prop=int(os.getenv('DISCORD_GUILD_ID_PROP'))
     for guild in bot.guilds:
