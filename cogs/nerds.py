@@ -28,8 +28,7 @@ class Nerds(commands.Cog):
         hidden=cogs.cfg['calc']['hidden']
     )
     async def calc(self, context: commands.Context, *exp: str) -> None:
-        exp_full: str=''.join(exp)
-        await context.send(choice(cogs.resp['calc']['result']).format(eval(exp_full)))
+        await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp))))
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],

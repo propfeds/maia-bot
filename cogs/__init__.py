@@ -16,7 +16,7 @@ with open('data/commands/wiki.json', encoding='utf-8') as json_wiki:
 
 emoji_id: Dict[int, Dict[str, int]]={}
 role_id: Dict[int, Dict[str, int]]={}
-role_list_idx: Dict[int, Dict[int, int]]={}
+role_index: Dict[int, Dict[int, int]]={}
 
 bard_rare_chance: int=10
 die_regex: str='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
@@ -25,15 +25,16 @@ gungeoneer_role_name: str='G\u0318\u031d\u034du\u0324\u0347\u032cn\u0329\u0332\u
 # Randorg
 randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
+# Gets a Role object. Uses the index from mapping name->ID->index in dicts.
 def get_role(guild: discord.Guild, name: str) -> discord.Role:
-    return guild.roles[role_list_idx[guild.id][role_id[guild.id][name]]]
+    return guild.roles[role_index[guild.id][role_id[guild.id][name]]]
 
 def gather(guild: discord.Guild, dump_json: bool=False) -> None:
-    global emoji_id, role_id, role_list_idx
+    global emoji_id, role_id, role_index
 
     emoji_id[guild.id]={}
     role_id[guild.id]={}
-    role_list_idx[guild.id]={}
+    role_index[guild.id]={}
 
     if not os.path.exists('data/guilds/{0}/'.format(guild.id)):
         os.mkdir('data/guilds/{0}/'.format(guild.id))
@@ -42,15 +43,15 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
     for emoji in guild.emojis:
         emoji_id[guild.id][emoji.name]=emoji.id
     if dump_json:
-        with open('data/guilds/{0}/emoji.json'.format(guild.id), 'w+') as json_emoji:
-            dump(emoji_id[guild.id], json_emoji, indent=4)
+        with open('data/guilds/{0}/emoji_id.json'.format(guild.id), 'w+') as json_emoji_id:
+            dump(emoji_id[guild.id], json_emoji_id, indent=4)
 
     # Role name to ID then ID to index (in guild's role list)
     for i, role in enumerate(guild.roles):
         role_id[guild.id][role.name]=role.id
-        role_list_idx[guild.id][role.id]=i
+        role_index[guild.id][role.id]=i
     if dump_json:
-        with open('data/guilds/{0}/role_ids.json'.format(guild.id), 'w+') as json_role_ids:
-            dump(role_id[guild.id], json_role_ids, indent=4)
-        with open('data/guilds/{0}/role_indexes.json'.format(guild.id), 'w+') as json_role_indexes:
-            dump(role_list_idx[guild.id], json_role_indexes, indent=4)
+        with open('data/guilds/{0}/role_id.json'.format(guild.id), 'w+') as json_role_id:
+            dump(role_id[guild.id], json_role_id, indent=4)
+        # with open('data/guilds/{0}/role_index.json'.format(guild.id), 'w+') as json_role_index:
+            # dump(role_index[guild.id], json_role_index, indent=4)
