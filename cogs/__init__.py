@@ -17,20 +17,26 @@ with open('data/commands/wiki.json', encoding='utf-8') as json_wiki:
 emoji_id: Dict[int, Dict[str, int]]={}
 role_id: Dict[int, Dict[str, int]]={}
 role_index: Dict[int, Dict[int, int]]={}
+guild_cfg: Dict[int, dict]={}
 
-bard_rare_chance: int=10
 die_regex: str='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
-gungeoneer_role_name: str='G\u0318\u031d\u034du\u0324\u0347\u032cn\u0329\u0332\u0320g\u0322\u0355\u0355e\u0356\u0317\u033cone\u0341\u0317\u0339e\u034d\u0326\u032dr\u0330?\u0327\u0339\u0333?\u0319\u0330\u031f'
+debug_state: bool=False
 
 # Randorg
 randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 # Gets a Role object. Uses the index from mapping name->ID->index in dicts.
-def get_role(guild: discord.Guild, name: str) -> discord.Role:
+def get_role_from_name(guild: discord.Guild, name: str) -> discord.Role:
     return guild.roles[role_index[guild.id][role_id[guild.id][name]]]
 
+def get_role_from_id(guild: discord.Guild, id_number: int) -> discord.Role:
+    return guild.roles[role_index[guild.id][id_number]]
+
+def format_emoji(guild: discord.Guild, name: str) -> str:
+    return '<:{0}:{1}>'.format(name, emoji_id[guild.id][name])
+
 def gather(guild: discord.Guild, dump_json: bool=False) -> None:
-    global emoji_id, role_id, role_index
+    global emoji_id, role_id, role_index, guild_cfg
 
     emoji_id[guild.id]={}
     role_id[guild.id]={}
@@ -55,3 +61,7 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
             dump(role_id[guild.id], json_role_id, indent=4)
         # with open('data/guilds/{0}/role_index.json'.format(guild.id), 'w+') as json_role_index:
             # dump(role_index[guild.id], json_role_index, indent=4)
+
+    # Guild config contains role IDs for Bards, Devs, Lorekeeps, Botkeeps and Mutes
+    with open('data/guilds/{0}/config.json'.format(guild.id), 'r') as json_guild_cfg:
+        guild_cfg[guild.id]=load(json_guild_cfg)

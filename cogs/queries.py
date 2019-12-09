@@ -5,11 +5,16 @@ from discord.ext import commands
 from json import dump
 from random import randint
 from typing import Optional
-from utils.grammar import get_possessive
 
 class Queries(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
+
+    def get_possessive(self, noun: str) -> str:
+        if noun[-1]=='s':
+            return noun+'\''
+        else:
+            return noun+'\'s'
 
     @commands.command(
         aliases=cogs.cfg['bard']['aliases'],
@@ -19,14 +24,17 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['bard']['hidden']
     )
     async def bard(self, context: commands.Context) -> None:
-        if cogs.get_role(context.guild, 'Bard') in context.author.roles:
-            await context.author.remove_roles(cogs.get_role(context.guild, 'Bard'), reason=cogs.resp['bard']['unbard_reason'])
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
+        role_bard=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['bard'])
+        if role_bard in context.author.roles:
+            await context.author.remove_roles(role_bard, reason=cogs.resp['bard']['unbard_reason'])
             await context.send(cogs.resp['bard']['unbard'].format(context.author.display_name))
         else:
-            await context.author.add_roles(cogs.get_role(context.guild, 'Bard'), reason=cogs.resp['bard']['bard_reason'])
+            await context.author.add_roles(role_bard, reason=cogs.resp['bard']['bard_reason'])
             roll_rare: int=randint(0, 99)
-            if roll_rare<cogs.bard_rare_chance:
-                await context.send(cogs.resp['bard']['bard_rare'].format(context.author.display_name, get_possessive(context.author.display_name)))
+            if roll_rare<cogs.cfg['bard']['rare_percent']:
+                await context.send(cogs.resp['bard']['bard_rare'].format(context.author.display_name, self.get_possessive(context.author.display_name)))
             else:
                 await context.send(cogs.resp['bard']['bard'].format(context.author.display_name))
 
@@ -38,6 +46,8 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['define']['hidden']
     )
     async def define(self, context: commands.Context, *entry: str) -> None:
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
         entry_full: str=' '.join(entry).lower()
         response: str='**{0}'.format(entry_full)
 
@@ -74,7 +84,10 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['modifine']['hidden']
     )
     async def modifine(self, context: commands.Context, entry: str, mode: Optional[int]=1, *value: str) -> None:
-        if cogs.get_role(context.guild, 'Headmaster') not in context.author.roles:
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
+        role_lorekeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
+        if role_lorekeep not in context.author.roles:
             await context.send(cogs.resp['modifine']['403'])
             return
 
@@ -111,6 +124,8 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['mute']['hidden']
     )
     async def mute(self, context: commands.Context, member: discord.Member, hours: str, *reason: str) -> None:
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
         if member==self.bot.user or not context.author.guild_permissions.manage_roles:
             await context.send(cogs.resp['mute']['403'])
             return
@@ -120,19 +135,20 @@ class Queries(commands.Cog):
             await context.send(cogs.resp['mute']['negative_duration'])
             return
 
+        role_mute=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['mute'])
         reason_full: str=' '.join(reason)
         response: str=cogs.resp['mute']['mute'].format(member.display_name, hours_float, reason_full)
         if member==context.author:
             response+=' {0}'.format(cogs.resp['mute']['self_mute'])
         await context.send(response)
-        await member.add_roles(cogs.get_role(context.guild, cogs.gungeoneer_role_name), reason=reason_full)
+        await member.add_roles(role_mute, reason=reason_full)
 
         await asyncio.sleep(hours_float*3600.0)
         response=cogs.resp['mute']['unmute'].format(member.mention, hours_float, reason_full)
         if member==context.author:
             response+=' {0}'.format(cogs.resp['mute']['self_mute'])
         await context.send(response)
-        await member.remove_roles(cogs.get_role(context.guild, cogs.gungeoneer_role_name), reason='Not '+reason_full)
+        await member.remove_roles(role_mute, reason='Not '+reason_full)
 
     @commands.command(
         aliases=cogs.cfg['sourcerer']['aliases'],
@@ -142,9 +158,12 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['sourcerer']['hidden']
     )
     async def sourcerer(self, context: commands.Context) -> None:
-        if cogs.get_role(context.guild, 'Sourcerer') in context.author.roles:
-            await context.author.remove_roles(cogs.get_role(context.guild, 'Sourcerer'), reason=cogs.resp['sourcerer']['unsource_reason'])
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
+        role_dev=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['dev'])
+        if role_dev in context.author.roles:
+            await context.author.remove_roles(role_dev, reason=cogs.resp['sourcerer']['unsource_reason'])
             await context.send(cogs.resp['sourcerer']['unsource'].format(context.author.display_name))
         else:
-            await context.author.add_roles(cogs.get_role(context.guild, 'Sourcerer'), reason=cogs.resp['sourcerer']['source_reason'])
+            await context.author.add_roles(role_dev, reason=cogs.resp['sourcerer']['source_reason'])
             await context.send(cogs.resp['sourcerer']['source'].format(context.author.display_name))

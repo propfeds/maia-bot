@@ -14,8 +14,9 @@ bot: commands.Bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ', 'MAIA, '
 async def on_ready() -> None:
     # Steal all your data
     guild_id_prop: int=int(os.getenv('DISCORD_GUILD_ID_PROP'))
+    guild_id_merp: int=int(os.getenv('DISCORD_GUILD_ID_MERP'))
     for guild in bot.guilds:
-        if guild.id==guild_id_prop:
+        if guild.id in (guild_id_prop, guild_id_merp):
             gather(guild, True)
         else:
             gather(guild)

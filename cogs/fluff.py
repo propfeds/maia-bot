@@ -2,14 +2,10 @@ import cogs
 import discord
 from discord.ext import commands
 from random import choice
-from utils.grammar import get_random_vowel
 
 class Fluff(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
-
-    def format_emoji(self, guild: discord.Guild, name: str) -> str:
-        return '<:{0}:{1}>'.format(name, cogs.emoji_id[guild.id][name])
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
@@ -19,10 +15,22 @@ class Fluff(commands.Cog):
         message_lowcase: str=message.content.lower()
 
         if 'wotcher' in message_lowcase:
-            await message.add_reaction(self.format_emoji(message.guild, 'wotcher'))
+            await message.add_reaction(cogs.format_emoji(message.guild, 'wotcher'))
 
         if 'rougelike' in message_lowcase:
-            await message.channel.send(cogs.resp['rougelike'].format(get_random_vowel(), get_random_vowel(), get_random_vowel()))
+            await message.channel.send(
+                cogs.resp['fluff']['rl_base'].format(
+                    choice(cogs.resp['fluff']['rouge']).format(
+                        choice(cogs.resp['fluff']['vowels']),
+                        choice(cogs.resp['fluff']['vowels']),
+                        choice(cogs.resp['fluff']['vowels'])
+                    ),
+                    choice(cogs.resp['fluff']['like']).format(
+                        choice(cogs.resp['fluff']['vowels']),
+                        choice(cogs.resp['fluff']['vowels'])
+                    )
+                )
+            )
 
         if 'reanimat' in message_lowcase:
             await message.channel.send(file=discord.File('data/necrobutt.gif'))
@@ -35,4 +43,6 @@ class Fluff(commands.Cog):
         hidden=cogs.cfg['scream']['hidden']
     )
     async def scream(self, context: commands.Context) -> None:
-        await context.send(choice(cogs.resp['scream']['screams']))
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
+        await context.send(choice(cogs.resp['fluff']['screams']))

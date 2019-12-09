@@ -1,17 +1,71 @@
 import cogs
 from discord.ext import commands
-# pylint: disable=unused-wildcard-import
-from math import *
+import math
 from random import randint, choice
 from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
 from typing import List, Match, Optional, Tuple
-from utils.conversions import *
-# pylint: enable=unused-wildcard-import
 
 class Nerds(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
+        self.func_dict={
+            'ceil': math.ceil,
+            'comb': math.comb,
+            'copysign': math.copysign,
+            'abs': math.fabs,
+            'factorial': math.factorial,
+            'floor': math.floor,
+            'fmod': math.fmod,
+            'frexp': math.frexp,
+            'fsum': math.fsum,
+            'gcd': math.gcd,
+            'isclose': math.isclose,
+            'isfinite': math.isfinite,
+            'isinf': math.isinf,
+            'isnan': math.isnan,
+            'isqrt': math.isqrt,
+            'ldexp': math.ldexp,
+            'modf': math.modf,
+            'perm': math.perm,
+            'prod': math.prod,
+            'remainder': math.remainder,
+            'trunc': math.trunc,
+            'exp': math.exp,
+            'expm1': math.expm1,
+            'log': math.log,
+            'log1p': math.log1p,
+            'log2': math.log2,
+            'log10': math.log10,
+            'pow': math.pow,
+            'sqrt': math.sqrt,
+            'acos': math.acos,
+            'asin': math.asin,
+            'atan': math.atan,
+            'atan2': math.atan2,
+            'cos': math.cos,
+            'dist': math.dist,
+            'hypot': math.hypot,
+            'sin': math.sin,
+            'tan': math.tan,
+            'degrees': math.degrees,
+            'radians': math.radians,
+            'acosh': math.acosh,
+            'asinh': math.asinh,
+            'atanh': math.atanh,
+            'cosh': math.cosh,
+            'sinh': math.sinh,
+            'tanh': math.tanh,
+            'erf': math.erf,
+            'erfc': math.erfc,
+            'gamma': math.gamma,
+            'lgamma': math.lgamma,
+            'pi': math.pi,
+            'e': math.e,
+            'tau': math.tau,
+            'inf': math.inf,
+            'nan': math.nan
+        }
 
     def format_dice(self, match: Match) -> Tuple[int, int, int]:
         return (
@@ -28,7 +82,32 @@ class Nerds(commands.Cog):
         hidden=cogs.cfg['calc']['hidden']
     )
     async def calc(self, context: commands.Context, *exp: str) -> None:
-        await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp))))
+        if cogs.debug_state:
+            role_botkeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+            if role_botkeep not in context.author.roles:
+                await context.send(cogs.resp['calc']['debug_locked'])
+                return
+            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp))))
+        else:
+            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp), {"__builtins__": None}, self.func_dict)))
+
+    @commands.command(
+        aliases=cogs.cfg['debug']['aliases'],
+        brief=cogs.cfg['debug']['brief'],
+        description=cogs.cfg['debug']['desc'],
+        help=cogs.cfg['debug']['help'],
+        hidden=cogs.cfg['debug']['hidden']
+    )
+    async def debug(self, context: commands.Context) -> None:
+        role_botkeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+        if role_botkeep not in context.author.roles:
+            await context.send(cogs.resp['debug']['403'])
+            return
+        cogs.debug_state=not cogs.debug_state
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
+        else:
+            await context.send(cogs.resp['debug']['off'])
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
@@ -38,6 +117,8 @@ class Nerds(commands.Cog):
         hidden=cogs.cfg['roll']['hidden']
     )
     async def roll(self, context: commands.Context, die: str, repeats: Optional[int]=1, *reason: str) -> None:
+        if cogs.debug_state:
+            await context.send(cogs.resp['debug']['on'])
         die_match: Match=re.match(cogs.die_regex, die)
         if die_match is None:
             await context.send(cogs.resp['roll']['not_die'].format(context.author.display_name))
