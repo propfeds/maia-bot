@@ -126,6 +126,13 @@ class Nerds(commands.Cog):
         else:
             dice: int; sides: int; mod: int
             dice, sides, mod=self.format_dice(die_match)
+            if not dice*repeats:
+                await context.send(cogs.resp['roll']['no_dice'])
+                return
+            elif dice*repeats<0:
+                await context.send(cogs.resp['roll']['negative_dice'])
+                return
+
         response: str=cogs.resp['roll']['rolling_for'].format(die, context.author.display_name)
         response+=' '
         if repeats>1:
