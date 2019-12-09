@@ -74,6 +74,8 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
                 "mute": 0
             }
         }
+        with open('data/guilds/{0}/config.json'.format(guild.id), 'w+') as json_guild_cfg:
+            dump(guild_cfg[guild.id], json_guild_cfg, indent=4)
     else:
         with open('data/guilds/{0}/config.json'.format(guild.id), 'r') as json_guild_cfg:
             guild_cfg[guild.id]=load(json_guild_cfg)
