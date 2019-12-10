@@ -1,9 +1,11 @@
 import cogs
+import discord
 from discord.ext import commands
 import math
 from random import randint, choice
 from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
+from sys import version_info
 from typing import List, Match, Optional, Tuple
 
 class Nerds(commands.Cog):
@@ -103,11 +105,15 @@ class Nerds(commands.Cog):
         if role_botkeep not in context.author.roles:
             await context.send(cogs.resp['debug']['403'])
             return
+
+        # Now really toggles
         cogs.debug_state=not cogs.debug_state
         if cogs.debug_state:
             await context.send(cogs.resp['debug']['on'])
+            await self.bot.change_presence(activity=discord.Game('Debug'), status=discord.Status.dnd)
         else:
             await context.send(cogs.resp['debug']['off'])
+            await self.bot.change_presence(activity=None, status=discord.Status.online)
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
@@ -132,6 +138,9 @@ class Nerds(commands.Cog):
             elif dice*repeats<0:
                 await context.send(cogs.resp['roll']['negative_dice'])
                 return
+            elif sides<=1:
+                await context.send(cogs.resp['roll']['not_die'].format(context.author.display_name))
+                return
 
         response: str=cogs.resp['roll']['rolling_for'].format(die, context.author.display_name)
         response+=' '
@@ -146,15 +155,21 @@ class Nerds(commands.Cog):
         response+=':'
 
         results: List[int]=[]
-        try:
-            results.extend(cogs.randorg_client.generate_integers(dice*repeats, 1, sides))
-        except RandomOrgSendTimeoutError:
-            response+='\n{0}'.format(cogs.resp['roll']['randorg_timeout'])
-        except (RandomOrgInsufficientRequestsError,
-        RandomOrgInsufficientBitsError):
-            response+='\n{0}'.format(cogs.resp['roll']['randorg_juice'])
+
+        if version_info.major==3 and version_info.minor==8:
+            response+='\n{0}'.format(cogs.resp['roll']['py_38_time'])
             for _ in range(dice*repeats):
                 results.append(randint(1, sides))
+        else:
+            try:
+                results.extend(cogs.randorg_client.generate_integers(dice*repeats, 1, sides))
+            except RandomOrgSendTimeoutError:
+                response+='\n{0}'.format(cogs.resp['roll']['randorg_timeout'])
+            except (RandomOrgInsufficientRequestsError,
+            RandomOrgInsufficientBitsError):
+                response+='\n{0}'.format(cogs.resp['roll']['randorg_juice'])
+                for _ in range(dice*repeats):
+                    results.append(randint(1, sides))
 
         # Actually displaying dice
         for i in range(repeats):
