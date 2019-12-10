@@ -63,7 +63,7 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
             # dump(role_index[guild.id], json_role_index, indent=4)
 
     # Guild config contains role IDs for Bards, Devs, Lorekeeps, Botkeeps and Mutes. If not found, creates a blank slate so every command would fail intentionally.
-    if not os.path.exists('data/guilds/{0}/config.json'):
+    if not os.path.exists('data/guilds/{0}/config.json'.format(guild.id)):
         guild_cfg[guild.id]={
             "roles":
             {
