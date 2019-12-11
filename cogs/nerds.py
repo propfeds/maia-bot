@@ -11,7 +11,7 @@ from typing import List, Match, Optional, Tuple
 class Nerds(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
-        self.func_dict={
+        self.func_dict: dict={
             'ceil': math.ceil,
             'comb': math.comb,
             'copysign': math.copysign,

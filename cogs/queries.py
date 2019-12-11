@@ -4,7 +4,8 @@ import discord
 from discord.ext import commands
 from json import dump
 from random import randint
-from typing import Optional
+import re
+from typing import List, Match, Optional
 
 class Queries(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -45,32 +46,38 @@ class Queries(commands.Cog):
         help=cogs.cfg['define']['help'],
         hidden=cogs.cfg['define']['hidden']
     )
-    async def define(self, context: commands.Context, *entry: str) -> None:
+    async def define(self, context: commands.Context, *entries: str) -> None:
         if cogs.debug_state:
             await context.send(cogs.resp['debug']['on'])
-        entry_full: str=' '.join(entry).lower()
-        response: str='**{0}'.format(entry_full)
+        entry_full: str=' '.join(entries).lower()
+        entry_list: List[Match]=re.finditer(cogs.entry_regex, entry_full)
+        for entry_itr in entry_list:
+            entry=entry_itr.group(2)
+            entry=re.sub(cogs.end_whitespace_trim_regex, '', entry)
+            if not entry:
+                continue
+            response: str='\n**{0}'.format(entry)
 
-        if cogs.wiki.get(entry_full):
-            # Array entries
-            if type(cogs.wiki[entry_full])==list:
-                response+=':**\n- '
-                response+='\n- '.join(cogs.wiki[entry_full])
-            else:
-                # Redirecting entries
-                while cogs.wiki[entry_full][0]=='>':
-                    entry_full=cogs.wiki[entry_full][1:]
-                    response+='→{0}'.format(entry_full)
-                
-                if type(cogs.wiki[entry_full])==list:
+            if cogs.wiki.get(entry):
+                # Array entries
+                if type(cogs.wiki[entry])==list:
                     response+=':**\n- '
-                    response+='\n- '.join(cogs.wiki[entry_full])
+                    response+='\n- '.join(cogs.wiki[entry])
                 else:
-                    response+=':** {0}'.format(cogs.wiki[entry_full])
-        else:
-            response+=':** {0}'.format(cogs.resp['define']['404'])
+                    # Redirecting entries
+                    while cogs.wiki[entry][0]=='>':
+                        entry=cogs.wiki[entry][1:]
+                        response+='→{0}'.format(entry)
+                    
+                    if type(cogs.wiki[entry])==list:
+                        response+=':**\n- '
+                        response+='\n- '.join(cogs.wiki[entry])
+                    else:
+                        response+=':** {0}'.format(cogs.wiki[entry])
+            else:
+                response+=':** {0}'.format(cogs.resp['define']['404'])
 
-        await context.send(response)
+            await context.send(response)
 
 # Modes:
 # 1: Add (default)

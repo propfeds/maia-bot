@@ -19,7 +19,9 @@ role_id: Dict[int, Dict[str, int]]={}
 role_index: Dict[int, Dict[int, int]]={}
 guild_cfg: Dict[int, dict]={}
 
-die_regex: str='(\\d+)?[dD](\\d+)([\\+\\-]\\d+)?'
+die_regex: str=r'(\d+)?[dD](\d+)([\+\-]\d+)?'
+entry_regex: str=r'( ?)([^(\?)]+)'  # Second group is entry
+end_whitespace_trim_regex: str=r' +$'
 debug_state: bool=False
 
 # Randorg
