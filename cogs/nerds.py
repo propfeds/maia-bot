@@ -3,7 +3,6 @@
 import cogs
 import discord
 from discord.ext import commands
-import math
 from random import randint, choice
 from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
@@ -13,63 +12,6 @@ from typing import List, Match, Optional, Tuple
 class Nerds(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
-        self.func_dict: dict={
-            'ceil': math.ceil,
-            'comb': math.comb,
-            'copysign': math.copysign,
-            'abs': math.fabs,
-            'factorial': math.factorial,
-            'floor': math.floor,
-            'fmod': math.fmod,
-            'frexp': math.frexp,
-            'fsum': math.fsum,
-            'gcd': math.gcd,
-            'isclose': math.isclose,
-            'isfinite': math.isfinite,
-            'isinf': math.isinf,
-            'isnan': math.isnan,
-            'isqrt': math.isqrt,
-            'ldexp': math.ldexp,
-            'modf': math.modf,
-            'perm': math.perm,
-            'prod': math.prod,
-            'remainder': math.remainder,
-            'trunc': math.trunc,
-            'exp': math.exp,
-            'expm1': math.expm1,
-            'log': math.log,
-            'log1p': math.log1p,
-            'log2': math.log2,
-            'log10': math.log10,
-            'pow': math.pow,
-            'sqrt': math.sqrt,
-            'acos': math.acos,
-            'asin': math.asin,
-            'atan': math.atan,
-            'atan2': math.atan2,
-            'cos': math.cos,
-            'dist': math.dist,
-            'hypot': math.hypot,
-            'sin': math.sin,
-            'tan': math.tan,
-            'degrees': math.degrees,
-            'radians': math.radians,
-            'acosh': math.acosh,
-            'asinh': math.asinh,
-            'atanh': math.atanh,
-            'cosh': math.cosh,
-            'sinh': math.sinh,
-            'tanh': math.tanh,
-            'erf': math.erf,
-            'erfc': math.erfc,
-            'gamma': math.gamma,
-            'lgamma': math.lgamma,
-            'pi': math.pi,
-            'e': math.e,
-            'tau': math.tau,
-            'inf': math.inf,
-            'nan': math.nan
-        }
 
     def format_dice(self, match: Match) -> Tuple[int, int, int]:
         return (
@@ -93,7 +35,7 @@ class Nerds(commands.Cog):
                 return
             await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp))))
         else:
-            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp), {"__builtins__": None}, self.func_dict)))
+            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp), {"__builtins__": None}, cogs.math_func_dict)))
 
     @commands.command(
         aliases=cogs.cfg['debug']['aliases'],
