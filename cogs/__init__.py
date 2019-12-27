@@ -22,7 +22,7 @@ guild_cfg: Dict[int, dict]={}
 die_regex: str=r'(\d+)?[dD](\d+)([\+\-]\d+)?'
 entry_regex: str=r'( ?)([^(\?)]+)'  # Second group is entry
 end_whitespace_trim_regex: str=r' +$'
-debug_state: bool=False
+_debug_state: bool=False
 
 # Randorg
 randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))

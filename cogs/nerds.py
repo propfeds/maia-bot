@@ -1,3 +1,5 @@
+# Nerds: Contains tools for rolling dice, calulating and debugging.
+
 import cogs
 import discord
 from discord.ext import commands
@@ -84,7 +86,7 @@ class Nerds(commands.Cog):
         hidden=cogs.cfg['calc']['hidden']
     )
     async def calc(self, context: commands.Context, *exp: str) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             role_botkeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
             if role_botkeep not in context.author.roles:
                 await context.send(cogs.resp['calc']['debug_locked'])
@@ -107,8 +109,8 @@ class Nerds(commands.Cog):
             return
 
         # Now really toggles
-        cogs.debug_state=not cogs.debug_state
-        if cogs.debug_state:
+        cogs._debug_state=not cogs._debug_state
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
             await self.bot.change_presence(activity=discord.Game('Debug'), status=discord.Status.dnd)
         else:
@@ -123,7 +125,7 @@ class Nerds(commands.Cog):
         hidden=cogs.cfg['roll']['hidden']
     )
     async def roll(self, context: commands.Context, die: str, repeats: Optional[int]=1, *reason: str) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         die_match: Match=re.match(cogs.die_regex, die)
         if die_match is None:

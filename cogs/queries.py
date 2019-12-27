@@ -1,3 +1,5 @@
+# Queries: General moderation and wiki-ing tools.
+
 import asyncio
 import cogs
 import discord
@@ -25,7 +27,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['bard']['hidden']
     )
     async def bard(self, context: commands.Context) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         role_bard=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['bard'])
         if role_bard in context.author.roles:
@@ -47,7 +49,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['define']['hidden']
     )
     async def define(self, context: commands.Context, *entries: str) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         entry_full: str=' '.join(entries).lower()
         entry_list: List[Match]=re.finditer(cogs.entry_regex, entry_full)
@@ -91,7 +93,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['modifine']['hidden']
     )
     async def modifine(self, context: commands.Context, entry: str, mode: Optional[int]=1, *value: str) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         role_lorekeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
         if role_lorekeep not in context.author.roles:
@@ -131,7 +133,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['mute']['hidden']
     )
     async def mute(self, context: commands.Context, member: discord.Member, hours: str, *reason: str) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         if member==self.bot.user or not context.author.guild_permissions.manage_roles:
             await context.send(cogs.resp['mute']['403'])
@@ -165,7 +167,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['sourcerer']['hidden']
     )
     async def sourcerer(self, context: commands.Context) -> None:
-        if cogs.debug_state:
+        if cogs._debug_state:
             await context.send(cogs.resp['debug']['on'])
         role_dev=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['dev'])
         if role_dev in context.author.roles:
