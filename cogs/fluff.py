@@ -42,6 +42,9 @@ class Fluff(commands.Cog):
         if 'reanimat' in message_lowcase:
             await message.channel.send(file=discord.File('data/necrobutt.gif'))
 
+        if 'heh' in message_lowcase:
+            await message.channel.send(file=discord.File('data/heh.gif'))
+
     @commands.command(
         aliases=cogs.cfg['scream']['aliases'],
         brief=cogs.cfg['scream']['brief'],
