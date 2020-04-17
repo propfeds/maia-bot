@@ -45,6 +45,9 @@ class Fluff(commands.Cog):
         if 'heh' in message_lowcase:
             await message.channel.send(file=discord.File('data/heh.gif'))
 
+        if 'that\'s what he said' in message_lowcase:
+            await message.channel.send(file=discord.File('data/gachibass.gif'))
+
     @commands.command(
         aliases=cogs.cfg['scream']['aliases'],
         brief=cogs.cfg['scream']['brief'],
