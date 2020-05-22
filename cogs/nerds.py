@@ -29,7 +29,7 @@ class Nerds(commands.Cog):
     )
     async def calc(self, context: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
-            role_botkeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+            role_botkeep: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
             if role_botkeep not in context.author.roles:
                 await context.send(cogs.resp['calc']['debug_locked'])
                 return

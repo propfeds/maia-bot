@@ -29,7 +29,7 @@ class Queries(commands.Cog):
     async def bard(self, context: commands.Context) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_bard=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['bard'])
+        role_bard: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['bard'])
         if role_bard in context.author.roles:
             await context.author.remove_roles(role_bard, reason=cogs.resp['bard']['unbard_reason'])
             await context.send(cogs.resp['bard']['unbard'].format(context.author.display_name))
@@ -95,7 +95,7 @@ class Queries(commands.Cog):
     async def modifine(self, context: commands.Context, entry: str, mode: Optional[int]=1, *value: str) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_lorekeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
+        role_lorekeep: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
         if role_lorekeep not in context.author.roles:
             await context.send(cogs.resp['modifine']['403'])
             return
@@ -144,7 +144,7 @@ class Queries(commands.Cog):
             await context.send(cogs.resp['mute']['negative_duration'])
             return
 
-        role_mute=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['mute'])
+        role_mute: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['mute'])
         reason_full: str=' '.join(reason)
         response: str=cogs.resp['mute']['mute'].format(member.display_name, hours_float, reason_full)
         if member==context.author:
@@ -167,7 +167,7 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['play']['hidden']
     )
     async def play(self, context: commands.Context, *game: str) -> None:
-        role_botkeep=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+        role_botkeep: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
         if role_botkeep not in context.author.roles:
             await context.send(cogs.resp['play']['403'])
             return
@@ -202,7 +202,7 @@ class Queries(commands.Cog):
     async def sourcerer(self, context: commands.Context) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_dev=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['dev'])
+        role_dev: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['dev'])
         if role_dev in context.author.roles:
             await context.author.remove_roles(role_dev, reason=cogs.resp['sourcerer']['unsource_reason'])
             await context.send(cogs.resp['sourcerer']['unsource'].format(context.author.display_name))
