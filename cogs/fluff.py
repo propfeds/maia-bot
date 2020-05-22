@@ -17,6 +17,9 @@ class Fluff(commands.Cog):
 
         message_lowcase: str=message.content.lower()
 
+        if message_lowcase=='😱':
+            await message.channel.send(choice(cogs.resp['fluff']['screams']))
+    
         if 'wotcher' in message_lowcase:
             # Wotcher falls back to Cult of the Propaned (hardcoded)
             if not cogs.emoji_id[message.guild.id].get('wotcher'):
@@ -42,7 +45,7 @@ class Fluff(commands.Cog):
         if 'reanimat' in message_lowcase:
             await message.channel.send(file=discord.File('data/necrobutt.gif'))
 
-        if 'heh' in message_lowcase:
+        if 'jarikeks' in message_lowcase:
             await message.channel.send(file=discord.File('data/heh.gif'))
 
         if 'that\'s what he said' in message_lowcase:
@@ -57,5 +60,5 @@ class Fluff(commands.Cog):
     )
     async def scream(self, context: commands.Context) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['debug']['on'])
+            await context.send(cogs.resp['play']['debug_on'])
         await context.send(choice(cogs.resp['fluff']['screams']))

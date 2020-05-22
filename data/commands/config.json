@@ -1,0 +1,83 @@
+{
+    "template":
+    {
+        "aliases": [],
+        "brief": "",
+        "desc": "",
+        "help": "",
+        "hidden": false
+    },
+    "bard":
+    {
+        "aliases": [],
+        "brief": "Toggles bardship",
+        "desc": "I hereby grant/ungrant thee bardship!",
+        "help": "Toggles bardship.",
+        "hidden": false,
+        "rare_percent": 7
+    },
+    "calc":
+    {
+        "aliases": ["calculate", "eval", "evaluate"],
+        "brief": "Calculates stuff",
+        "desc": "Powered by python's math package.",
+        "help": "Calculates stuff.\nSpecify an expression.\nExample:\n!calculate 1+3\nMaia, evaluate sin(pi/6)",
+        "hidden": false
+    },
+    "define":
+    {
+        "aliases": ["wiki", "lore", "what's", "who's"],
+        "brief": "Helps you with lore",
+        "desc": "Search the Library of Maia to learn about various topics.",
+        "help": "Helps you with lore.\nSpecify an entry (or entries, separated by question marks).\nCan redirect entries.\nExample:\n!wiki tome\nMaia what's happening???? ? ? Where? is ? Dance of the Pythons ?",
+        "hidden": false
+    },
+    "modifine":
+    {
+        "aliases": ["modefine", "babble", "weave"],
+        "brief": "Weaves new lore",
+        "desc": "Like, modify the define.",
+        "help": "Weaves new lore. Does not require Bardship, weirdly, but a special Lorekeeper role specified in data/guilds/{guild.id}/config.json.\nSpecify an entry (in double quotes), then the mode (optional), then the value.\nModes:\n1: Add (default)\n0: Add & Modify\n-1: Delete\nNote that to print a newline, you must include this as an *argument:\n\"\n\"\nExample: Maia, modifine \"maia's tavern\" 1 This place no one ever dares to come.",
+        "hidden": true
+    },
+    "mute":
+    {
+        "aliases": ["gungeon"],
+        "brief": "Cast a vile soul into the Gungeon",
+        "desc": "Proceed to spend an eternity beating your Past.",
+        "help": "Cast a vile soul into the Gungeon.\nSpecify a mention then the amount of hours.\nCan be followed by a reason.\nExample:\n!gungeon @Paradox#6969 888\n!gungeon @Convict#5555 12 BEING A FOOL",
+        "hidden": true
+    },
+    "play":
+    {
+        "aliases": [],
+        "brief": "Play video games or music",
+        "desc": "Nope.",
+        "help": "Engage a video game. Requires the Botkeep role specified in data/guilds/{guild.id}/config.json.\nCan also engage debug mode.",
+        "hidden": true
+    },
+    "roll":
+    {
+        "aliases": [],
+        "brief": "Rolls dice in the format of xdy+m",
+        "desc": "Powered by Random.org.",
+        "help": "Rolls dice.\nSpecify a die in the format of xdy+m.\nCan be followed by a reason, or the number of repeats, or both (number of repeats goes first).\nExamples:\n!roll 3d6\n!roll 3d6 fireball\n!roll 3d6 2\n!roll 3d6 2 two fireballs",
+        "hidden": false
+    },
+    "scream":
+    {
+        "aliases": ["shout"],
+        "brief": "Screams",
+        "desc": "Screams.",
+        "help": "Screams.",
+        "hidden": true
+    },
+    "sourcerer":
+    {
+        "aliases": ["programmer", "developer", "dev"],
+        "brief": "Toggles sourcehood",
+        "desc": "I hereby grant/ungrant thee sourcehood!",
+        "help": "Toggles sourcehood.",
+        "hidden": false
+    }
+}
