@@ -1,10 +1,11 @@
-# Nerds: Contains tools for rolling dice, calulating and debugging.
+# Nerds: Contains mathematical tools.
 
 import cogs
 import discord
 from discord.ext import commands
 from random import randint, choice
-from rdoclient_py3 import RandomOrgSendTimeoutError, RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
+from rdoclient_py3 import RandomOrgSendTimeoutError,
+RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
 import re
 from sys import version_info
 from typing import List, Match, Optional, Tuple
@@ -29,13 +30,16 @@ class Nerds(commands.Cog):
     )
     async def calc(self, context: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
-            role_botkeep: discord.Role=cogs.get_role_from_id(context.guild, cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+            role_botkeep: discord.Role=cogs.get_role_from_id(context.guild,
+                cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
             if role_botkeep not in context.author.roles:
                 await context.send(cogs.resp['calc']['debug_locked'])
                 return
-            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp))))
+            await context.send(choice(cogs.resp['calc']['result']).format(eval(
+                ''.join(exp))))
         else:
-            await context.send(choice(cogs.resp['calc']['result']).format(eval(''.join(exp), {"__builtins__": None}, cogs.math_func_dict)))
+            await context.send(choice(cogs.resp['calc']['result']).format(eval(
+                ''.join(exp), {"__builtins__": None}, cogs.math_func_dict)))
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
@@ -44,12 +48,14 @@ class Nerds(commands.Cog):
         help=cogs.cfg['roll']['help'],
         hidden=cogs.cfg['roll']['hidden']
     )
-    async def roll(self, context: commands.Context, die: str, repeats: Optional[int]=1, *reason: str) -> None:
+    async def roll(self, context: commands.Context, die: str, repeats: Optional
+    [int]=1, *reason: str) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
         die_match: Match=re.match(cogs.die_regex, die)
         if die_match is None:
-            await context.send(cogs.resp['roll']['not_die'].format(context.author.display_name))
+            await context.send(cogs.resp['roll']['not_die'].format(
+                context.author.display_name))
             return
         else:
             dice: int; sides: int; mod: int
@@ -61,10 +67,12 @@ class Nerds(commands.Cog):
                 await context.send(cogs.resp['roll']['negative_dice'])
                 return
             elif sides<=1:
-                await context.send(cogs.resp['roll']['not_die'].format(context.author.display_name))
+                await context.send(cogs.resp['roll']['not_die'].format(
+                    context.author.display_name))
                 return
 
-        response: str=cogs.resp['roll']['rolling_for'].format(die, context.author.display_name)
+        response: str=cogs.resp['roll']['rolling_for'].format(die,
+            context.author.display_name)
         response+=' '
         if repeats>1:
             response+=cogs.resp['roll']['times'].format(repeats)
@@ -84,7 +92,8 @@ class Nerds(commands.Cog):
                 results.append(randint(1, sides))
         else:
             try:
-                results.extend(cogs.randorg_client.generate_integers(dice*repeats, 1, sides))
+                results.extend(cogs.randorg_client.generate_integers(
+                    dice*repeats, 1, sides))
             except RandomOrgSendTimeoutError:
                 response+='\n{0}'.format(cogs.resp['roll']['randorg_timeout'])
             except (RandomOrgInsufficientRequestsError,

@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-bot: commands.Bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ', 'MAIA, ', 'Maia ', 'maia ', 'MAIA '])
+bot: commands.Bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ',
+    'MAIA, ', 'Maia ', 'maia ', 'MAIA '])
 
 @bot.event
 async def on_ready() -> None:
@@ -21,7 +22,8 @@ async def on_ready() -> None:
         else:
             gather(guild)
 
-    print('{0}, rolling out in the age of {1}!'.format(bot.user.name, discord.__version__))
+    print('{0}, rolling out in the age of {1}!'.format(bot.user.name,
+        discord.__version__))
 
 bot.add_cog(Fluff(bot))
 bot.add_cog(Nerds(bot))

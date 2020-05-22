@@ -25,7 +25,8 @@ class Fluff(commands.Cog):
             if not cogs.emoji_id[message.guild.id].get('wotcher'):
                 await message.add_reaction('<:wotcher:631772789988392960>')
             else:
-                await message.add_reaction(cogs.format_emoji(message.guild, 'wotcher'))
+                await message.add_reaction(cogs.format_emoji(message.guild,
+                    'wotcher'))
 
         if 'rougelike' in message_lowcase:
             await message.channel.send(
