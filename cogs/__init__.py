@@ -109,8 +109,8 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
     for emoji in guild.emojis:
         emoji_id[guild.id][emoji.name]=emoji.id
     if dump_json:
-        with open('data/guilds/{0}/emoji_id.json'.format(guild.id), 'w+') as
-        json_emoji_id:
+        with open('data/guilds/{0}/emoji_id.json'.format(guild.id), 'w+'
+        ) as json_emoji_id:
             dump(emoji_id[guild.id], json_emoji_id, indent=4)
 
     # Role name to ID then ID to index (in guild's role list)
@@ -118,8 +118,8 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
         role_id[guild.id][role.name]=role.id
         role_index[guild.id][role.id]=i
     if dump_json:
-        with open('data/guilds/{0}/role_id.json'.format(guild.id), 'w+') as
-        json_role_id:
+        with open('data/guilds/{0}/role_id.json'.format(guild.id), 'w+'
+        ) as json_role_id:
             dump(role_id[guild.id], json_role_id, indent=4)
         # with open('data/guilds/{0}/role_index.json'.format(guild.id), 'w+')
         # as json_role_index:
@@ -139,10 +139,10 @@ def gather(guild: discord.Guild, dump_json: bool=False) -> None:
                 "mute": 0
             }
         }
-        with open('data/guilds/{0}/config.json'.format(guild.id), 'w+') as
-        json_guild_cfg:
+        with open('data/guilds/{0}/config.json'.format(guild.id), 'w+'
+        ) as json_guild_cfg:
             dump(guild_cfg[guild.id], json_guild_cfg, indent=4)
     else:
-        with open('data/guilds/{0}/config.json'.format(guild.id), 'r') as
-        json_guild_cfg:
+        with open('data/guilds/{0}/config.json'.format(guild.id), 'r'
+        ) as json_guild_cfg:
             guild_cfg[guild.id]=load(json_guild_cfg)

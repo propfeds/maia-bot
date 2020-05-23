@@ -131,8 +131,8 @@ class Queries(commands.Cog):
             cogs.wiki[entry]=' '.join(value)
             await context.send(cogs.resp['modifine']['add_mod'].format(entry))
             # If not returned, export will commence
-        with open('data/commands/wiki.json', 'w+', encoding='utf-8') as
-        json_wiki:
+        with open('data/commands/wiki.json', 'w+', encoding='utf-8'
+        ) as json_wiki:
             dump(cogs.wiki, json_wiki, sort_keys=True, indent=4)
 
     @commands.command(
@@ -146,8 +146,8 @@ class Queries(commands.Cog):
         hours: str, *reason: str) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        if member==self.bot.user or not context.author.guild_permissions.
-        manage_roles:
+        if member==self.bot.user or (
+            not context.author.guild_permissions.manage_roles):
             await context.send(cogs.resp['mute']['403'])
             return
 

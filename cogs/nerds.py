@@ -4,8 +4,8 @@ import cogs
 import discord
 from discord.ext import commands
 from random import randint, choice
-from rdoclient_py3 import RandomOrgSendTimeoutError,
-RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError
+from rdoclient_py3 import (RandomOrgSendTimeoutError,
+RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError)
 import re
 from sys import version_info
 from typing import List, Match, Optional, Tuple
