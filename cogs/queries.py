@@ -205,10 +205,16 @@ class Queries(commands.Cog):
                     status=discord.Status.online)
         elif game_full in ('Nothing, nothing'):
             await self.bot.change_presence(activity=None)
+            # Export status for use next launch
+            with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
+                game_cfg.write('')
         else:
             if cogs.resp['play'].get(game_full):
                 await context.send(cogs.resp['play'][game_full])
             await self.bot.change_presence(activity=discord.Game(game_full))
+            # Export status for use next launch
+            with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
+                game_cfg.write(game_full)
 
     @commands.command(
         aliases=cogs.cfg['sourcerer']['aliases'],

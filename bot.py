@@ -25,6 +25,12 @@ async def on_ready() -> None:
     print('{0}, rolling out in the age of {1}!'.format(bot.user.name,
         discord.__version__))
 
+    with open('data/game.txt', 'r+', encoding='utf-8') as game_cfg:
+        game=game_cfg.read()
+        if game!='':
+            await bot.change_presence(activity=discord.Game(game))
+            print('Playing: {0}'.format(game))
+
 bot.add_cog(Fluff(bot))
 bot.add_cog(Nerds(bot))
 bot.add_cog(Queries(bot))
