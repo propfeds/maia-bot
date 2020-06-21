@@ -4,7 +4,7 @@ from json import load, dump
 import math
 import os
 from rdoclient_py3 import RandomOrgClient
-from typing import Dict
+from typing import Dict, Union
 
 load_dotenv()
 # Discourse
@@ -47,8 +47,8 @@ randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 def get_role(guild: discord.Guild, id_num: int) -> discord.Role:
     return discord.utils.get(guild.roles, id=id_num)
 
-def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) ->
-Union[str, discord.Emoji]:
+def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
+    str, discord.Emoji]:
     emoji: discord.Emoji=discord.utils.get(guild.emojis, name=name)
     if not emoji:
         return f'<:{name}:{fallback_id}>'

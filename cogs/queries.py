@@ -65,7 +65,7 @@ class Queries(commands.Cog):
             entry=re.sub(cogs.end_whitespace_trim_regex, '', entry)
             if not entry:
                 continue
-            response: str=f'\n**{entry}'
+            response: str='\n**'+entry
 
             if cogs.wiki.get(entry):
                 # Array entries
@@ -76,15 +76,15 @@ class Queries(commands.Cog):
                     # Redirecting entries
                     while cogs.wiki[entry][0]=='>':
                         entry=cogs.wiki[entry][1:]
-                        response+=f'→{entry}'
+                        response+='→'+entry
                     
                     if type(cogs.wiki[entry])==list:
                         response+=':**\n- '
                         response+='\n- '.join(cogs.wiki[entry])
                     else:
-                        response+=f':** {cogs.wiki[entry]}'
+                        response+=':** '+cogs.wiki[entry]
             else:
-                response+=f':** {cogs.resp['define']['404']}'
+                response+=':** '+cogs.resp['define']['404']
 
             await ctx.send(response)
 
@@ -162,7 +162,7 @@ class Queries(commands.Cog):
         response: str=cogs.resp['mute']['mute'].format(member.display_name,
             hours_float, reason_full)
         if member==ctx.author:
-            response+=f' {cogs.resp['mute']['self_mute']}'
+            response+=' '+cogs.resp['mute']['self_mute']
         await ctx.send(response)
         await member.add_roles(role_mute, reason=reason_full)
 
@@ -170,7 +170,7 @@ class Queries(commands.Cog):
         response=cogs.resp['mute']['unmute'].format(member.mention,
             hours_float, reason_full)
         if member==ctx.author:
-            response+=f' {cogs.resp['mute']['self_mute']}'
+            response+=' '+cogs.resp['mute']['self_mute']
         await ctx.send(response)
         await member.remove_roles(role_mute, reason='Not '+reason_full)
 

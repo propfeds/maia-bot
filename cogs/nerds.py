@@ -80,14 +80,14 @@ class Nerds(commands.Cog):
             response+=cogs.resp['roll']['once']
 
         if len(reason):
-            response+=f' ({' '.join(reason)})'
+            response+=' ('+' '.join(reason)+')'
 
         response+=':'
 
         results: List[int]=[]
 
         if version_info.major==3 and version_info.minor==8:
-            response+=f'\n{cogs.resp['roll']['py_38_time']}'
+            response+='\n'+cogs.resp['roll']['py_38_time']
             for _ in range(dice*repeats):
                 results.append(randint(1, sides))
         else:
@@ -95,10 +95,10 @@ class Nerds(commands.Cog):
                 results.extend(cogs.randorg_client.generate_integers(
                     dice*repeats, 1, sides))
             except RandomOrgSendTimeoutError:
-                response+=f'\n{cogs.resp['roll']['randorg_timeout']}'
+                response+='\n'+cogs.resp['roll']['randorg_timeout']
             except (RandomOrgInsufficientRequestsError,
             RandomOrgInsufficientBitsError):
-                response+=f'\n{cogs.resp['roll']['randorg_juice']}'
+                response+='\n'+cogs.resp['roll']['randorg_juice']
                 for _ in range(dice*repeats):
                     results.append(randint(1, sides))
 
@@ -108,8 +108,8 @@ class Nerds(commands.Cog):
             # Oh the format monstrosities
             response+='\n`{0}{1}`{2}'.format(
                 str(roll),
-                (f'+{mod}' if mod>0 else str(mod)) if mod!=0 else '',
-                f'→{sum(roll, mod)}' if (dice>1 or mod!=0) else ''
+                ('+'+str(mod) if mod>0 else str(mod)) if mod!=0 else '',
+                '→'+str(sum(roll, mod)) if (dice>1 or mod!=0) else ''
             )
 
         await ctx.send(response)
