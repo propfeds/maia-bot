@@ -65,7 +65,7 @@ class Fluff(commands.Cog):
         help=cogs.cfg['scream']['help'],
         hidden=cogs.cfg['scream']['hidden']
     )
-    async def scream(self, context: commands.Context) -> None:
+    async def scream(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        await context.send(choice(cogs.resp['fluff']['screams']))
+            await ctx.send(cogs.resp['play']['debug_on'])
+        await ctx.send(choice(cogs.resp['fluff']['screams']))
