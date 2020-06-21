@@ -19,7 +19,7 @@ async def on_ready() -> None:
     print(f'{bot.user.name}, rolling out in the age of {discord.__version__}!')
 
     with open('data/game.txt', 'r+', encoding='utf-8') as game_cfg:
-        game: str='\n'.join(game_cfg.read())
+        game: str=game_cfg.read()
         if game!='':
             await bot.change_presence(activity=discord.Game(game))
             print(f'Playing: {game}')
