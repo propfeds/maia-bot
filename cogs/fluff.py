@@ -4,7 +4,7 @@
 import cogs
 import discord
 from discord.ext import commands
-from random import choice
+from random import choice, randint
 
 class Fluff(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -22,11 +22,8 @@ class Fluff(commands.Cog):
     
         if 'wotcher' in message_lowcase:
             # Wotcher falls back to Cult of the Propaned (hardcoded)
-            if not cogs.emoji_id[message.guild.id].get('wotcher'):
-                await message.add_reaction('<:wotcher:631772789988392960>')
-            else:
-                await message.add_reaction(cogs.format_emoji(message.guild,
-                    'wotcher'))
+            await message.add_reaction(cogs.format_emoji(message.guild,
+                'wotcher', 631772789988392960))
 
         if 'rougelike' in message_lowcase:
             await message.channel.send(
@@ -51,6 +48,15 @@ class Fluff(commands.Cog):
 
         if 'that\'s what he said' in message_lowcase:
             await message.channel.send(file=discord.File('data/gachibass.gif'))
+
+        if 'get outta my swamp' in message_lowcase:
+            async for m in message.channel.history(limit=13, before=message):
+                if randint(0, 99)<10:
+                    await m.add_reaction(cogs.format_emoji(message.guild,
+                        'OG', 722745447088783422))
+                else:
+                    await m.add_reaction(cogs.format_emoji(message.guild,
+                        'ogre', 560120290072461322))
 
     @commands.command(
         aliases=cogs.cfg['scream']['aliases'],

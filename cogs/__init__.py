@@ -21,61 +21,23 @@ role_index: Dict[int, Dict[int, int]]={}
 guild_cfg: Dict[int, dict]={}
 
 math_func_dict: dict={
-    'ceil': math.ceil,
-    'comb': math.comb,
-    'copysign': math.copysign,
-    'abs': math.fabs,
-    'factorial': math.factorial,
-    'floor': math.floor,
-    'fmod': math.fmod,
-    'frexp': math.frexp,
-    'fsum': math.fsum,
-    'gcd': math.gcd,
-    'isclose': math.isclose,
-    'isfinite': math.isfinite,
-    'isinf': math.isinf,
-    'isnan': math.isnan,
-    'isqrt': math.isqrt,
-    'ldexp': math.ldexp,
-    'modf': math.modf,
-    'perm': math.perm,
-    'prod': math.prod,
-    'remainder': math.remainder,
-    'trunc': math.trunc,
-    'exp': math.exp,
-    'expm1': math.expm1,
-    'log': math.log,
-    'log1p': math.log1p,
-    'log2': math.log2,
-    'log10': math.log10,
-    'pow': math.pow,
-    'sqrt': math.sqrt,
-    'acos': math.acos,
-    'asin': math.asin,
-    'atan': math.atan,
-    'atan2': math.atan2,
-    'cos': math.cos,
-    'dist': math.dist,
-    'hypot': math.hypot,
-    'sin': math.sin,
-    'tan': math.tan,
-    'degrees': math.degrees,
-    'radians': math.radians,
-    'acosh': math.acosh,
-    'asinh': math.asinh,
-    'atanh': math.atanh,
-    'cosh': math.cosh,
-    'sinh': math.sinh,
-    'tanh': math.tanh,
-    'erf': math.erf,
-    'erfc': math.erfc,
-    'gamma': math.gamma,
-    'lgamma': math.lgamma,
-    'pi': math.pi,
-    'e': math.e,
-    'tau': math.tau,
-    'inf': math.inf,
-    'nan': math.nan
+    'ceil': math.ceil, 'comb': math.comb, 'copysign': math.copysign,
+    'abs': math.fabs, 'factorial': math.factorial, 'floor': math.floor,
+    'fmod': math.fmod, 'frexp': math.frexp, 'fsum': math.fsum, 'gcd': math.gcd,
+    'isclose': math.isclose, 'isfinite': math.isfinite, 'isinf': math.isinf,
+    'isnan': math.isnan, 'isqrt': math.isqrt, 'ldexp': math.ldexp,
+    'modf': math.modf, 'perm': math.perm, 'prod': math.prod,
+    'remainder': math.remainder, 'trunc': math.trunc, 'exp': math.exp,
+    'expm1': math.expm1, 'log': math.log, 'log1p': math.log1p,
+    'log2': math.log2, 'log10': math.log10, 'pow': math.pow, 'sqrt': math.sqrt,
+    'acos': math.acos, 'asin': math.asin, 'atan': math.atan,
+    'atan2': math.atan2, 'cos': math.cos, 'dist': math.dist,
+    'hypot': math.hypot, 'sin': math.sin, 'tan': math.tan,
+    'degrees': math.degrees, 'radians': math.radians, 'acosh': math.acosh,
+    'asinh': math.asinh, 'atanh': math.atanh, 'cosh': math.cosh,
+    'sinh': math.sinh, 'tanh': math.tanh, 'erf': math.erf, 'erfc': math.erfc,
+    'gamma': math.gamma, 'lgamma': math.lgamma, 'pi': math.pi, 'e': math.e,
+    'tau': math.tau, 'inf': math.inf, 'nan': math.nan
 }
 die_regex: str=r'(\d+)?[dD](\d+)([\+\-]\d+)?'
 entry_regex: str=r'( ?)([^(\?)]+)'  # Second group is entry
@@ -92,8 +54,12 @@ def get_role_from_name(guild: discord.Guild, name: str) -> discord.Role:
 def get_role_from_id(guild: discord.Guild, id_number: int) -> discord.Role:
     return guild.roles[role_index[guild.id][id_number]]
 
-def format_emoji(guild: discord.Guild, name: str) -> str:
-    return '<:{0}:{1}>'.format(name, emoji_id[guild.id][name])
+def format_emoji(guild: discord.Guild, name: str, fallback_id: int=None) ->
+Union[str, discord.Emoji]:
+    emoji=discord.utils.get(guild.emojis, name=name)
+    if not emoji:
+        return f'<:{name}:{fallback_id}>'
+    return emoji
 
 def gather(guild: discord.Guild, dump_json: bool=False) -> None:
     global emoji_id, role_id, role_index, guild_cfg
