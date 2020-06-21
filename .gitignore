@@ -1,7 +1,7 @@
 # Project
 data/guilds/
 data/game.txt
-utils/*/
+utils/
 .vscode/
 
 # Byte-compiled / optimized / DLL files

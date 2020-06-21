@@ -13,16 +13,13 @@ bot: commands.Bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ',
 
 @bot.event
 async def on_ready() -> None:
-    # Steal all your data
-    guild_id_prop: int=int(os.getenv('DISCORD_GUILD_ID_PROP'))
-    guild_id_merp: int=int(os.getenv('DISCORD_GUILD_ID_MERP'))
     for guild in bot.guilds:
         get_cfg(guild)
 
     print(f'{bot.user.name}, rolling out in the age of {discord.__version__}!')
 
     with open('data/game.txt', 'r+', encoding='utf-8') as game_cfg:
-        game=game_cfg.read()
+        game: str='\n'.join(game_cfg.read())
         if game!='':
             await bot.change_presence(activity=discord.Game(game))
             print(f'Playing: {game}')

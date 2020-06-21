@@ -7,7 +7,7 @@ from discord.ext import commands
 from json import dump
 from random import randint
 import re
-from typing import List, Match, Optional
+from typing import Iterator, Match, Optional
 
 class Queries(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -60,7 +60,8 @@ class Queries(commands.Cog):
             await ctx.send(cogs.resp['play']['debug_on'])
         entry_full: str=' '.join(entries).lower()
         # Second group in match is entry
-        entry_list: List[Match]=re.finditer(r'( ?)([^(\?)]+)', entry_full)
+        entry_list: Iterator[Match[str]]=re.finditer(r'( ?)([^(\?)]+)',
+            entry_full)
         for entry_itr in entry_list:
             entry=entry_itr.group(2)
             # Trim ending whitespace
