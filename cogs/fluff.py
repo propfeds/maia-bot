@@ -22,7 +22,7 @@ class Fluff(commands.Cog):
     
         if 'wotcher' in message_lowcase:
             # Wotcher falls back to Cult of the Propaned (hardcoded)
-            await message.add_reaction(cogs.format_emoji(message.guild,
+            await message.add_reaction(cogs.get_emoji(message.guild,
                 'wotcher', 631772789988392960))
 
         if 'rougelike' in message_lowcase:
@@ -52,10 +52,10 @@ class Fluff(commands.Cog):
         if 'get outta my swamp' in message_lowcase:
             async for m in message.channel.history(limit=13, before=message):
                 if randint(0, 99)<10:
-                    await m.add_reaction(cogs.format_emoji(message.guild,
+                    await m.add_reaction(cogs.get_emoji(message.guild,
                         'OG', 722745447088783422))
                 else:
-                    await m.add_reaction(cogs.format_emoji(message.guild,
+                    await m.add_reaction(cogs.get_emoji(message.guild,
                         'ogre', 560120290072461322))
 
     @commands.command(

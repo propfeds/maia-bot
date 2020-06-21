@@ -29,8 +29,8 @@ class Queries(commands.Cog):
     async def bard(self, context: commands.Context) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_bard: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['bard'])
+        role_bard: discord.Role=cogs.get_role(context.guild,
+            cogs.guild_cfg[context.guild.id]['bard'])
         if role_bard in context.author.roles:
             await context.author.remove_roles(role_bard,
                 reason=cogs.resp['bard']['unbard_reason'])
@@ -103,8 +103,8 @@ class Queries(commands.Cog):
         Optional[int]=1, *value: str) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_lorekeep: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
+        role_lorekeep: discord.Role=cogs.get_role(context.guild,
+            cogs.guild_cfg[context.guild.id]['lorekeep'])
         if role_lorekeep not in context.author.roles:
             await context.send(cogs.resp['modifine']['403'])
             return
@@ -131,7 +131,7 @@ class Queries(commands.Cog):
             cogs.wiki[entry]=' '.join(value)
             await context.send(cogs.resp['modifine']['add_mod'].format(entry))
             # If not returned, export will commence
-        with open('data/commands/wiki.json', 'w+', encoding='utf-8'
+        with open('data/wiki.json', 'w+', encoding='utf-8'
         ) as json_wiki:
             dump(cogs.wiki, json_wiki, sort_keys=True, indent=4)
 
@@ -156,8 +156,8 @@ class Queries(commands.Cog):
             await context.send(cogs.resp['mute']['negative_duration'])
             return
 
-        role_mute: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['mute'])
+        role_mute: discord.Role=cogs.get_role(context.guild,
+            cogs.guild_cfg[context.guild.id]['mute'])
         reason_full: str=' '.join(reason)
         response: str=cogs.resp['mute']['mute'].format(member.display_name,
             hours_float, reason_full)
@@ -182,8 +182,8 @@ class Queries(commands.Cog):
         hidden=cogs.cfg['play']['hidden']
     )
     async def play(self, context: commands.Context, *game: str) -> None:
-        role_botkeep: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
+        role_botkeep: discord.Role=cogs.get_role(context.guild,
+            cogs.guild_cfg[context.guild.id]['botkeep'])
         if role_botkeep not in context.author.roles:
             await context.send(cogs.resp['play']['403'])
             return
@@ -226,8 +226,8 @@ class Queries(commands.Cog):
     async def sourcerer(self, context: commands.Context) -> None:
         if cogs._debug_state:
             await context.send(cogs.resp['play']['debug_on'])
-        role_dev: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['dev'])
+        role_dev: discord.Role=cogs.get_role(context.guild,
+            cogs.guild_cfg[context.guild.id]['dev'])
         if role_dev in context.author.roles:
             await context.author.remove_roles(role_dev,
                 reason=cogs.resp['sourcerer']['unsource_reason'])

@@ -1,4 +1,4 @@
-from cogs import gather
+from cogs import get_cfg
 from cogs.fluff import Fluff
 from cogs.nerds import Nerds
 from cogs.queries import Queries
@@ -17,10 +17,7 @@ async def on_ready() -> None:
     guild_id_prop: int=int(os.getenv('DISCORD_GUILD_ID_PROP'))
     guild_id_merp: int=int(os.getenv('DISCORD_GUILD_ID_MERP'))
     for guild in bot.guilds:
-        if guild.id in (guild_id_prop, guild_id_merp):
-            gather(guild, True)
-        else:
-            gather(guild)
+        get_cfg(guild)
 
     print('{0}, rolling out in the age of {1}!'.format(bot.user.name,
         discord.__version__))
