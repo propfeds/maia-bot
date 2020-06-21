@@ -14,10 +14,10 @@ with open('data/responses.json', encoding='utf-8') as json_responses:
     resp=load(json_responses)
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
     wiki=load(json_wiki)
+_guild_cfg: Dict[int, dict]={}
+_debug_state: bool=False
 
-guild_cfg: Dict[int, dict]={}
-
-math_func_dict: dict={
+_math_func_dict: dict={
     'ceil': math.ceil, 'comb': math.comb, 'copysign': math.copysign,
     'abs': math.fabs, 'factorial': math.factorial, 'floor': math.floor,
     'fmod': math.fmod, 'frexp': math.frexp, 'fsum': math.fsum, 'gcd': math.gcd,
@@ -36,11 +36,6 @@ math_func_dict: dict={
     'gamma': math.gamma, 'lgamma': math.lgamma, 'pi': math.pi, 'e': math.e,
     'tau': math.tau, 'inf': math.inf, 'nan': math.nan
 }
-die_regex: str=r'(\d+)?[dD](\d+)([\+\-]\d+)?'
-entry_regex: str=r'( ?)([^(\?)]+)'  # Second group is entry
-end_whitespace_trim_regex: str=r' +$'
-_debug_state: bool=False
-
 # Randorg
 randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
@@ -55,7 +50,7 @@ def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
     return emoji
 
 def get_cfg(guild: discord.Guild) -> None:
-    global guild_cfg
+    global _guild_cfg
 
     if not os.path.exists('data/guilds/'):
         os.mkdir('data/guilds/')
@@ -64,7 +59,7 @@ def get_cfg(guild: discord.Guild) -> None:
     # Mutes. If not found, creates a blank slate so every command would fail
     # intentionally.
     if not os.path.exists(f'data/guilds/{guild.id}.json'):
-        guild_cfg[guild.id]: Dict[str, int]={
+        _guild_cfg[guild.id]: Dict[str, int]={
             "botkeep": 0,
             "lorekeep": 0,
             "dev": 0,
@@ -72,7 +67,7 @@ def get_cfg(guild: discord.Guild) -> None:
             "mute": 0
         }
         with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cfg:
-            dump(guild_cfg[guild.id], json_guild_cfg, indent=4)
+            dump(_guild_cfg[guild.id], json_guild_cfg, indent=4)
     else:
         with open(f'data/guilds/{guild.id}.json', 'r') as json_guild_cfg:
-            guild_cfg[guild.id]=load(json_guild_cfg)
+            _guild_cfg[guild.id]=load(json_guild_cfg)

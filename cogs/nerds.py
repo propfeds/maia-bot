@@ -31,7 +31,7 @@ class Nerds(commands.Cog):
     async def calc(self, ctx: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
             role_botkeep: discord.Role=cogs.get_role(ctx.guild,
-                cogs.guild_cfg[ctx.guild.id]['botkeep'])
+                cogs._guild_cfg[ctx.guild.id]['botkeep'])
             if role_botkeep not in ctx.author.roles:
                 await ctx.send(cogs.resp['calc']['debug_locked'])
                 return
@@ -39,7 +39,7 @@ class Nerds(commands.Cog):
                 ''.join(exp))))
         else:
             await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
-                ''.join(exp), {"__builtins__": None}, cogs.math_func_dict)))
+                ''.join(exp), {"__builtins__": None}, cogs._math_func_dict)))
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
@@ -52,7 +52,7 @@ class Nerds(commands.Cog):
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:
             await ctx.send(cogs.resp['play']['debug_on'])
-        die_match: Match=re.match(cogs.die_regex, die)
+        die_match: Match=re.match(r'(\d+)?[dD](\d+)([\+\-]\d+)?', die)
         if die_match is None:
             await ctx.send(cogs.resp['roll']['not_die'].format(
                 ctx.author.display_name))
