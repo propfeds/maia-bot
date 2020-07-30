@@ -1,6 +1,7 @@
 # Fluff: Definitely slows the whole bot down,
 # since it scans every single message and convert it into lowercase.
 
+import asyncio
 import cogs
 import discord
 from discord.ext import commands
@@ -15,10 +16,7 @@ class Fluff(commands.Cog):
         if message.author==self.bot.user:
             return
 
-        message_lowcase: str=message.content.lower()
-
-        if message_lowcase=='😱':
-            await message.channel.send(choice(cogs.resp['fluff']['screams']))
+        message_lowcase: str=message.content.casefold()
     
         if 'wotcher' in message_lowcase:
             # Wotcher falls back to Cult of the Propaned (hardcoded)
@@ -40,23 +38,18 @@ class Fluff(commands.Cog):
                 )
             )
 
-        if 'reanimat' in message_lowcase:
+        if 'reanimate' in message_lowcase:
+            await message.add_reaction('🤘')
+            await asyncio.sleep(randint(4, 11))
             await message.channel.send(file=discord.File('data/necrobutt.gif'))
 
-        if 'jarikeks' in message_lowcase:
-            await message.channel.send(file=discord.File('data/heh.gif'))
+        if 'heh' in message_lowcase:
+            await asyncio.sleep(1)
+            if randint(0, 99)<3:
+                await message.channel.send(file=discord.File('data/heh.gif'))
 
         if 'that\'s what he said' in message_lowcase:
             await message.channel.send(file=discord.File('data/gachibass.gif'))
-
-        if 'get outta my swamp' in message_lowcase:
-            async for m in message.channel.history(limit=13, before=message):
-                if randint(0, 99)<10:
-                    await m.add_reaction(cogs.get_emoji(message.guild,
-                        'OG', 722745447088783422))
-                else:
-                    await m.add_reaction(cogs.get_emoji(message.guild,
-                        'ogre', 560120290072461322))
 
     @commands.command(
         aliases=cogs.cfg['scream']['aliases'],

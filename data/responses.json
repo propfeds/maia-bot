@@ -1,7 +1,7 @@
 {
     "fluff":
     {
-        "rl_base": "It's spelled *{0}*{1}.",
+        "rl_base": "I think it should be spelled *{0}*{1}...",
         "rouge": ["r{0}g{1}{2}", "r{0}{1}g{2}", "r{0}{1}{2}g"],
         "like": ["l{0}k{1}", "l{0}{1}k"],
         "vowels": ["a", "e", "i", "o", "u"],
