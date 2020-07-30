@@ -1,4 +1,4 @@
-from cogs import gather
+from cogs import get_cfg
 from cogs.fluff import Fluff
 from cogs.nerds import Nerds
 from cogs.queries import Queries
@@ -13,23 +13,16 @@ bot: commands.Bot=commands.Bot(command_prefix=['!', 'Maia, ', 'maia, ',
 
 @bot.event
 async def on_ready() -> None:
-    # Steal all your data
-    guild_id_prop: int=int(os.getenv('DISCORD_GUILD_ID_PROP'))
-    guild_id_merp: int=int(os.getenv('DISCORD_GUILD_ID_MERP'))
     for guild in bot.guilds:
-        if guild.id in (guild_id_prop, guild_id_merp):
-            gather(guild, True)
-        else:
-            gather(guild)
+        get_cfg(guild)
 
-    print('{0}, rolling out in the age of {1}!'.format(bot.user.name,
-        discord.__version__))
+    print(f'{bot.user.name}, rolling out in the age of {discord.__version__}!')
 
     with open('data/game.txt', 'r+', encoding='utf-8') as game_cfg:
-        game=game_cfg.read()
+        game: str=game_cfg.read()
         if game!='':
             await bot.change_presence(activity=discord.Game(game))
-            print('Playing: {0}'.format(game))
+            print(f'Playing: {game}')
 
 bot.add_cog(Fluff(bot))
 bot.add_cog(Nerds(bot))

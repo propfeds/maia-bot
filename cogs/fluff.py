@@ -1,10 +1,11 @@
 # Fluff: Definitely slows the whole bot down,
 # since it scans every single message and convert it into lowercase.
 
+import asyncio
 import cogs
 import discord
 from discord.ext import commands
-from random import choice
+from random import choice, randint
 
 class Fluff(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -15,18 +16,12 @@ class Fluff(commands.Cog):
         if message.author==self.bot.user:
             return
 
-        message_lowcase: str=message.content.lower()
-
-        if message_lowcase=='😱':
-            await message.channel.send(choice(cogs.resp['fluff']['screams']))
+        message_lowcase: str=message.content.casefold()
     
         if 'wotcher' in message_lowcase:
             # Wotcher falls back to Cult of the Propaned (hardcoded)
-            if not cogs.emoji_id[message.guild.id].get('wotcher'):
-                await message.add_reaction('<:wotcher:631772789988392960>')
-            else:
-                await message.add_reaction(cogs.format_emoji(message.guild,
-                    'wotcher'))
+            await message.add_reaction(cogs.get_emoji(message.guild,
+                'wotcher', 631772789988392960))
 
         if 'rougelike' in message_lowcase:
             await message.channel.send(
@@ -43,11 +38,15 @@ class Fluff(commands.Cog):
                 )
             )
 
-        if 'reanimat' in message_lowcase:
+        if 'reanimate' in message_lowcase:
+            await message.add_reaction('🤘')
+            await asyncio.sleep(randint(14, 21))
             await message.channel.send(file=discord.File('data/necrobutt.gif'))
 
-        if 'jarikeks' in message_lowcase:
-            await message.channel.send(file=discord.File('data/heh.gif'))
+        if 'heh' in message_lowcase:
+            await asyncio.sleep(1)
+            if randint(0, 99)<1:
+                await message.channel.send(file=discord.File('data/heh.gif'))
 
         if 'that\'s what he said' in message_lowcase:
             await message.channel.send(file=discord.File('data/gachibass.gif'))
@@ -59,7 +58,7 @@ class Fluff(commands.Cog):
         help=cogs.cfg['scream']['help'],
         hidden=cogs.cfg['scream']['hidden']
     )
-    async def scream(self, context: commands.Context) -> None:
+    async def scream(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        await context.send(choice(cogs.resp['fluff']['screams']))
+            await ctx.send(cogs.resp['play']['debug_on'])
+        await ctx.send(choice(cogs.resp['fluff']['screams']))

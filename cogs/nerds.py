@@ -14,7 +14,7 @@ class Nerds(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
 
-    def format_dice(self, match: Match) -> Tuple[int, int, int]:
+    def die_tuple(self, match: Match) -> Tuple[int, int, int]:
         return (
             int(match.group(1)) if (match.group(1) is not None) else 1,
             int(match.group(2)),
@@ -28,18 +28,18 @@ class Nerds(commands.Cog):
         help=cogs.cfg['calc']['help'],
         hidden=cogs.cfg['calc']['hidden']
     )
-    async def calc(self, context: commands.Context, *exp: str) -> None:
+    async def calc(self, ctx: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
-            role_botkeep: discord.Role=cogs.get_role_from_id(context.guild,
-                cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
-            if role_botkeep not in context.author.roles:
-                await context.send(cogs.resp['calc']['debug_locked'])
+            role_botkeep: discord.Role=cogs.get_role(ctx.guild,
+                cogs._guild_cfg[ctx.guild.id]['botkeep'])
+            if role_botkeep not in ctx.author.roles:
+                await ctx.send(cogs.resp['calc']['debug_locked'])
                 return
-            await context.send(choice(cogs.resp['calc']['result']).format(eval(
+            await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
                 ''.join(exp))))
         else:
-            await context.send(choice(cogs.resp['calc']['result']).format(eval(
-                ''.join(exp), {"__builtins__": None}, cogs.math_func_dict)))
+            await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
+                ''.join(exp), {"__builtins__": None}, cogs._math_func_dict)))
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
@@ -48,31 +48,31 @@ class Nerds(commands.Cog):
         help=cogs.cfg['roll']['help'],
         hidden=cogs.cfg['roll']['hidden']
     )
-    async def roll(self, context: commands.Context, die: str, repeats: Optional
+    async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        die_match: Match=re.match(cogs.die_regex, die)
+            await ctx.send(cogs.resp['play']['debug_on'])
+        die_match: Match=re.match(r'(\d+)?[dD](\d+)([\+\-]\d+)?', die)
         if die_match is None:
-            await context.send(cogs.resp['roll']['not_die'].format(
-                context.author.display_name))
+            await ctx.send(cogs.resp['roll']['not_die'].format(
+                ctx.author.display_name))
             return
         else:
             dice: int; sides: int; mod: int
-            dice, sides, mod=self.format_dice(die_match)
+            dice, sides, mod=self.die_tuple(die_match)
             if not dice*repeats:
-                await context.send(cogs.resp['roll']['no_dice'])
+                await ctx.send(cogs.resp['roll']['no_dice'])
                 return
             elif dice*repeats<0:
-                await context.send(cogs.resp['roll']['negative_dice'])
+                await ctx.send(cogs.resp['roll']['negative_dice'])
                 return
             elif sides<=1:
-                await context.send(cogs.resp['roll']['not_die'].format(
-                    context.author.display_name))
+                await ctx.send(cogs.resp['roll']['not_die'].format(
+                    ctx.author.display_name))
                 return
 
         response: str=cogs.resp['roll']['rolling_for'].format(die,
-            context.author.display_name)
+            ctx.author.display_name)
         response+=' '
         if repeats>1:
             response+=cogs.resp['roll']['times'].format(repeats)
@@ -80,14 +80,14 @@ class Nerds(commands.Cog):
             response+=cogs.resp['roll']['once']
 
         if len(reason):
-            response+=' ({0})'.format(' '.join(reason))
+            response+=' ('+' '.join(reason)+')'
 
         response+=':'
 
         results: List[int]=[]
 
         if version_info.major==3 and version_info.minor==8:
-            response+='\n{0}'.format(cogs.resp['roll']['py_38_time'])
+            response+='\n'+cogs.resp['roll']['py_38_time']
             for _ in range(dice*repeats):
                 results.append(randint(1, sides))
         else:
@@ -95,10 +95,10 @@ class Nerds(commands.Cog):
                 results.extend(cogs.randorg_client.generate_integers(
                     dice*repeats, 1, sides))
             except RandomOrgSendTimeoutError:
-                response+='\n{0}'.format(cogs.resp['roll']['randorg_timeout'])
+                response+='\n'+cogs.resp['roll']['randorg_timeout']
             except (RandomOrgInsufficientRequestsError,
             RandomOrgInsufficientBitsError):
-                response+='\n{0}'.format(cogs.resp['roll']['randorg_juice'])
+                response+='\n'+cogs.resp['roll']['randorg_juice']
                 for _ in range(dice*repeats):
                     results.append(randint(1, sides))
 
@@ -108,8 +108,8 @@ class Nerds(commands.Cog):
             # Oh the format monstrosities
             response+='\n`{0}{1}`{2}'.format(
                 str(roll),
-                ('+{0}'.format(mod) if mod>0 else str(mod)) if mod!=0 else '',
-                '→{0}'.format(sum(roll, mod)) if (dice>1 or mod!=0) else ''
+                ('+'+str(mod) if mod>0 else str(mod)) if mod!=0 else '',
+                '→'+str(sum(roll, mod)) if (dice>1 or mod!=0) else ''
             )
 
-        await context.send(response)
+        await ctx.send(response)

@@ -7,7 +7,7 @@ from discord.ext import commands
 from json import dump
 from random import randint
 import re
-from typing import List, Match, Optional
+from typing import Iterator, Match, Optional
 
 class Queries(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -26,27 +26,27 @@ class Queries(commands.Cog):
         help=cogs.cfg['bard']['help'],
         hidden=cogs.cfg['bard']['hidden']
     )
-    async def bard(self, context: commands.Context) -> None:
+    async def bard(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        role_bard: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['bard'])
-        if role_bard in context.author.roles:
-            await context.author.remove_roles(role_bard,
+            await ctx.send(cogs.resp['play']['debug_on'])
+        role_bard: discord.Role=cogs.get_role(ctx.guild,
+            cogs._guild_cfg[ctx.guild.id]['bard'])
+        if role_bard in ctx.author.roles:
+            await ctx.author.remove_roles(role_bard,
                 reason=cogs.resp['bard']['unbard_reason'])
-            await context.send(cogs.resp['bard']['unbard'].format(
-                context.author.display_name))
+            await ctx.send(cogs.resp['bard']['unbard'].format(
+                ctx.author.display_name))
         else:
-            await context.author.add_roles(role_bard,
+            await ctx.author.add_roles(role_bard,
                 reason=cogs.resp['bard']['bard_reason'])
             roll_rare: int=randint(0, 99)
             if roll_rare<cogs.cfg['bard']['rare_percent']:
-                await context.send(cogs.resp['bard']['bard_rare'].format(
-                    context.author.display_name, self.get_possessive(
-                        context.author.display_name)))
+                await ctx.send(cogs.resp['bard']['bard_rare'].format(
+                    ctx.author.display_name, self.get_possessive(
+                        ctx.author.display_name)))
             else:
-                await context.send(cogs.resp['bard']['bard'].format(
-                    context.author.display_name))
+                await ctx.send(cogs.resp['bard']['bard'].format(
+                    ctx.author.display_name))
 
     @commands.command(
         aliases=cogs.cfg['define']['aliases'],
@@ -55,17 +55,20 @@ class Queries(commands.Cog):
         help=cogs.cfg['define']['help'],
         hidden=cogs.cfg['define']['hidden']
     )
-    async def define(self, context: commands.Context, *entries: str) -> None:
+    async def define(self, ctx: commands.Context, *entries: str) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
+            await ctx.send(cogs.resp['play']['debug_on'])
         entry_full: str=' '.join(entries).lower()
-        entry_list: List[Match]=re.finditer(cogs.entry_regex, entry_full)
+        # Second group in match is entry
+        entry_list: Iterator[Match[str]]=re.finditer(r'( ?)([^(\?)]+)',
+            entry_full)
         for entry_itr in entry_list:
             entry=entry_itr.group(2)
-            entry=re.sub(cogs.end_whitespace_trim_regex, '', entry)
+            # Trim ending whitespace
+            entry=re.sub(r' +$', '', entry)
             if not entry:
                 continue
-            response: str='\n**{0}'.format(entry)
+            response: str='\n**'+entry
 
             if cogs.wiki.get(entry):
                 # Array entries
@@ -76,17 +79,17 @@ class Queries(commands.Cog):
                     # Redirecting entries
                     while cogs.wiki[entry][0]=='>':
                         entry=cogs.wiki[entry][1:]
-                        response+='→{0}'.format(entry)
+                        response+='→'+entry
                     
                     if type(cogs.wiki[entry])==list:
                         response+=':**\n- '
                         response+='\n- '.join(cogs.wiki[entry])
                     else:
-                        response+=':** {0}'.format(cogs.wiki[entry])
+                        response+=':** '+cogs.wiki[entry]
             else:
-                response+=':** {0}'.format(cogs.resp['define']['404'])
+                response+=':** '+cogs.resp['define']['404']
 
-            await context.send(response)
+            await ctx.send(response)
 
 # Modes:
 # 1: Add (default)
@@ -99,39 +102,39 @@ class Queries(commands.Cog):
         help=cogs.cfg['modifine']['help'],
         hidden=cogs.cfg['modifine']['hidden']
     )
-    async def modifine(self, context: commands.Context, entry: str, mode:
+    async def modifine(self, ctx: commands.Context, entry: str, mode:
         Optional[int]=1, *value: str) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        role_lorekeep: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['lorekeep'])
-        if role_lorekeep not in context.author.roles:
-            await context.send(cogs.resp['modifine']['403'])
+            await ctx.send(cogs.resp['play']['debug_on'])
+        role_lorekeep: discord.Role=cogs.get_role(ctx.guild,
+            cogs._guild_cfg[ctx.guild.id]['lorekeep'])
+        if role_lorekeep not in ctx.author.roles:
+            await ctx.send(cogs.resp['modifine']['403'])
             return
 
         entry=entry.lower()
 
         if mode==-1:
             if not cogs.wiki.get(entry):
-                await context.send(cogs.resp['modifine']['404'])
+                await ctx.send(cogs.resp['modifine']['404'])
                 return
 
             del cogs.wiki[entry]
-            await context.send(cogs.resp['modifine']['delete'].format(entry))
+            await ctx.send(cogs.resp['modifine']['delete'].format(entry))
             # If not returned, export will commence
         else:
             if not len(value):
-                await context.send(cogs.resp['modifine']['empty_entry'])
+                await ctx.send(cogs.resp['modifine']['empty_entry'])
                 return
 
             if cogs.wiki.get(entry) and mode==1:
-                await context.send(cogs.resp['modifine']['entry_exists'])
+                await ctx.send(cogs.resp['modifine']['entry_exists'])
                 return
 
             cogs.wiki[entry]=' '.join(value)
-            await context.send(cogs.resp['modifine']['add_mod'].format(entry))
+            await ctx.send(cogs.resp['modifine']['add_mod'].format(entry))
             # If not returned, export will commence
-        with open('data/commands/wiki.json', 'w+', encoding='utf-8'
+        with open('data/wiki.json', 'w+', encoding='utf-8'
         ) as json_wiki:
             dump(cogs.wiki, json_wiki, sort_keys=True, indent=4)
 
@@ -142,36 +145,36 @@ class Queries(commands.Cog):
         help=cogs.cfg['mute']['help'],
         hidden=cogs.cfg['mute']['hidden']
     )
-    async def mute(self, context: commands.Context, member: discord.Member,
+    async def mute(self, ctx: commands.Context, member: discord.Member,
         hours: str, *reason: str) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
+            await ctx.send(cogs.resp['play']['debug_on'])
         if member==self.bot.user or (
-            not context.author.guild_permissions.manage_roles):
-            await context.send(cogs.resp['mute']['403'])
+            not ctx.author.guild_permissions.manage_roles):
+            await ctx.send(cogs.resp['mute']['403'])
             return
 
         hours_float: float=eval(hours, {"__builtins__": None}, None)
         if hours_float<0:
-            await context.send(cogs.resp['mute']['negative_duration'])
+            await ctx.send(cogs.resp['mute']['negative_duration'])
             return
 
-        role_mute: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['mute'])
+        role_mute: discord.Role=cogs.get_role(ctx.guild,
+            cogs._guild_cfg[ctx.guild.id]['mute'])
         reason_full: str=' '.join(reason)
         response: str=cogs.resp['mute']['mute'].format(member.display_name,
             hours_float, reason_full)
-        if member==context.author:
-            response+=' {0}'.format(cogs.resp['mute']['self_mute'])
-        await context.send(response)
+        if member==ctx.author:
+            response+=' '+cogs.resp['mute']['self_mute']
+        await ctx.send(response)
         await member.add_roles(role_mute, reason=reason_full)
 
         await asyncio.sleep(hours_float*3600.0)
         response=cogs.resp['mute']['unmute'].format(member.mention,
             hours_float, reason_full)
-        if member==context.author:
-            response+=' {0}'.format(cogs.resp['mute']['self_mute'])
-        await context.send(response)
+        if member==ctx.author:
+            response+=' '+cogs.resp['mute']['self_mute']
+        await ctx.send(response)
         await member.remove_roles(role_mute, reason='Not '+reason_full)
 
     @commands.command(
@@ -181,26 +184,26 @@ class Queries(commands.Cog):
         help=cogs.cfg['play']['help'],
         hidden=cogs.cfg['play']['hidden']
     )
-    async def play(self, context: commands.Context, *game: str) -> None:
-        role_botkeep: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['botkeep'])
-        if role_botkeep not in context.author.roles:
-            await context.send(cogs.resp['play']['403'])
+    async def play(self, ctx: commands.Context, *game: str) -> None:
+        role_botkeep: discord.Role=cogs.get_role(ctx.guild,
+            cogs._guild_cfg[ctx.guild.id]['botkeep'])
+        if role_botkeep not in ctx.author.roles:
+            await ctx.send(cogs.resp['play']['403'])
             return
 
         game_full: str=' '.join(game)
 
         if game_full=='':
-            await context.send(cogs.resp['play']['404'])
+            await ctx.send(cogs.resp['play']['404'])
             return
         elif game_full in ('Debug', 'debug'):
             cogs._debug_state=not cogs._debug_state
             if cogs._debug_state:
-                await context.send(cogs.resp['play']['debug_on'])
+                await ctx.send(cogs.resp['play']['debug_on'])
                 await self.bot.change_presence(activity=discord.Game('Debug'),
                     status=discord.Status.dnd)
             else:
-                await context.send(cogs.resp['play']['debug_off'])
+                await ctx.send(cogs.resp['play']['debug_off'])
                 await self.bot.change_presence(activity=None,
                     status=discord.Status.online)
         elif game_full in ('Nothing, nothing'):
@@ -210,7 +213,7 @@ class Queries(commands.Cog):
                 game_cfg.write('')
         else:
             if cogs.resp['play'].get(game_full):
-                await context.send(cogs.resp['play'][game_full])
+                await ctx.send(cogs.resp['play'][game_full])
             await self.bot.change_presence(activity=discord.Game(game_full))
             # Export status for use next launch
             with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
@@ -223,18 +226,18 @@ class Queries(commands.Cog):
         help=cogs.cfg['sourcerer']['help'],
         hidden=cogs.cfg['sourcerer']['hidden']
     )
-    async def sourcerer(self, context: commands.Context) -> None:
+    async def sourcerer(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
-            await context.send(cogs.resp['play']['debug_on'])
-        role_dev: discord.Role=cogs.get_role_from_id(context.guild,
-            cogs.guild_cfg[context.guild.id]['roles']['dev'])
-        if role_dev in context.author.roles:
-            await context.author.remove_roles(role_dev,
+            await ctx.send(cogs.resp['play']['debug_on'])
+        role_dev: discord.Role=cogs.get_role(ctx.guild,
+            cogs._guild_cfg[ctx.guild.id]['dev'])
+        if role_dev in ctx.author.roles:
+            await ctx.author.remove_roles(role_dev,
                 reason=cogs.resp['sourcerer']['unsource_reason'])
-            await context.send(cogs.resp['sourcerer']['unsource'].format(
-                context.author.display_name))
+            await ctx.send(cogs.resp['sourcerer']['unsource'].format(
+                ctx.author.display_name))
         else:
-            await context.author.add_roles(role_dev,
+            await ctx.author.add_roles(role_dev,
                 reason=cogs.resp['sourcerer']['source_reason'])
-            await context.send(cogs.resp['sourcerer']['source'].format(
-                context.author.display_name))
+            await ctx.send(cogs.resp['sourcerer']['source'].format(
+                ctx.author.display_name))

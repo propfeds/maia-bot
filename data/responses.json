@@ -1,11 +1,11 @@
 {
     "fluff":
     {
-        "rl_base": "It's spelled *{0}*{1}.",
+        "rl_base": "I think it should be spelled *{0}*{1}...",
         "rouge": ["r{0}g{1}{2}", "r{0}{1}g{2}", "r{0}{1}{2}g"],
         "like": ["l{0}k{1}", "l{0}{1}k"],
         "vowels": ["a", "e", "i", "o", "u"],
-        "screams": ["U ổ o!", "Wotwotwot!", "aaaa", "Wowowowow", "uwu", "SCRAPE"]
+        "screams": ["U ổ o!", "Wotwotwot!", "aaaa", "AAAAA", "Wowowowow", "uwu", "SCRAPE", "À i ư ệ ộ!"]
     },
     "bard":
     {
@@ -52,7 +52,8 @@
         "Terminal Blues": "Dab a dee, dab a dye. https://github.com/propfeds/terminal-blues",
         "Code War": "```\nThey'll tear open your eyes\nAt the speed of light\nNetwork sharing line,\nis chaos all the time.\n```",
         "Baptized in Flimes": "```\nA paradigm\nA time crime\nIntro the data stream tonight\n\nConsume lime\nIn time\nThat feel when you baptized in flimes.\n```",
-        "Roguelegends: Dark Realms": "*appears with a spinning slash*"
+        "Roguelegends: Dark Realms": "*spears with an ape slash*",
+        "Scandroid": "```\nIn Neo-Tokyo,\non these empty streets alone,\nto eat flesh and bone.\n```"
     },
     "roll":
     {
