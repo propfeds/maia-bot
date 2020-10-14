@@ -7,13 +7,24 @@
         "vowels": ["a", "e", "i", "o", "u"],
         "screams": ["U ổ o!", "Wotwotwot!", "aaaa", "AAAAA", "Wowowowow", "uwu", "SCRAPE", "À i ư ệ ộ!"]
     },
-    "bard":
+    "grant":
     {
-        "bard": "{0}, I hereby bard thee!",
-        "bard_rare": "`{0} kneels.`\n`Maia places a lute upon {1} shoulder.`\nSois bard, au nom de Dieu.\n`Maia strikes a G7(♭9♯11) chord with the lute.`\nAvancez, bard.\n",
-        "bard_reason": "Barded by command",
-        "unbard": "{0}, I hereby unbard thee!",
-        "unbard_reason": "Unbarded by command"
+        "bard":
+        {
+            "resp": "{0}, I hereby bard thee!",
+            "resp_rare": "`{0} kneels.`\n`Maia places a lute upon {1} shoulder.`\nSois bard, au nom de Dieu.\n`Maia strikes a G7(♭9♯11) chord with the lute.`\nAvancez, bard.\n",
+            "reason": "Barded by command",
+            "un": "{0}, I hereby unbard thee!",
+            "un_reason": "Unbarded by command"
+        },
+        "sourcerer":
+        {
+            "resp": "Arise, sourcerer {0}!",
+            "resp_rare": "Boo devs! Shame on you, {0}.",
+            "reason": "Sourced by command",
+            "un": "You may now disarise, *ex*-sourcerer {0}...",
+            "un_reason": "Unsourced by command"
+        }
     },
     "calc":
     {
@@ -68,13 +79,5 @@
         "rolling_for": "Rolling `{0}` for {1}",
         "times": "{0} times",
         "once": "once"
-    },
-    "sourcerer":
-    {
-        "source": "Arise, sourcerer {0}!",
-        "source_rare": "Boo devs! Shame on you, {0}.",
-        "source_reason": "Sourced by command",
-        "unsource": "You may now disarise, *ex*-sourcerer {0}...",
-        "unsource_reason": "Unsourced by command"
     }
 }

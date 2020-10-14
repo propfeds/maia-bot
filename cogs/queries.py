@@ -1,4 +1,4 @@
-# Queries: General moderation and wiki-ing tools.
+# Queries: General moderation and information tools.
 
 import asyncio
 import cogs
@@ -18,35 +18,6 @@ class Queries(commands.Cog):
             return noun+'\''
         else:
             return noun+'\'s'
-
-    @commands.command(
-        aliases=cogs.cfg['bard']['aliases'],
-        brief=cogs.cfg['bard']['brief'],
-        description=cogs.cfg['bard']['desc'],
-        help=cogs.cfg['bard']['help'],
-        hidden=cogs.cfg['bard']['hidden']
-    )
-    async def bard(self, ctx: commands.Context) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs.resp['play']['debug_on'])
-        role_bard: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cfg[ctx.guild.id]['bard'])
-        if role_bard in ctx.author.roles:
-            await ctx.author.remove_roles(role_bard,
-                reason=cogs.resp['bard']['unbard_reason'])
-            await ctx.send(cogs.resp['bard']['unbard'].format(
-                ctx.author.display_name))
-        else:
-            await ctx.author.add_roles(role_bard,
-                reason=cogs.resp['bard']['bard_reason'])
-            roll_rare: int=randint(0, 99)
-            if roll_rare<cogs.cfg['bard']['rare_percent']:
-                await ctx.send(cogs.resp['bard']['bard_rare'].format(
-                    ctx.author.display_name, self.get_possessive(
-                        ctx.author.display_name)))
-            else:
-                await ctx.send(cogs.resp['bard']['bard'].format(
-                    ctx.author.display_name))
 
     @commands.command(
         aliases=cogs.cfg['define']['aliases'],
@@ -219,25 +190,3 @@ class Queries(commands.Cog):
             with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
                 game_cfg.write(game_full)
 
-    @commands.command(
-        aliases=cogs.cfg['sourcerer']['aliases'],
-        brief=cogs.cfg['sourcerer']['brief'],
-        description=cogs.cfg['sourcerer']['desc'],
-        help=cogs.cfg['sourcerer']['help'],
-        hidden=cogs.cfg['sourcerer']['hidden']
-    )
-    async def sourcerer(self, ctx: commands.Context) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs.resp['play']['debug_on'])
-        role_dev: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cfg[ctx.guild.id]['dev'])
-        if role_dev in ctx.author.roles:
-            await ctx.author.remove_roles(role_dev,
-                reason=cogs.resp['sourcerer']['unsource_reason'])
-            await ctx.send(cogs.resp['sourcerer']['unsource'].format(
-                ctx.author.display_name))
-        else:
-            await ctx.author.add_roles(role_dev,
-                reason=cogs.resp['sourcerer']['source_reason'])
-            await ctx.send(cogs.resp['sourcerer']['source'].format(
-                ctx.author.display_name))
