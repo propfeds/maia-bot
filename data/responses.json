@@ -5,7 +5,7 @@
         "rouge": ["r{0}g{1}{2}", "r{0}{1}g{2}", "r{0}{1}{2}g"],
         "like": ["l{0}k{1}", "l{0}{1}k"],
         "vowels": ["a", "e", "i", "o", "u"],
-        "screams": ["U ổ o!", "Wotwotwot!", "aaaa", "AAAAA", "Wowowowow", "uwu", "SCRAPE", "À i ư ệ ộ!"]
+        "screams": ["U ổ o!", "Wotwotwot!", "aaaaa", "AAA", "Wowowowow", "uwu", "SCRAPE", "I love you!"]
     },
     "grant":
     {

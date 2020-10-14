@@ -1,5 +1,6 @@
 # Project
 data/guilds/
+data/logs/
 data/game.txt
 utils/
 .vscode/

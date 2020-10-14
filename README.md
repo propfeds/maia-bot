@@ -1,10 +1,10 @@
 # maia-bot
-## A Discord Tavernkeep bot in Python.
-### How to Use ???
-This is a personal bot. I have no other intention of publishing than educational purposes.
+## A Discord Tavernkeep bot in Python
+
+I have no other intention of publishing than educational purposes.
 
 You can do whatever with it, as long as it is unlicensed.
 
-`!help` to get help (built into the API)
+Call her by name to command.
 
-[Development Discord](https://discord.gg/AxMZJyg)
+[Where is she used?](https://discord.gg/AxMZJyg)

@@ -55,15 +55,12 @@ def get_cfg(guild: discord.Guild) -> None:
     if not os.path.exists('data/guilds/'):
         os.mkdir('data/guilds/')
 
-    # Guild config contains role IDs for Bards, Devs, Lorekeeps, Botkeeps and
-    # Mutes. If not found, creates a blank slate so every command would fail
-    # intentionally.
+    # Guild config contains role IDs for Lorekeeps, Botkeeps and Mutes. If not
+    # found, creates a blank slate so every command would fail intentionally.
     if not os.path.exists(f'data/guilds/{guild.id}.json'):
         _guild_cfg[guild.id]: Dict[str, int]={
             "botkeep": 0,
             "lorekeep": 0,
-            "dev": 0,
-            "bard": 0,
             "mute": 0
         }
         with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cfg:
