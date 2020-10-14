@@ -41,15 +41,18 @@ class Fluff(commands.Cog):
         if 'reanimate' in message_lowcase:
             await message.add_reaction('🤘')
             await asyncio.sleep(randint(14, 21))
-            await message.channel.send(file=discord.File('data/necrobutt.gif'))
+            await message.channel.send(file=discord.File(
+                'data/images/necrobutt.gif'))
 
         if 'heh' in message_lowcase:
             await asyncio.sleep(1)
             if randint(0, 99)<1:
-                await message.channel.send(file=discord.File('data/heh.gif'))
+                await message.channel.send(file=discord.File(
+                    'data/images/heh.gif'))
 
         if 'that\'s what he said' in message_lowcase:
-            await message.channel.send(file=discord.File('data/gachibass.gif'))
+            await message.channel.send(file=discord.File(
+                'data/images/gachibass.gif'))
 
     @commands.command(
         aliases=cogs.cfg['scream']['aliases'],
