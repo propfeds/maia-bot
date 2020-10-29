@@ -133,6 +133,9 @@ class Queries(commands.Cog):
         role_mute: discord.Role=cogs.get_role(ctx.guild,
             cogs._guild_cfg[ctx.guild.id]['mute'])
         reason_full: str=' '.join(reason)
+        if reason_full=='':
+            reason_full='no reason'
+        
         response: str=cogs.resp['mute']['mute'].format(member.display_name,
             hours_float, reason_full)
         if member==ctx.author:
