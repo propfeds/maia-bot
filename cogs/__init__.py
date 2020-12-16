@@ -59,9 +59,9 @@ def get_cfg(guild: discord.Guild) -> None:
     # found, creates a blank slate so every command would fail intentionally.
     if not os.path.exists(f'data/guilds/{guild.id}.json'):
         _guild_cfg[guild.id]: Dict[str, int]={
-            "botkeep": 0,
-            "lorekeep": 0,
-            "mute": 0
+            'botkeep': 0,
+            'lorekeep': 0,
+            'mute': 0
         }
         with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cfg:
             dump(_guild_cfg[guild.id], json_guild_cfg, indent=4)

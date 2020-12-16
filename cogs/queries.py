@@ -125,7 +125,7 @@ class Queries(commands.Cog):
             await ctx.send(cogs.resp['mute']['403'])
             return
 
-        hours_float: float=eval(hours, {"__builtins__": None}, None)
+        hours_float: float=eval(hours, {'__builtins__': None}, None)
         if hours_float<0:
             await ctx.send(cogs.resp['mute']['negative_duration'])
             return

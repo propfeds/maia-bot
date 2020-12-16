@@ -39,7 +39,7 @@ class Nerds(commands.Cog):
                 ''.join(exp))))
         else:
             await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
-                ''.join(exp), {"__builtins__": None}, cogs._math_func_dict)))
+                ''.join(exp), {'__builtins__': None}, cogs._math_func_dict)))
 
     @commands.command(
         aliases=cogs.cfg['roll']['aliases'],
