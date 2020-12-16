@@ -1,5 +1,6 @@
 # Fluff: Definitely slows the whole bot down,
 # since it scans every single message and convert it into lowercase.
+# For nothing but memes.
 
 import asyncio
 import cogs
@@ -44,7 +45,7 @@ class Fluff(commands.Cog):
             await message.channel.send(file=discord.File(
                 'data/images/necrobutt.gif'))
 
-        if 'heh' in message_lowcase:
+        if 'heh' in message_lowcase or 'hah' in message_lowcase:
             await asyncio.sleep(1)
             if randint(0, 99)<1:
                 await message.channel.send(file=discord.File(

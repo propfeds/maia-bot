@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from json import load, dump
 import math
 import os
-from rdoclient_py3 import RandomOrgClient
+from rdoclient import RandomOrgClient
 from typing import Dict, Union
 
 load_dotenv()
@@ -37,7 +37,7 @@ _math_func_dict: dict={
     'tau': math.tau, 'inf': math.inf, 'nan': math.nan
 }
 # Randorg
-randorg_client: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
+rdo: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild: discord.Guild, id_num: int) -> discord.Role:
     return discord.utils.get(guild.roles, id=id_num)

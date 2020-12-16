@@ -70,8 +70,8 @@
     },
     "roll":
     {
-        "randorg_timeout": "Random.org timeout.",
-        "randorg_juice": "Random.org out of juice! Using pseudo RNG.",
+        "rdo_timeout": "Random.org timeout.",
+        "rdo_juice": "Random.org out of juice! Using pseudo RNG.",
         "py_38_time": "Python 3.8 has removed time.clock(). Using pseudo RNG.",
         "not_die": "That's not a die, {0}!",
         "no_dice": "What am I gonna do with no dice!",

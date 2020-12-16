@@ -4,7 +4,7 @@ import cogs
 import discord
 from discord.ext import commands
 from random import randint, choice
-from rdoclient_py3 import (RandomOrgSendTimeoutError,
+from rdoclient import (RandomOrgSendTimeoutError,
 RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError)
 import re
 from sys import version_info
@@ -86,22 +86,17 @@ class Nerds(commands.Cog):
 
         results: List[int]=[]
 
-        if version_info.major==3 and version_info.minor==8:
-            response+='\n'+cogs.resp['roll']['py_38_time']
+        try:
+            results.extend(cogs.rdo.generate_integers(
+                dice*repeats, 1, sides))                
+        except RandomOrgSendTimeoutError:
+            response+='\n'+cogs.resp['roll']['rdo_timeout']
+        except (RandomOrgInsufficientRequestsError,
+        RandomOrgInsufficientBitsError):
+            response+='\n'+cogs.resp['roll']['rdo_juice']
             for _ in range(dice*repeats):
                 results.append(randint(1, sides))
-        else:
-            try:
-                results.extend(cogs.randorg_client.generate_integers(
-                    dice*repeats, 1, sides))
-            except RandomOrgSendTimeoutError:
-                response+='\n'+cogs.resp['roll']['randorg_timeout']
-            except (RandomOrgInsufficientRequestsError,
-            RandomOrgInsufficientBitsError):
-                response+='\n'+cogs.resp['roll']['randorg_juice']
-                for _ in range(dice*repeats):
-                    results.append(randint(1, sides))
-
+        
         # Actually displaying dice
         for i in range(repeats):
             roll: List[int]=results[dice*i:dice*(i+1)]
