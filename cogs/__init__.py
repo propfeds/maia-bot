@@ -10,11 +10,11 @@ from typing import List, Dict, Tuple, Union
 load_dotenv()
 # Discourse
 with open('data/config.json', encoding='utf-8') as json_config:
-    cfg=load(json_config)
+    _cfg=load(json_config)
 with open('data/responses.json', encoding='utf-8') as json_responses:
-    resp=load(json_responses)
+    _resp=load(json_responses)
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
-    wiki=load(json_wiki)
+    _wiki=load(json_wiki)
 _guild_cfg: Dict[int, dict]={}
 _debug_state: bool=False
 
@@ -38,7 +38,7 @@ _math_func_dict: dict={
     'tau': math.tau, 'inf': math.inf, 'nan': math.nan
 }
 # Randorg
-rdo: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
+_rdo: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild: discord.Guild, id_num: int) -> discord.Role:
     return discord.utils.get(guild.roles, id=id_num)
@@ -53,7 +53,7 @@ def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
 def roll_array(batch_size: int, sides: int) -> Tuple[List[int], str]:
     err_resp: str=''
     try:
-        results: List[int]=rdo.generate_integers(batch_size, 1, sides)
+        results: List[int]=_rdo.generate_integers(batch_size, 1, sides)
     except RandomOrgSendTimeoutError:
         err_resp.append(resp['roll']['rdo_timeout']+'\n')
     except (RandomOrgInsufficientRequestsError,

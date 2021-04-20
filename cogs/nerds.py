@@ -22,62 +22,62 @@ class Nerds(commands.Cog):
         )
 
     @commands.command(
-        aliases=cogs.cfg['calc']['aliases'],
-        brief=cogs.cfg['calc']['brief'],
-        description=cogs.cfg['calc']['desc'],
-        help=cogs.cfg['calc']['help'],
-        hidden=cogs.cfg['calc']['hidden']
+        aliases=cogs._cfg['calc']['aliases'],
+        brief=cogs._cfg['calc']['brief'],
+        description=cogs._cfg['calc']['desc'],
+        help=cogs._cfg['calc']['help'],
+        hidden=cogs._cfg['calc']['hidden']
     )
     async def calc(self, ctx: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
             role_botkeep: discord.Role=cogs.get_role(ctx.guild,
                 cogs._guild_cfg[ctx.guild.id]['botkeep'])
             if role_botkeep not in ctx.author.roles:
-                await ctx.send(cogs.resp['calc']['debug_locked'])
+                await ctx.send(cogs._resp['calc']['debug_locked'])
                 return
-            await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
+            await ctx.send(choice(cogs._resp['calc']['result']).format(eval(
                 ''.join(exp))))
         else:
-            await ctx.send(choice(cogs.resp['calc']['result']).format(eval(
+            await ctx.send(choice(cogs._resp['calc']['result']).format(eval(
                 ''.join(exp), {'__builtins__': None}, cogs._math_func_dict)))
 
     @commands.command(
-        aliases=cogs.cfg['roll']['aliases'],
-        brief=cogs.cfg['roll']['brief'],
-        description=cogs.cfg['roll']['desc'],
-        help=cogs.cfg['roll']['help'],
-        hidden=cogs.cfg['roll']['hidden']
+        aliases=cogs._cfg['roll']['aliases'],
+        brief=cogs._cfg['roll']['brief'],
+        description=cogs._cfg['roll']['desc'],
+        help=cogs._cfg['roll']['help'],
+        hidden=cogs._cfg['roll']['hidden']
     )
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:
-            await ctx.send(cogs.resp['play']['debug_on'])
+            await ctx.send(cogs._resp['play']['debug_on'])
         die_match: Match=re.match(r'(\d+)?[dD](\d+)([\+\-]\d+)?', die)
         if die_match is None:
-            await ctx.send(cogs.resp['roll']['not_die'].format(
+            await ctx.send(cogs._resp['roll']['not_die'].format(
                 ctx.author.display_name))
             return
         else:
             dice: int; sides: int; mod: int
             dice, sides, mod=self.die_tuple(die_match)
             if not dice*repeats:
-                await ctx.send(cogs.resp['roll']['no_dice'])
+                await ctx.send(cogs._resp['roll']['no_dice'])
                 return
             elif dice*repeats<0:
-                await ctx.send(cogs.resp['roll']['negative_dice'])
+                await ctx.send(cogs._resp['roll']['negative_dice'])
                 return
             elif sides<=1:
-                await ctx.send(cogs.resp['roll']['not_die'].format(
+                await ctx.send(cogs._resp['roll']['not_die'].format(
                     ctx.author.display_name))
                 return
 
-        response: str=cogs.resp['roll']['rolling_for'].format(die,
+        response: str=cogs._resp['roll']['rolling_for'].format(die,
             ctx.author.display_name)
         response+=' '
         if repeats>1:
-            response+=cogs.resp['roll']['times'].format(repeats)
+            response+=cogs._resp['roll']['times'].format(repeats)
         else:
-            response+=cogs.resp['roll']['once']
+            response+=cogs._resp['roll']['once']
 
         if len(reason):
             response+=' ('+' '.join(reason)+')'
