@@ -7,23 +7,48 @@
         "vowels": ["a", "e", "i", "o", "u"],
         "screams": ["U ổ o!", "Wotwotwot!", "aaaaa", "AAA", "Wowowowow", "uwu", "SCRAPE", "I love you!"]
     },
-    "grant":
+    "give":
     {
         "bard":
         {
-            "resp": "{0}, I hereby bard thee!",
-            "resp_rare": "`{0} kneels.`\n`Maia places a lute upon {1} shoulder.`\nSois bard, au nom de Dieu.\n`Maia strikes a G7(♭9♯11) chord with the lute.`\nAvancez, bard.\n",
-            "reason": "Barded by command",
-            "un": "{0}, I hereby unbard thee!",
-            "un_reason": "Unbarded by command"
+            "actions": ["toggle_role"],
+            "role": "bard",
+            "on":
+            {
+                "items": ["{0}, I hereby bard thee!", "`{0} kneels.`\n`Maia places a lute upon {1} shoulder.`\nSois bard, au nom de Dieu.\n`Maia strikes a G7(♭9♯11) chord with the lute.`\nAvancez, bard.\n"],
+                "weights": [19, 1]
+            },
+            "off": "{0}, I hereby unbard thee!",
+            "reason":
+            {
+                "on": "Barded by command",
+                "off": "Unbarded by command"
+            }
         },
         "sourcerer":
         {
-            "resp": "Arise, sourcerer {0}!",
-            "resp_rare": "Boo devs! Shame on you, {0}.",
-            "reason": "Sourced by command",
-            "un": "You may now disarise, *ex*-sourcerer {0}...",
-            "un_reason": "Unsourced by command"
+            "actions": ["toggle_role"],
+            "role": "dev",
+            "on":
+            {
+                "items": ["Arise, sourcerer {0}!", "Boo programmers! Shame on you, {0}."],
+                "weights": [19, 1]
+            },
+            "off": "You may now disarise, *not*-sourcerer {0}...",
+            "reason":
+            {
+                "on": "Sourced by command",
+                "off": "Unsourced by command"
+            }
+        },
+        "love":
+        {
+            "actions": ["react", "react", "react"],
+            "react":
+            {
+                "items": ["heart", "heart_blue"],
+                "weights": [1, 1]
+            }
         }
     },
     "calc":

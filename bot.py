@@ -11,17 +11,17 @@ import os
 
 load_dotenv()
 
-if not os.path.exists('data/logs/'):
-    os.mkdir('data/logs/')
-
-logger=logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler=logging.FileHandler(
-    filename=f'data/logs/{datetime.now().strftime("%Y-%m-%d_%H%M%S")}.log',
-    encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter(
-    '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
+# if not os.path.exists('data/logs/'):
+#     os.mkdir('data/logs/')
+# 
+# logger=logging.getLogger('discord')
+# logger.setLevel(logging.DEBUG)
+# handler=logging.FileHandler(
+#     filename=f'data/logs/{datetime.now().strftime("%Y-%m-%d")}.log',
+#     encoding='utf-8', mode='w')
+# handler.setFormatter(logging.Formatter(
+#     '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+# logger.addHandler(handler)
 
 bot: commands.Bot=commands.Bot(command_prefix=['Maia ', 'maia ', 'MAIA ',
     'Maia, ', 'maia, ', 'MAIA, '])

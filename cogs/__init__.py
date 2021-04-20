@@ -3,8 +3,9 @@ from dotenv import load_dotenv
 from json import load, dump
 import math
 import os
+from random import randint
 from rdoclient import RandomOrgClient
-from typing import Dict, Union
+from typing import List, Dict, Tuple, Union
 
 load_dotenv()
 # Discourse
@@ -48,6 +49,21 @@ def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
     if not emoji:
         return f'<:{name}:{fallback_id}>'
     return emoji
+
+def roll_array(batch_size: int, sides: int) -> Tuple[List[int], str]:
+    err_resp: str=''
+    try:
+        results: List[int]=rdo.generate_integers(batch_size, 1, sides)
+    except RandomOrgSendTimeoutError:
+        err_resp.append(resp['roll']['rdo_timeout']+'\n')
+    except (RandomOrgInsufficientRequestsError,
+    RandomOrgInsufficientBitsError):
+        err_resp.append(resp['roll']['rdo_juice']+'\n')
+        results: List[int]=[]
+        for _ in range(batch_size):
+            results.append(randint(1, sides))
+    return results, err_resp
+    
 
 def get_cfg(guild: discord.Guild) -> None:
     global _guild_cfg

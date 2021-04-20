@@ -3,7 +3,7 @@
 import cogs
 import discord
 from discord.ext import commands
-from random import randint, choice
+from random import choice
 from rdoclient import (RandomOrgSendTimeoutError,
 RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError)
 import re
@@ -82,26 +82,16 @@ class Nerds(commands.Cog):
         if len(reason):
             response+=' ('+' '.join(reason)+')'
 
-        response+=':'
+        response+=':\n'
 
-        results: List[int]=[]
-
-        try:
-            results.extend(cogs.rdo.generate_integers(
-                dice*repeats, 1, sides))                
-        except RandomOrgSendTimeoutError:
-            response+='\n'+cogs.resp['roll']['rdo_timeout']
-        except (RandomOrgInsufficientRequestsError,
-        RandomOrgInsufficientBitsError):
-            response+='\n'+cogs.resp['roll']['rdo_juice']
-            for _ in range(dice*repeats):
-                results.append(randint(1, sides))
+        results, err_resp=cogs.roll_array(dice*repeats, sides)
+        response+=err_resp
         
         # Actually displaying dice
         for i in range(repeats):
             roll: List[int]=results[dice*i:dice*(i+1)]
             # Oh the format monstrosities
-            response+='\n`{0}{1}`{2}'.format(
+            response+='`{0}{1}`{2}\n'.format(
                 str(roll),
                 ('+'+str(mod) if mod>0 else str(mod)) if mod!=0 else '',
                 '→'+str(sum(roll, mod)) if (dice>1 or mod!=0) else ''
