@@ -55,13 +55,7 @@ class Fluff(commands.Cog):
             await message.channel.send(file=discord.File(
                 'data/images/gachibass.gif'))
 
-    @commands.command(
-        aliases=cogs._cfg['scream']['aliases'],
-        brief=cogs._cfg['scream']['brief'],
-        description=cogs._cfg['scream']['desc'],
-        help=cogs._cfg['scream']['help'],
-        hidden=cogs._cfg['scream']['hidden']
-    )
+    @commands.command(cogs._cmd['scream'])
     async def scream(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])

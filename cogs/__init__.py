@@ -1,24 +1,23 @@
 import discord
 from dotenv import load_dotenv
-from json import load, dump
+from json import dump, load
 import math
 import os
 from random import randint
 from rdoclient import RandomOrgClient
-from typing import List, Dict, Tuple, Union
+from typing import Callable, Dict, Union
 
 load_dotenv()
 # Discourse
-with open('data/config.json', encoding='utf-8') as json_config:
-    _cfg=load(json_config)
+with open('data/commands.json', encoding='utf-8') as json_config:
+    _cmd=load(json_config)
 with open('data/responses.json', encoding='utf-8') as json_responses:
     _resp=load(json_responses)
 with open('data/wiki.json', encoding='utf-8') as json_wiki:
     _wiki=load(json_wiki)
-_guild_cfg: Dict[int, dict]={}
-_debug_state: bool=False
+_guild_cmd: Dict[int, Dict[str, int]]={}
 
-_math_func_dict: dict={
+_math_func_dict: Dict[str, Callable]={
     'ceil': math.ceil, 'comb': math.comb, 'copysign': math.copysign,
     'abs': math.fabs, 'factorial': math.factorial, 'floor': math.floor,
     'fmod': math.fmod, 'frexp': math.frexp, 'fsum': math.fsum, 'gcd': math.gcd,
@@ -50,23 +49,8 @@ def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
         return f'<:{name}:{fallback_id}>'
     return emoji
 
-def roll_array(batch_size: int, sides: int) -> Tuple[List[int], str]:
-    err_resp: str=''
-    try:
-        results: List[int]=_rdo.generate_integers(batch_size, 1, sides)
-    except RandomOrgSendTimeoutError:
-        err_resp.append(resp['roll']['rdo_timeout']+'\n')
-    except (RandomOrgInsufficientRequestsError,
-    RandomOrgInsufficientBitsError):
-        err_resp.append(resp['roll']['rdo_juice']+'\n')
-        results: List[int]=[]
-        for _ in range(batch_size):
-            results.append(randint(1, sides))
-    return results, err_resp
-    
-
-def get_cfg(guild: discord.Guild) -> None:
-    global _guild_cfg
+def get_cmd(guild: discord.Guild) -> None:
+    global _guild_cmd
 
     if not os.path.exists('data/guilds/'):
         os.mkdir('data/guilds/')
@@ -74,13 +58,13 @@ def get_cfg(guild: discord.Guild) -> None:
     # Guild config contains role IDs for Lorekeeps, Botkeeps and Mutes. If not
     # found, creates a blank slate so every command would fail intentionally.
     if not os.path.exists(f'data/guilds/{guild.id}.json'):
-        _guild_cfg[guild.id]: Dict[str, int]={
+        _guild_cmd[guild.id]={
             'botkeep': 0,
             'lorekeep': 0,
             'mute': 0
         }
-        with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cfg:
-            dump(_guild_cfg[guild.id], json_guild_cfg, indent=4)
+        with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cmd:
+            dump(_guild_cmd[guild.id], json_guild_cmd, indent=4)
     else:
-        with open(f'data/guilds/{guild.id}.json', 'r') as json_guild_cfg:
-            _guild_cfg[guild.id]=load(json_guild_cfg)
+        with open(f'data/guilds/{guild.id}.json', 'r') as json_guild_cmd:
+            _guild_cmd[guild.id]=load(json_guild_cmd)

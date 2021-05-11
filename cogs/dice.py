@@ -1,10 +1,10 @@
 import cogs
-import discord
 from discord.ext import commands
 import os
 from random import randint
 from rdoclient import (RandomOrgClient, RandomOrgSendTimeoutError,
 RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError)
+import re
 from typing import List, Match, Optional, Tuple
 
 class Dice(commands.Cog):
@@ -33,13 +33,7 @@ class Dice(commands.Cog):
             int(match.group(3)) if (match.group(3) is not None) else 0
         )
 
-    @commands.command(
-        aliases=cogs._cfg['roll']['aliases'],
-        brief=cogs._cfg['roll']['brief'],
-        description=cogs._cfg['roll']['desc'],
-        help=cogs._cfg['roll']['help'],
-        hidden=cogs._cfg['roll']['hidden']
-    )
+    @commands.command(cogs._cmd['roll'])
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:

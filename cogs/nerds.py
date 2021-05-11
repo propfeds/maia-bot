@@ -21,17 +21,11 @@ class Nerds(commands.Cog):
             int(match.group(3)) if (match.group(3) is not None) else 0
         )
 
-    @commands.command(
-        aliases=cogs._cfg['calc']['aliases'],
-        brief=cogs._cfg['calc']['brief'],
-        description=cogs._cfg['calc']['desc'],
-        help=cogs._cfg['calc']['help'],
-        hidden=cogs._cfg['calc']['hidden']
-    )
+    @commands.command(cogs._cmd['calc'])
     async def calc(self, ctx: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
             role_botkeep: discord.Role=cogs.get_role(ctx.guild,
-                cogs._guild_cfg[ctx.guild.id]['botkeep'])
+                cogs._guild_cmd[ctx.guild.id]['botkeep'])
             if role_botkeep not in ctx.author.roles:
                 await ctx.send(cogs._resp['calc']['debug_locked'])
                 return
@@ -41,13 +35,7 @@ class Nerds(commands.Cog):
             await ctx.send(choice(cogs._resp['calc']['result']).format(eval(
                 ''.join(exp), {'__builtins__': None}, cogs._math_func_dict)))
 
-    @commands.command(
-        aliases=cogs._cfg['roll']['aliases'],
-        brief=cogs._cfg['roll']['brief'],
-        description=cogs._cfg['roll']['desc'],
-        help=cogs._cfg['roll']['help'],
-        hidden=cogs._cfg['roll']['hidden']
-    )
+    @commands.command(cogs._cmd['roll'])
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:

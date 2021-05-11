@@ -19,13 +19,7 @@ class Queries(commands.Cog):
         else:
             return noun+'\'s'
 
-    @commands.command(
-        aliases=cogs._cfg['define']['aliases'],
-        brief=cogs._cfg['define']['brief'],
-        description=cogs._cfg['define']['desc'],
-        help=cogs._cfg['define']['help'],
-        hidden=cogs._cfg['define']['hidden']
-    )
+    @commands.command(cogs._cmd['define'])
     async def define(self, ctx: commands.Context, *entries: str) -> None:
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])
@@ -66,56 +60,44 @@ class Queries(commands.Cog):
 # 1: Add (default)
 # 0: Add & Modify
 # -1: Delete
-    @commands.command(
-        aliases=cogs._cfg['modifine']['aliases'],
-        brief=cogs._cfg['modifine']['brief'],
-        description=cogs._cfg['modifine']['desc'],
-        help=cogs._cfg['modifine']['help'],
-        hidden=cogs._cfg['modifine']['hidden']
-    )
-    async def modifine(self, ctx: commands.Context, entry: str, mode:
+    @commands.command(cogs._cmd['edit'])
+    async def edit(self, ctx: commands.Context, entry: str, mode:
         Optional[int]=1, *value: str) -> None:
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])
         role_lorekeep: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cfg[ctx.guild.id]['lorekeep'])
+            cogs._guild_cmd[ctx.guild.id]['lorekeep'])
         if role_lorekeep not in ctx.author.roles:
-            await ctx.send(cogs._resp['modifine']['403'])
+            await ctx.send(cogs._resp['edit']['403'])
             return
 
         entry=entry.lower()
 
         if mode==-1:
             if not cogs._wiki.get(entry):
-                await ctx.send(cogs._resp['modifine']['404'])
+                await ctx.send(cogs._resp['edit']['404'])
                 return
 
             del cogs._wiki[entry]
-            await ctx.send(cogs._resp['modifine']['delete'].format(entry))
+            await ctx.send(cogs._resp['edit']['delete'].format(entry))
             # If not returned, export will commence
         else:
             if not len(value):
-                await ctx.send(cogs._resp['modifine']['empty_entry'])
+                await ctx.send(cogs._resp['edit']['empty_entry'])
                 return
 
             if cogs._wiki.get(entry) and mode==1:
-                await ctx.send(cogs._resp['modifine']['entry_exists'])
+                await ctx.send(cogs._resp['edit']['entry_exists'])
                 return
 
             cogs._wiki[entry]=' '.join(value)
-            await ctx.send(cogs._resp['modifine']['add_mod'].format(entry))
+            await ctx.send(cogs._resp['edit']['add_mod'].format(entry))
             # If not returned, export will commence
         with open('data/wiki.json', 'w+', encoding='utf-8'
         ) as json_wiki:
             dump(cogs._wiki, json_wiki, sort_keys=True, indent=4)
 
-    @commands.command(
-        aliases=cogs._cfg['mute']['aliases'],
-        brief=cogs._cfg['mute']['brief'],
-        description=cogs._cfg['mute']['desc'],
-        help=cogs._cfg['mute']['help'],
-        hidden=cogs._cfg['mute']['hidden']
-    )
+    @commands.command(cogs._cmd['mute'])
     async def mute(self, ctx: commands.Context, member: discord.Member,
         hours: str, *reason: str) -> None:
         if cogs._debug_state:
@@ -131,7 +113,7 @@ class Queries(commands.Cog):
             return
 
         role_mute: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cfg[ctx.guild.id]['mute'])
+            cogs._guild_cmd[ctx.guild.id]['mute'])
         reason_full: str=' '.join(reason)
         if reason_full=='':
             reason_full='no reason'
@@ -151,16 +133,10 @@ class Queries(commands.Cog):
         await ctx.send(response)
         await member.remove_roles(role_mute, reason='Not '+reason_full)
 
-    @commands.command(
-        aliases=cogs._cfg['play']['aliases'],
-        brief=cogs._cfg['play']['brief'],
-        description=cogs._cfg['play']['desc'],
-        help=cogs._cfg['play']['help'],
-        hidden=cogs._cfg['play']['hidden']
-    )
+    @commands.command(cogs._cmd['play'])
     async def play(self, ctx: commands.Context, *game: str) -> None:
         role_botkeep: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cfg[ctx.guild.id]['botkeep'])
+            cogs._guild_cmd[ctx.guild.id]['botkeep'])
         if role_botkeep not in ctx.author.roles:
             await ctx.send(cogs._resp['play']['403'])
             return
@@ -170,26 +146,30 @@ class Queries(commands.Cog):
         if game_full=='':
             await ctx.send(cogs._resp['play']['404'])
             return
-        elif game_full in ('Debug', 'debug'):
-            cogs._debug_state=not cogs._debug_state
-            if cogs._debug_state:
-                await ctx.send(cogs._resp['play']['debug_on'])
-                await self.bot.change_presence(activity=discord.Game('Debug'),
-                    status=discord.Status.dnd)
-            else:
-                await ctx.send(cogs._resp['play']['debug_off'])
-                await self.bot.change_presence(activity=None,
-                    status=discord.Status.online)
+        # elif game_full in ('Debug', 'debug'):
+        #     cogs._debug_state=not cogs._debug_state
+        #     if cogs._debug_state:
+        #         await ctx.send(cogs._resp['play']['debug_on'])
+        #         await self.bot.change_presence(activity=discord.Game('Debug'),
+        #             status=discord.Status.dnd)
+        #     else:
+        #         await ctx.send(cogs._resp['play']['debug_off'])
+        #         await self.bot.change_presence(activity=None,
+        #             status=discord.Status.online)
         elif game_full in ('Nothing, nothing'):
             await self.bot.change_presence(activity=None)
             # Export status for use next launch
-            with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
-                game_cfg.write('')
+            del cogs._cmd['play']['game']
+            with open('data/commands.json', 'w+', encoding='utf-8'
+            ) as json_config:
+                dump(cogs._cmd, json_config, sort_keys=True, indent=4)
         else:
             if cogs._resp['play'].get(game_full):
                 await ctx.send(cogs._resp['play'][game_full])
             await self.bot.change_presence(activity=discord.Game(game_full))
             # Export status for use next launch
-            with open('data/game.txt', 'w+', encoding='utf-8') as game_cfg:
-                game_cfg.write(game_full)
+            cogs._cmd['play']['game']=game_full
+            with open('data/commands.json', 'w+', encoding='utf-8'
+            ) as json_config:
+                dump(cogs._cmd, json_config, sort_keys=True, indent=4)
 

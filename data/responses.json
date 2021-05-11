@@ -60,7 +60,7 @@
     {
         "404": "Entry does not exist."
     },
-    "modifine":
+    "edit":
     {
         "403": "You are forbidden from modifying the Library.",
         "404": "You are deleting what?",
@@ -79,8 +79,8 @@
     },
     "play":
     {
-        "403": "Hey, you're not my owner. You can't play me.",
-        "404": "Play what?",
+        "403": "Hey, you're not my owner, you can't play *me!*",
+        "404": "What you want me kill?",
         "debug_on": "Hey dude, debug mode is on!",
         "debug_off": "No longer debugging.",
         "Baptized in Flimes": "```\nA paradigm\nA time crime\nIntro the data stream tonight\n\nConsume lime\nIn time\nThat feel when you baptized in flimes.\n```",
