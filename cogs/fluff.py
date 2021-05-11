@@ -55,7 +55,7 @@ class Fluff(commands.Cog):
             await message.channel.send(file=discord.File(
                 'data/images/gachibass.gif'))
 
-    @commands.command(cogs._cmd['scream'])
+    @commands.command(**cogs._cmd['scream'])
     async def scream(self, ctx: commands.Context) -> None:
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])

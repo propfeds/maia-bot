@@ -21,7 +21,7 @@ class Nerds(commands.Cog):
             int(match.group(3)) if (match.group(3) is not None) else 0
         )
 
-    @commands.command(cogs._cmd['calc'])
+    @commands.command(**cogs._cmd['calc'])
     async def calc(self, ctx: commands.Context, *exp: str) -> None:
         if cogs._debug_state:
             role_botkeep: discord.Role=cogs.get_role(ctx.guild,
@@ -35,7 +35,7 @@ class Nerds(commands.Cog):
             await ctx.send(choice(cogs._resp['calc']['result']).format(eval(
                 ''.join(exp), {'__builtins__': None}, cogs._math_func_dict)))
 
-    @commands.command(cogs._cmd['roll'])
+    @commands.command(**cogs._cmd['roll'])
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
         if cogs._debug_state:

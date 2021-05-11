@@ -19,7 +19,7 @@ class Queries(commands.Cog):
         else:
             return noun+'\'s'
 
-    @commands.command(cogs._cmd['define'])
+    @commands.command(**cogs._cmd['define'])
     async def define(self, ctx: commands.Context, *entries: str) -> None:
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])
@@ -60,7 +60,7 @@ class Queries(commands.Cog):
 # 1: Add (default)
 # 0: Add & Modify
 # -1: Delete
-    @commands.command(cogs._cmd['edit'])
+    @commands.command(**cogs._cmd['edit'])
     async def edit(self, ctx: commands.Context, entry: str, mode:
         Optional[int]=1, *value: str) -> None:
         if cogs._debug_state:
@@ -97,7 +97,7 @@ class Queries(commands.Cog):
         ) as json_wiki:
             dump(cogs._wiki, json_wiki, sort_keys=True, indent=4)
 
-    @commands.command(cogs._cmd['mute'])
+    @commands.command(**cogs._cmd['mute'])
     async def mute(self, ctx: commands.Context, member: discord.Member,
         hours: str, *reason: str) -> None:
         if cogs._debug_state:
@@ -133,7 +133,7 @@ class Queries(commands.Cog):
         await ctx.send(response)
         await member.remove_roles(role_mute, reason='Not '+reason_full)
 
-    @commands.command(cogs._cmd['play'])
+    @commands.command(**cogs._cmd['play'])
     async def play(self, ctx: commands.Context, *game: str) -> None:
         role_botkeep: discord.Role=cogs.get_role(ctx.guild,
             cogs._guild_cmd[ctx.guild.id]['botkeep'])
