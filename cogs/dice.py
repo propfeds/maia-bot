@@ -70,7 +70,7 @@ class Dice(commands.Cog):
 
         response+=':\n'
 
-        results, err_resp=cogs.roll_array(dice*repeats, sides)
+        results, err_resp=self.roll_array(dice*repeats, sides)
         response+=err_resp
         
         # Actually displaying dice

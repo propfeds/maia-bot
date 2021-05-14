@@ -1,7 +1,6 @@
 from cogs.core import Core
-from cogs.fluff import Fluff
-from cogs.nerds import Nerds
-from cogs.queries import Queries
+from cogs.enquiries import Enquiries
+from cogs.wiki import Wiki
 from datetime import datetime
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -26,8 +25,7 @@ bot: commands.Bot=commands.Bot(command_prefix=['Maia ', 'maia ', 'MAIA ',
     'Maia, ', 'maia, ', 'MAIA, '])
 
 bot.add_cog(Core(bot))
-bot.add_cog(Fluff(bot))
-bot.add_cog(Nerds(bot))
-bot.add_cog(Queries(bot))
+bot.add_cog(Enquiries(bot))
+bot.add_cog(Wiki(bot))
 
 bot.run(os.getenv('DISCORD_TOKEN'))
