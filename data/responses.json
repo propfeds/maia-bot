@@ -80,10 +80,9 @@
     "play":
     {
         "403": "Hey, you're not my owner, you can't play *me!*",
-        "404": "What you want me kill?",
-        "debug_on": "Hey dude, debug mode is on!",
-        "debug_off": "No longer debugging.",
-        "nothing": "Stopped playing {0}.",
+        "404": "What chu want me kill?",
+        "Debug": "Hey dude, debug mode is on!",
+        "nothing": "Terminated {0}.",
         "Baptized in Flimes": "```\nA paradigm\nA time crime\nIntro the data stream tonight\n\nConsume lime\nIn time\nThat feel when you baptized in flimes.\n```",
         "Code War": "```\nThey'll tear open your eyes\nAt the speed of light\nNetwork sharing line,\nis chaos all the time.\n```",
         "Dance of the Pythons": "**Dance of the Pythons:** Entry does not exist.",

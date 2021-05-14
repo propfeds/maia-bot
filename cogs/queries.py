@@ -21,8 +21,8 @@ class Queries(commands.Cog):
 
     @commands.command(**cogs._cmd['define'])
     async def define(self, ctx: commands.Context, *entries: str) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs._resp['play']['debug_on'])
+        if cogs._global['playing']=='Debug':
+            await ctx.send(cogs._resp['play']['Debug'])
         entry_full: str=' '.join(entries).lower()
         # Second group in match is entry
         entry_list: Iterator[Match[str]]=re.finditer(r'( ?)([^(\?)]+)',
@@ -63,8 +63,8 @@ class Queries(commands.Cog):
     @commands.command(**cogs._cmd['edit'])
     async def edit(self, ctx: commands.Context, entry: str, mode:
         Optional[int]=1, *value: str) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs._resp['play']['debug_on'])
+        if cogs._global['playing']=='Debug':
+            await ctx.send(cogs._resp['play']['Debug'])
         role_lorekeep: discord.Role=cogs.get_role(ctx.guild,
             cogs._guild[ctx.guild.id]['lorekeep'])
         if role_lorekeep not in ctx.author.roles:
@@ -100,8 +100,8 @@ class Queries(commands.Cog):
     @commands.command(**cogs._cmd['mute'])
     async def mute(self, ctx: commands.Context, member: discord.Member,
         hours: str, *reason: str) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs._resp['play']['debug_on'])
+        if cogs._global['playing']=='Debug':
+            await ctx.send(cogs._resp['play']['Debug'])
         if member==self.bot.user or (
             not ctx.author.guild_permissions.manage_roles):
             await ctx.send(cogs._resp['mute']['403'])
@@ -146,18 +146,16 @@ class Queries(commands.Cog):
         if game_full=='':
             await ctx.send(cogs._resp['play']['404'])
             return
-        # elif game_full in ('Debug', 'debug'):
-        #     cogs._debug_state=not cogs._debug_state
-        #     if cogs._debug_state:
-        #         await ctx.send(cogs._resp['play']['debug_on'])
-        #         await self.bot.change_presence(activity=discord.Game('Debug'),
-        #             status=discord.Status.dnd)
-        #     else:
-        #         await ctx.send(cogs._resp['play']['debug_off'])
-        #         await self.bot.change_presence(activity=None,
-        #             status=discord.Status.online)
+        elif game_full in ('Debug', 'debug'):
+            await self.bot.change_presence(activity=discord.Game('Debug'),
+                status=discord.Status.dnd)
+            cogs._global['playing']='Debug'
+            with open('data/global.json', 'w+', encoding='utf-8'
+            ) as json_global:
+                dump(cogs._global, json_global, sort_keys=True, indent=4)
         elif game_full in ('Nothing, nothing'):
-            await self.bot.change_presence(activity=None)
+            await self.bot.change_presence(activity=None,
+                status=discord.Status.online)
             # Export status for use next launch
             prev_game=cogs._global.pop('playing')
             await ctx.send(cogs._resp['play']['nothing'].format(prev_game))
@@ -167,7 +165,8 @@ class Queries(commands.Cog):
         else:
             if cogs._resp['play'].get(game_full):
                 await ctx.send(cogs._resp['play'][game_full])
-            await self.bot.change_presence(activity=discord.Game(game_full))
+            await self.bot.change_presence(activity=discord.Game(game_full),
+                status=discord.Status.online)
             # Export status for use next launch
             cogs._global['playing']=game_full
             with open('data/global.json', 'w+', encoding='utf-8'

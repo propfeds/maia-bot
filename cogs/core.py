@@ -5,7 +5,6 @@ from discord.ext import commands
 class Core(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
-        # self._debug_state: bool=False
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
@@ -17,5 +16,7 @@ class Core(commands.Cog):
         if cogs._global.get('playing'):
             game: str=cogs._global['playing']
             await self.bot.change_presence(activity=discord.Game(game))
+            if game=='Debug':
+                await self.bot.change_presence(status=discord.Status.dnd)
             print(f'Playing: {game}')
     

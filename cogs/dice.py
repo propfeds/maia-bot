@@ -36,8 +36,8 @@ class Dice(commands.Cog):
     @commands.command(**cogs._cmd['roll'])
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs._resp['play']['debug_on'])
+        if cogs._global['playing']=='Debug':
+            await ctx.send(cogs._resp['play']['Debug'])
         die_match: Match=re.match(r'(\d+)?[dD](\d+)([\+\-]\d+)?', die)
         if die_match is None:
             await ctx.send(cogs._resp['roll']['not_die'].format(
