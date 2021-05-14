@@ -57,15 +57,14 @@
         "aliases": [],
         "brief": "Play video games or music",
         "description": "Nope.",
-        "game": "At My Door",
-        "help": "Engage a video game. Requires the Botkeep role specified in data/guilds/{guild.id}/config.json.\nCan also engage debug mode.",
+        "help": "Engage a playable content. Requires the Botkeep role specified in data/guilds/{guild's ID}.json.\nCan also engage debug mode.",
         "hidden": true
     },
     "roll": {
         "aliases": [],
         "brief": "Rolls dice in the format of xdy+m",
         "description": "Powered by Random.org.",
-        "help": "Rolls dice.\nSpecify a die in the format of xdy+m.\nCan be followed by a reason, or the number of repeats, or both (number of repeats goes first).\nExamples:\nmaia roll 3d6\nMaia roll 3d6 fireball\nmaia roll 3d6 2\nMaia, roll 3d6 2 two fireballs",
+        "help": "Rolls dice.\nSpecify a die in the format of xdy+m.\nCan be followed by the number of repeats, then a reason.\nExamples:\nmaia roll 3d6\nMaia roll 3d6 fireball\nmaia roll 3d6 2\nMaia, roll 3d6 2 two fireballs",
         "hidden": false
     },
     "scream": {

@@ -1,10 +1,8 @@
-from cogs import get_cmd
 from cogs.core import Core
 from cogs.fluff import Fluff
 from cogs.nerds import Nerds
 from cogs.queries import Queries
 from datetime import datetime
-import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import logging

@@ -66,7 +66,7 @@ class Queries(commands.Cog):
         if cogs._debug_state:
             await ctx.send(cogs._resp['play']['debug_on'])
         role_lorekeep: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cmd[ctx.guild.id]['lorekeep'])
+            cogs._guild[ctx.guild.id]['lorekeep'])
         if role_lorekeep not in ctx.author.roles:
             await ctx.send(cogs._resp['edit']['403'])
             return
@@ -113,7 +113,7 @@ class Queries(commands.Cog):
             return
 
         role_mute: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cmd[ctx.guild.id]['mute'])
+            cogs._guild[ctx.guild.id]['mute'])
         reason_full: str=' '.join(reason)
         if reason_full=='':
             reason_full='no reason'
@@ -136,7 +136,7 @@ class Queries(commands.Cog):
     @commands.command(**cogs._cmd['play'])
     async def play(self, ctx: commands.Context, *game: str) -> None:
         role_botkeep: discord.Role=cogs.get_role(ctx.guild,
-            cogs._guild_cmd[ctx.guild.id]['botkeep'])
+            cogs._guild[ctx.guild.id]['botkeep'])
         if role_botkeep not in ctx.author.roles:
             await ctx.send(cogs._resp['play']['403'])
             return
@@ -159,17 +159,18 @@ class Queries(commands.Cog):
         elif game_full in ('Nothing, nothing'):
             await self.bot.change_presence(activity=None)
             # Export status for use next launch
-            del cogs._cmd['play']['game']
-            with open('data/commands.json', 'w+', encoding='utf-8'
-            ) as json_config:
-                dump(cogs._cmd, json_config, sort_keys=True, indent=4)
+            prev_game=cogs._global.pop('playing')
+            await ctx.send(cogs._resp['play']['nothing'].format(prev_game))
+            with open('data/global.json', 'w+', encoding='utf-8'
+            ) as json_global:
+                dump(cogs._global, json_global, sort_keys=True, indent=4)
         else:
             if cogs._resp['play'].get(game_full):
                 await ctx.send(cogs._resp['play'][game_full])
             await self.bot.change_presence(activity=discord.Game(game_full))
             # Export status for use next launch
-            cogs._cmd['play']['game']=game_full
-            with open('data/commands.json', 'w+', encoding='utf-8'
-            ) as json_config:
-                dump(cogs._cmd, json_config, sort_keys=True, indent=4)
+            cogs._global['playing']=game_full
+            with open('data/global.json', 'w+', encoding='utf-8'
+            ) as json_global:
+                dump(cogs._global, json_global, sort_keys=True, indent=4)
 

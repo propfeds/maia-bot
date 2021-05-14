@@ -7,15 +7,23 @@ from random import randint
 from rdoclient import RandomOrgClient
 from typing import Callable, Dict, Union
 
-load_dotenv()
 # Discourse
-with open('data/commands.json', encoding='utf-8') as json_config:
-    _cmd=load(json_config)
-with open('data/responses.json', encoding='utf-8') as json_responses:
-    _resp=load(json_responses)
-with open('data/wiki.json', encoding='utf-8') as json_wiki:
-    _wiki=load(json_wiki)
-_guild_cmd: Dict[int, Dict[str, int]]={}
+def load_cfg(name: str, default_dict: Dict={}) -> Dict:
+    try:
+        with open(f'data/{name}.json', encoding='utf-8') as f:
+            cfg: Dict=load(f)
+    except FileNotFoundError:
+        cfg=default_dict
+        with open(f'data/{name}.json', 'w+') as f:
+            dump(cfg, f, indent=4)
+    finally:
+        return cfg
+
+_cmd=load_cfg('commands')
+_resp=load_cfg('responses')
+_wiki=load_cfg('wiki')
+_global=load_cfg('global')
+_guild: Dict[int, Dict[str, int]]={}
 
 _math_func_dict: Dict[str, Callable]={
     'ceil': math.ceil, 'comb': math.comb, 'copysign': math.copysign,
@@ -37,6 +45,7 @@ _math_func_dict: Dict[str, Callable]={
     'tau': math.tau, 'inf': math.inf, 'nan': math.nan
 }
 # Randorg
+load_dotenv()
 _rdo: RandomOrgClient=RandomOrgClient(os.getenv('RANDORG_API_KEY'))
 
 def get_role(guild: discord.Guild, id_num: int) -> discord.Role:
@@ -49,22 +58,16 @@ def get_emoji(guild: discord.Guild, name: str, fallback_id: int=None) -> Union[
         return f'<:{name}:{fallback_id}>'
     return emoji
 
-def get_cmd(guild: discord.Guild) -> None:
-    global _guild_cmd
+def get_guild_cfg(guild: discord.Guild) -> None:
+    global _guild
 
     if not os.path.exists('data/guilds/'):
         os.mkdir('data/guilds/')
 
     # Guild config contains role IDs for Lorekeeps, Botkeeps and Mutes. If not
     # found, creates a blank slate so every command would fail intentionally.
-    if not os.path.exists(f'data/guilds/{guild.id}.json'):
-        _guild_cmd[guild.id]={
-            'botkeep': 0,
-            'lorekeep': 0,
-            'mute': 0
-        }
-        with open(f'data/guilds/{guild.id}.json', 'w+') as json_guild_cmd:
-            dump(_guild_cmd[guild.id], json_guild_cmd, indent=4)
-    else:
-        with open(f'data/guilds/{guild.id}.json', 'r') as json_guild_cmd:
-            _guild_cmd[guild.id]=load(json_guild_cmd)
+    _guild[guild.id]=load_cfg(f'guilds/{guild.id}', {
+        'botkeep': 0,
+        'lorekeep': 0,
+        'mute': 0
+    })
