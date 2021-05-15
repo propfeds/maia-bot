@@ -1,31 +1,15 @@
+import cogs
 from cogs.core import Core
-from cogs.enquiries import Enquiries
-from cogs.wiki import Wiki
-from datetime import datetime
 from discord.ext import commands
 from dotenv import load_dotenv
-import logging
-import os
+from os import getenv
 
-load_dotenv()
-
-# if not os.path.exists('data/logs/'):
-#     os.mkdir('data/logs/')
-# 
-# logger=logging.getLogger('discord')
-# logger.setLevel(logging.DEBUG)
-# handler=logging.FileHandler(
-#     filename=f'data/logs/{datetime.now().strftime("%Y-%m-%d")}.log',
-#     encoding='utf-8', mode='w')
-# handler.setFormatter(logging.Formatter(
-#     '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-# logger.addHandler(handler)
-
-bot: commands.Bot=commands.Bot(command_prefix=['Maia ', 'maia ', 'MAIA ',
-    'Maia, ', 'maia, ', 'MAIA, '])
+bot: commands.Bot=commands.Bot(command_prefix=cogs._global['prefixes'])
 
 bot.add_cog(Core(bot))
-bot.add_cog(Enquiries(bot))
-bot.add_cog(Wiki(bot))
+core=bot.get_cog('Core')
+for cog in cogs._global['autoruns']:
+    core.construct_cog(cog)
 
-bot.run(os.getenv('DISCORD_TOKEN'))
+load_dotenv()
+bot.run(getenv('DISCORD_TOKEN'))

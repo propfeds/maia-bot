@@ -1,11 +1,15 @@
 import cogs
+import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 import os
 from random import randint
 from rdoclient import (RandomOrgClient, RandomOrgSendTimeoutError,
 RandomOrgInsufficientRequestsError, RandomOrgInsufficientBitsError)
 import re
 from typing import List, Match, Optional, Tuple
+
+load_dotenv()
 
 class Dice(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -36,7 +40,7 @@ class Dice(commands.Cog):
     @commands.command(**cogs._cmd['roll'])
     async def roll(self, ctx: commands.Context, die: str, repeats: Optional
     [int]=1, *reason: str) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             await ctx.send(cogs._resp['play']['Debug'])
         die_match: Match=re.match(r'(\d+)?[dD](\d+)([\+\-]\d+)?', die)
         if die_match is None:

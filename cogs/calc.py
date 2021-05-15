@@ -34,7 +34,7 @@ class Calculator(commands.Cog):
     
     @commands.command(**cogs._cmd['calc'])
     async def calc(self, ctx: commands.Context, *exp: str) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             role_botkeep: discord.Role=cogs.get_role(ctx.guild,
                 cogs._guild[ctx.guild.id]['botkeep'])
             if role_botkeep not in ctx.author.roles:

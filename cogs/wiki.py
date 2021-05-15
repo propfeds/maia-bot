@@ -1,6 +1,5 @@
 # Wiki: General information tools.
 
-import asyncio
 import cogs
 import discord
 from discord.ext import commands
@@ -15,7 +14,7 @@ class Wiki(commands.Cog):
 
     @commands.command(**cogs._cmd['define'])
     async def define(self, ctx: commands.Context, *entries: str) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             await ctx.send(cogs._resp['play']['Debug'])
         entry_full: str=' '.join(entries).lower()
         # Second group in match is entry
@@ -57,7 +56,7 @@ class Wiki(commands.Cog):
     @commands.command(**cogs._cmd['edit'])
     async def edit(self, ctx: commands.Context, entry: str, mode:
         Optional[int]=1, *value: str) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             await ctx.send(cogs._resp['play']['Debug'])
         role_lorekeep: discord.Role=cogs.get_role(ctx.guild,
             cogs._guild[ctx.guild.id]['lorekeep'])

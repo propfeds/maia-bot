@@ -57,6 +57,6 @@ class Fluff(commands.Cog):
 
     @commands.command(**cogs._cmd['scream'])
     async def scream(self, ctx: commands.Context) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             await ctx.send(cogs._resp['play']['Debug'])
         await ctx.send(choice(cogs._resp['fluff']['screams']))

@@ -79,8 +79,9 @@
     },
     "play":
     {
-        "403": "Hey, you're not my owner, you can't play *me!*",
+        "403": "Hey, you're not my owner, you can't play *this!*",
         "404": "What chu want me kill?",
+        "already_running": "{0} is already running!",
         "Debug": "Hey dude, debug mode is on!",
         "nothing": "Terminated {0}.",
         "Baptized in Flimes": "```\nA paradigm\nA time crime\nIntro the data stream tonight\n\nConsume lime\nIn time\nThat feel when you baptized in flimes.\n```",
@@ -104,5 +105,10 @@
         "rolling_for": "Rolling `{0}` for {1}",
         "times": "{0} times",
         "once": "once"
+    },
+    "stop":
+    {
+        "404": "What chu want me kill?",
+        "not_running": "{0} is already dead."
     }
 }

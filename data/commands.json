@@ -54,11 +54,11 @@
         "hidden": true
     },
     "play": {
-        "aliases": [],
+        "aliases": ["launch", "start"],
         "brief": "Play video games or music",
-        "description": "Nope.",
-        "help": "Engage a playable content. Requires the Botkeep role specified in data/guilds/{guild's ID}.json.\nCan also engage debug mode.",
-        "hidden": true
+        "description": "Not including Year's Revel.",
+        "help": "Engage a playable content.\nCan also engage debug mode, which is not a real cog.\nExamples:\nmaia play dice\nMaia play Year's Revel",
+        "hidden": false
     },
     "roll": {
         "aliases": [],
@@ -75,6 +75,13 @@
         "description": "Screams.",
         "help": "Screams.",
         "hidden": true
+    },
+    "stop": {
+        "aliases": ["terminate", "end"],
+        "brief": "Stop playing video games or music",
+        "description": "Perhaps gives free ram.",
+        "help": "Disengage a playable content.\nCan also disengage debug mode.\nExamples:\nmaia play dice\nMaia play Year's Revel",
+        "hidden": false
     },
     "template": {
         "aliases": [],

@@ -1,7 +1,7 @@
 # Project
 data/guilds/
 data/logs/
-data/global.json
+data/config.json
 utils/
 .vscode/
 

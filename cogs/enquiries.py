@@ -12,7 +12,7 @@ class Enquiries(commands.Cog):
     @commands.command(**cogs._cmd['mute'])
     async def mute(self, ctx: commands.Context, member: discord.Member,
         hours: str, *reason: str) -> None:
-        if cogs._global['playing']=='Debug':
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
             await ctx.send(cogs._resp['play']['Debug'])
         if member==self.bot.user or (
             not ctx.author.guild_permissions.manage_roles):
