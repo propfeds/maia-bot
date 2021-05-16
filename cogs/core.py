@@ -13,13 +13,11 @@ class Core(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot=bot
         self._cog_aliases: Dict[str, Type[commands.Cog]]={
-            'calc': Calculator, 'calculator': Calculator, 'Calc': Calculator,
-            'Calculator': Calculator,
-            'dice': Dice, 'Dice': Dice, 
+            'calc': Calculator, 'calculator': Calculator,
+            'dice': Dice, 
             'enquiries': Enquiries, 'inquiries': Enquiries,
-            'Enquiries': Enquiries, 'Inquiries': Enquiries,
-            'fluff': Fluff, 'meme': Fluff, 'joke': Fluff, 'Fluff': Fluff,
-            'wiki': Wiki, 'Wiki': Wiki,
+            'fluff': Fluff, 'meme': Fluff, 'joke': Fluff,
+            'wiki': Wiki,
         }
         self._running_cogs: set=set()
 
@@ -31,12 +29,13 @@ class Core(commands.Cog):
             ', '.join(cog_list)))
 
     async def construct_cog(self, name: str, online: bool) -> str:
-        if not self._cog_aliases.get(name):
+        name_lower=name.lower()
+        if not self._cog_aliases.get(name_lower):
             # This one prints to console because it's related to autoruns
             print(f'Load failed: cog name \'{name}\' cannot be found.')
             return cogs._resp['play']['404']
         else:
-            cog_type: Type[commands.Cog]=self._cog_aliases[name]
+            cog_type: Type[commands.Cog]=self._cog_aliases[name_lower]
             if cog_type in self._running_cogs:
                 # This one too
                 print(f'Cog \'{cog_type}\' is already running.')
@@ -50,12 +49,13 @@ class Core(commands.Cog):
                 return None
 
     async def destruct_cog(self, name: str) -> str:
-        if not self._cog_aliases.get(name):
+        name_lower=name.lower()
+        if not self._cog_aliases.get(name_lower):
             # No need to print
             # print(f'Termination failed: cog name \'{name}\' cannot be found.')
             return cogs._resp['stop']['404']
         else:
-            cog_type: Type[commands.Cog]=self._cog_aliases[name]
+            cog_type: Type[commands.Cog]=self._cog_aliases[name_lower]
             if cog_type not in self._running_cogs:
                 # print(f'Cog \'{cog_type}\' is not running.')
                 return cogs._resp['stop']['not_running'].format(

@@ -11,7 +11,8 @@ async def autorun(bot: commands.Bot, cogs: list) -> None:
     tasks=[core.construct_cog(cog, False) for cog in cogs]
     await asyncio.wait(tasks)
 
-bot: commands.Bot=commands.Bot(command_prefix=cogs._global['prefixes'])
+bot: commands.Bot=commands.Bot(command_prefix=cogs._global['prefixes'],
+    case_insensitive=True)
 
 bot.add_cog(Core(bot))
 loop: AbstractEventLoop=asyncio.get_event_loop()
