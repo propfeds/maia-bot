@@ -1,5 +1,6 @@
+# Json files for command info and stuff
+
 import discord
-from discord.ext import commands
 from json import dump, load
 from typing import Dict, Union
 
