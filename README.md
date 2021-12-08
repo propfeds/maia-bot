@@ -27,6 +27,10 @@ Cogs can be deactivated as well.
 
 `maia stop <cog_name>`
 
-## Address
+## Contact
 
-[Maia's Tavern, 1336 Propaned Str.](https://discord.gg/AxMZJyg)
+1336 Salt Str., Propaned Avenue, [Discord](https://discord.gg/AxMZJyg)
+
+Cult of the Propaned, B2F, Maia's Tavern
+
+Fax: I don't know.
