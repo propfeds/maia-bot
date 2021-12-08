@@ -1,5 +1,6 @@
-# Wiki: General information tools.
-
+'''
+Wiki: General information tools.
+'''
 import cogs
 import discord
 from discord.ext import commands

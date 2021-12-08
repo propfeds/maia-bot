@@ -1,3 +1,6 @@
+'''
+Dice: Rolls dice.
+'''
 import cogs
 import discord
 from discord.ext import commands

@@ -1,5 +1,6 @@
-# Json files for command info and stuff
-
+'''
+Json files for command info and other things.
+'''
 import discord
 from json import dump, load
 from typing import Dict, Union
@@ -36,6 +37,6 @@ _guild: Dict[int, Dict[str, int]]={}
 _cmd=load_cfg('commands')
 _resp=load_cfg('responses')
 _global=load_cfg('config', {
-    'prefixes': ['maia '],
+    'prefixes': ["Maia ", "maia ", "MAIA ", "Maia, ", "maia, ", "MAIA, "],
     'autoruns': [],
 })

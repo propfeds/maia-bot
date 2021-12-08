@@ -1,7 +1,6 @@
-# Fluff: Definitely slows the whole bot down,
-# since it scans every single message and convert it into lowercase.
-# For nothing but memes.
-
+'''
+Fluff: For nothing but memes.
+'''
 import asyncio
 import cogs
 import discord

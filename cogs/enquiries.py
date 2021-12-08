@@ -1,5 +1,6 @@
-# Enquiries: Moderation tools.
-
+'''
+Enquiries: Moderation tools.
+'''
 import asyncio
 import cogs
 import discord

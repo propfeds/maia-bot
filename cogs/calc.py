@@ -1,5 +1,6 @@
-# Calc: Contains mathematical tools.
-
+'''
+Calc: Mathematical tools.
+'''
 import cogs
 import discord
 from discord.ext import commands
