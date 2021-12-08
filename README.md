@@ -1,10 +1,32 @@
 # maia-bot
-## A Discord Tavernkeep bot in Python
+## A general-purpose Discord API bot in Python.
 
-I have no other intention of publishing than educational purposes.
+Welcome to Maia's tavern! Where sidetrack is the spice of life.
 
-You can do whatever with it, as long as it is unlicensed.
+The bot is equipped with utilities that mostly annoy her patrons. Published for
+educational purposes.
 
-Call her by name to command.
+## Usage
 
-[Where is she used?](https://discord.gg/AxMZJyg)
+Maia uses a pseudo-tasking system that activates certain command sets by using
+Discord API's Cogs. Firstly, start up one or more cogs:
+
+`maia play <cog_name>`
+
+Cogs can also be automatically started on bot launch. This can be edited inside
+`./data/config.json`.
+
+After starting desired cogs, call her by name to evoke commands. For example:
+
+`maia help` - Displays help.
+
+`Maia, roll 3d6 2 fireballs` - Rolls two sets of 3 6-sided dice (6 total) for
+the purpose of 'fireballs'.
+
+Cogs can be deactivated as well.
+
+`maia stop <cog_name>`
+
+## Address
+
+[Maia's Tavern, 1336 Propaned Str.](https://discord.gg/AxMZJyg)
