@@ -60,7 +60,7 @@
     {
         "404": "Entry does not exist."
     },
-    "modifine":
+    "edit":
     {
         "403": "You are forbidden from modifying the Library.",
         "404": "You are deleting what?",
@@ -79,10 +79,11 @@
     },
     "play":
     {
-        "403": "Hey, you're not my owner. You can't play me.",
-        "404": "Play what?",
-        "debug_on": "Hey dude, debug mode is on!",
-        "debug_off": "No longer debugging.",
+        "403": "Hey, you're not my owner, you can't play *this!*",
+        "404": "What chu want me kill?",
+        "already_running": "{0} is already running!",
+        "Debug": "Hey dude, debug mode is on!",
+        "nothing": "Terminated {0}.",
         "Baptized in Flimes": "```\nA paradigm\nA time crime\nIntro the data stream tonight\n\nConsume lime\nIn time\nThat feel when you baptized in flimes.\n```",
         "Code War": "```\nThey'll tear open your eyes\nAt the speed of light\nNetwork sharing line,\nis chaos all the time.\n```",
         "Dance of the Pythons": "**Dance of the Pythons:** Entry does not exist.",
@@ -104,5 +105,10 @@
         "rolling_for": "Rolling `{0}` for {1}",
         "times": "{0} times",
         "once": "once"
+    },
+    "stop":
+    {
+        "404": "What chu want me kill?",
+        "not_running": "{0} is already dead."
     }
 }

@@ -1,7 +1,6 @@
-# Fluff: Definitely slows the whole bot down,
-# since it scans every single message and convert it into lowercase.
-# For nothing but memes.
-
+'''
+Fluff: For nothing but memes.
+'''
 import asyncio
 import cogs
 import discord
@@ -26,15 +25,15 @@ class Fluff(commands.Cog):
 
         if 'rougelike' in message_lowcase:
             await message.channel.send(
-                cogs.resp['fluff']['rl_base'].format(
-                    choice(cogs.resp['fluff']['rouge']).format(
-                        choice(cogs.resp['fluff']['vowels']),
-                        choice(cogs.resp['fluff']['vowels']),
-                        choice(cogs.resp['fluff']['vowels'])
+                cogs._resp['fluff']['rl_base'].format(
+                    choice(cogs._resp['fluff']['rouge']).format(
+                        choice(cogs._resp['fluff']['vowels']),
+                        choice(cogs._resp['fluff']['vowels']),
+                        choice(cogs._resp['fluff']['vowels'])
                     ),
-                    choice(cogs.resp['fluff']['like']).format(
-                        choice(cogs.resp['fluff']['vowels']),
-                        choice(cogs.resp['fluff']['vowels'])
+                    choice(cogs._resp['fluff']['like']).format(
+                        choice(cogs._resp['fluff']['vowels']),
+                        choice(cogs._resp['fluff']['vowels'])
                     )
                 )
             )
@@ -55,14 +54,8 @@ class Fluff(commands.Cog):
             await message.channel.send(file=discord.File(
                 'data/images/gachibass.gif'))
 
-    @commands.command(
-        aliases=cogs.cfg['scream']['aliases'],
-        brief=cogs.cfg['scream']['brief'],
-        description=cogs.cfg['scream']['desc'],
-        help=cogs.cfg['scream']['help'],
-        hidden=cogs.cfg['scream']['hidden']
-    )
+    @commands.command(**cogs._cmd['scream'])
     async def scream(self, ctx: commands.Context) -> None:
-        if cogs._debug_state:
-            await ctx.send(cogs.resp['play']['debug_on'])
-        await ctx.send(choice(cogs.resp['fluff']['screams']))
+        if ctx.guild.get_member(self.bot.user.id).status==discord.Status.dnd:
+            await ctx.send(cogs._resp['play']['Debug'])
+        await ctx.send(choice(cogs._resp['fluff']['screams']))

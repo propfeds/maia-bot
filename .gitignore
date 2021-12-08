@@ -1,7 +1,7 @@
 # Project
 data/guilds/
 data/logs/
-data/game.txt
+data/config.json
 utils/
 .vscode/
 

@@ -1,0 +1,93 @@
+{
+    "calc": {
+        "aliases": [
+            "calculate",
+            "eval",
+            "evaluate"
+        ],
+        "brief": "Calculates stuff",
+        "description": "Powered by python's math package.",
+        "help": "Calculates stuff.\nSpecify an expression.\nExample:\nmaia calculate 1+3\nMaia, evaluate sin(pi/6)",
+        "hidden": false
+    },
+    "define": {
+        "aliases": [
+            "wiki",
+            "lore",
+            "what's",
+            "who's"
+        ],
+        "brief": "Helps you with lore",
+        "description": "Search the Library of Maia to learn about various topics.",
+        "help": "Helps you with lore.\nSpecify an entry (or entries, separated by question marks).\nCan redirect entries.\nExample:\nMaia wiki tome\nMaia what's happening???? ? ? Where? is ? Dance of the Pythons ?",
+        "hidden": false
+    },
+    "edit": {
+        "aliases": [
+            "mod",
+            "babble",
+            "weave"
+        ],
+        "brief": "Weaves new lore",
+        "description": "Like, modify the define.",
+        "help": "Weaves new lore. Does not require Bardship, weirdly, but a special Lorekeeper role specified in data/guilds/{guild.id}/config.json.\nSpecify an entry (in double quotes), then the mode (optional), then the value.\nModes:\n1: Add (default)\n0: Add & Modify\n-1: Delete\nNote that to print a newline, you must include this as an *argument:\n\"\n\"\nExample: Maia, mod \"maia's tavern\" 1 This place no one ever dares to come.",
+        "hidden": true
+    },
+    "give": {
+        "aliases": [
+            "gib",
+            "gif",
+            "grant"
+        ],
+        "brief": "Gives things",
+        "description": "I hereby grant thee something!",
+        "help": "Gives several things, such as responses or roles.\nExample:\nmaia gib love",
+        "hidden": false
+    },
+    "mute": {
+        "aliases": [
+            "gungeon"
+        ],
+        "brief": "Cast a vile soul into the Gungeon",
+        "description": "Proceed to spend an eternity beating your Past.",
+        "help": "Cast a vile soul into the Gungeon.\nSpecify a mention then the amount of hours.\nCan be followed by a reason.\nExample:\nmaia gungeon @Paradox#6969 888\nMaia gungeon @Convict#5555 12 BEING A FOOL",
+        "hidden": true
+    },
+    "play": {
+        "aliases": ["launch", "start"],
+        "brief": "Play video games or music",
+        "description": "Not including Year's Revel.",
+        "help": "Engage a playable content.\nCan also engage debug mode, which is not a real cog.\nExamples:\nmaia play dice\nMaia play Year's Revel",
+        "hidden": false
+    },
+    "roll": {
+        "aliases": [],
+        "brief": "Rolls dice in the format of xdy+m",
+        "description": "Powered by Random.org.",
+        "help": "Rolls dice.\nSpecify a die in the format of xdy+m.\nCan be followed by the number of repeats, then a reason.\nExamples:\nmaia roll 3d6\nMaia roll 3d6 fireball\nmaia roll 3d6 2\nMaia, roll 3d6 2 two fireballs",
+        "hidden": false
+    },
+    "scream": {
+        "aliases": [
+            "shout"
+        ],
+        "brief": "Screams",
+        "description": "Screams.",
+        "help": "Screams.",
+        "hidden": true
+    },
+    "stop": {
+        "aliases": ["terminate", "end"],
+        "brief": "Stop playing video games or music",
+        "description": "Perhaps gives free ram.",
+        "help": "Disengage a playable content.\nCan also disengage debug mode.\nExamples:\nmaia play dice\nMaia play Year's Revel",
+        "hidden": false
+    },
+    "template": {
+        "aliases": [],
+        "brief": "",
+        "description": "",
+        "help": "",
+        "hidden": false
+    }
+}
